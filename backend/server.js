@@ -1,12 +1,14 @@
+require('dotenv').config() 
+
 const express = require('express')
+const app = express()
 
 const authRoutes = require('./routes/authRoutes')
 const habitRoutes = require('./routes/habitRoutes')
 const habitLogRoutes = require('./routes/habitLogRoutes')
 
-require('dotenv').config() 
-
-const app = express()
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // routes
 app.use("/api/auth", authRoutes)
