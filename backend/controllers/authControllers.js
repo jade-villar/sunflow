@@ -1,5 +1,6 @@
 const prisma = require('../config/db')
 const bcrypt = require('bcryptjs')
+const generateToken = require('../utils/generateToken')
 
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body
@@ -10,7 +11,9 @@ const registerUser = async (req, res) => {
   })
 
   if (userExists) {
-    return res.status(400).json({ error: "User already exist" })
+    return res.status(400).json({ 
+      error: "User email already exist" 
+    })
   }
 
   // Hash password
@@ -25,6 +28,9 @@ const registerUser = async (req, res) => {
       password: hashedPassword
     }
   })
+
+  // Generate JWT token
+  const token = generateToken(user.id, res)
   
   res.status(201).json({  
     status: "success",
@@ -33,7 +39,8 @@ const registerUser = async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email
-      }
+      },
+      token: token
     }
   })
 }
@@ -47,15 +54,22 @@ const loginUser = async (req, res) => {
   })
 
   if (!user) {
-    return res.status(401).json({ error: "Invalid email or password" })
+    return res.status(401).json({ 
+      error: "Invalid email or password"
+    })
   }
 
   // Verify password
   const isPasswordValid = await bcrypt.compare(password, user.password)
 
   if (!isPasswordValid) {
-    return res.status(401).json({ error: "Invalid email or password" })
+    return res.status(401).json({ 
+      error: "Invalid email or password" 
+    })
   }
+
+  // Generate JWT token
+  const token = generateToken(user.id, res)
 
   res.status(201).json({  
     status: "success",
@@ -64,13 +78,23 @@ const loginUser = async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email
-      }
+      },
+      token: token
     }
   })
 }
 
 const logoutUser = async (req, res) => {
-  res.status(200).json({ status: "success", message: "Logged out successfully" })
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax"
+  })
+  
+  res.status(200).json({ 
+    status: "success", 
+    message: "Logged out successfully" 
+  })
 }
 
 module.exports = { registerUser, loginUser, logoutUser }
