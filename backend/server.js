@@ -1,11 +1,15 @@
 require('dotenv').config() 
 
+const cookieParser = require('cookie-parser')
+
 const express = require('express')
 const app = express()
 
 const authRoutes = require('./routes/authRoutes')
 const habitRoutes = require('./routes/habitRoutes')
 const habitLogRoutes = require('./routes/habitLogRoutes')
+
+app.use(cookieParser())
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

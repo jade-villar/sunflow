@@ -1,6 +1,10 @@
 const express = require('express')
-const router = express.Router()
 const { getAllHabits, getHabit, addHabit, updateHabit, deleteHabit } = require('../controllers/habitControllers')
+const protect = require('../middlewares/authMiddleware')
+
+const router = express.Router()
+
+router.use(protect)
 
 router.get("/", getAllHabits)
 
