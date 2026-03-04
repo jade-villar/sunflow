@@ -29,7 +29,7 @@ model Habit {
   title       String
   description String?
   frequency   Frequency
-  categoryId  String
+  categoryId  Int
   streak      Streak?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
@@ -59,7 +59,7 @@ model Streak {
 }
 
 model Category {
-  id    String @id @default(uuid())
+  id    Int    @id @default(autoincrement())
   name  String @unique
   emoji String
 
