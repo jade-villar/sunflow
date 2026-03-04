@@ -35,7 +35,7 @@ model Habit {
   updatedAt   DateTime   @updatedAt
   logs        HabitLog[]
 
-  user     User     @relation(fields: [userId], references: [id])
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   category Category @relation(fields: [categoryId], references: [id])
 }
 
@@ -45,7 +45,7 @@ model HabitLog {
   date      DateTime @db.Date
   completed Boolean  @default(false)
 
-  habit Habit @relation(fields: [habitId], references: [id])
+  habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
 
   @@unique([habitId, date])
 }
@@ -55,7 +55,7 @@ model Streak {
   streak  Int    @default(0)
   habitId String @unique
 
-  habit Habit @relation(fields: [habitId], references: [id])
+  habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
 }
 
 model Category {
