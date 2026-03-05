@@ -8,10 +8,7 @@ const getAllHabits = async (req, res) => {
     // Get all habits
     const habits = await prisma.habit.findMany({
       where: { userId: userId },
-      include: {
-        category: true,
-        streak: true,
-      },
+      include: { category: true },
       orderBy: { createdAt: "desc" },
     });
 
@@ -31,10 +28,8 @@ const getAllHabits = async (req, res) => {
           name: habit.category.name,
           emoji: habit.category.emoji,
         },
-        streak: {
-          id: habit.streak.id,
-          streak: habit.streak.streak,
-        },
+        streak: habit.streak,
+        lastCompletedAt: habit.lastCompletedAt,
         createdAt: habit.createdAt,
         updatedAt: habit.updatedAt,
       })),
@@ -53,10 +48,7 @@ const getHabit = async (req, res) => {
     // Get specific habit
     const habit = await prisma.habit.findUnique({
       where: { id: req.params.id },
-      include: {
-        category: true,
-        streak: true,
-      },
+      include: { category: true },
     });
 
     if (!habit) {
@@ -80,10 +72,8 @@ const getHabit = async (req, res) => {
           name: habit.category.name,
           emoji: habit.category.emoji,
         },
-        streak: {
-          id: habit.streak.id,
-          streak: habit.streak.streak,
-        },
+        streak: habit.streak,
+        lastCompletedAt: habit.lastCompletedAt,
         createdAt: habit.createdAt,
         updatedAt: habit.updatedAt,
       },
@@ -115,16 +105,8 @@ const addHabit = async (req, res) => {
         frequency: frequency,
         categoryId: categoryId,
         userId: userId,
-        streak: {
-          create: {
-            streak: 0,
-          },
-        },
       },
-      include: {
-        category: true,
-        streak: true,
-      },
+      include: { category: true },
     });
 
     res.status(201).json({
@@ -139,10 +121,8 @@ const addHabit = async (req, res) => {
           name: habit.category.name,
           emoji: habit.category.emoji,
         },
-        streak: {
-          id: habit.streak.id,
-          streak: habit.streak.streak,
-        },
+        streak: habit.streak,
+        lastCompletedAt: habit.lastCompletedAt,
         createdAt: habit.createdAt,
         updatedAt: habit.updatedAt,
       },
@@ -189,10 +169,7 @@ const updateHabit = async (req, res) => {
         frequency: frequency,
         categoryId: categoryId,
       },
-      include: {
-        category: true,
-        streak: true,
-      },
+      include: { category: true },
     });
 
     res.status(200).json({
@@ -207,10 +184,8 @@ const updateHabit = async (req, res) => {
           name: habit.category.name,
           emoji: habit.category.emoji,
         },
-        streak: {
-          id: habit.streak.id,
-          streak: habit.streak.streak,
-        },
+        streak: habit.streak,
+        lastCompletedAt: habit.lastCompletedAt,
         createdAt: habit.createdAt,
         updatedAt: habit.updatedAt,
       },

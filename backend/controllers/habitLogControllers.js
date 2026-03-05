@@ -1,4 +1,5 @@
 const prisma = require("../config/db");
+const { startOfDay } = require("date-fns");
 const calculateDailyStreak = require("../utils/calculateDailyStreak");
 const calculateWeeklyStreak = require("../utils/calculateWeeklyStreak");
 
@@ -12,8 +13,7 @@ const completeHabit = async (req, res) => {
 
     // Get the habit to update
     const habit = await prisma.habit.findUnique({
-      where: { id: habitId },
-      include: { streak: true }
+      where: { id: habitId }
     })
 
     if (!habit) {
@@ -25,8 +25,7 @@ const completeHabit = async (req, res) => {
       return res.status(403).json({ error: "Permission denied" })
     }
 
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
+    const today = startOfDay(new Date())
 
     // Check if there is existing log
     const existingLog = await prisma.habitLog.findUnique({
@@ -72,9 +71,12 @@ const completeHabit = async (req, res) => {
     }
 
     // Update streak
-    await prisma.streak.update({
-      where: { habitId: habitId },
-      data: { streak: newStreak }
+    await prisma.habit.update({
+      where: { id: habitId },
+      data: {
+        streak: newStreak,
+        lastCompletedAt: log.completed ? today : null,
+      },
     })
 
     res.status(200).json({
