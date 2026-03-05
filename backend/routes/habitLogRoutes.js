@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const { completeHabit, getHabitLogs, getHabitStreak } = require('../controllers/habitLogControllers')
+const { completeHabit, getHabitLogs } = require('../controllers/habitLogControllers')
+const protect = require('../middlewares/authMiddleware')
 
-router.post("/:id/complete", completeHabit)
+router.use(protect)
+
+router.patch("/:id/complete", completeHabit)
 
 router.get("/:id/logs", getHabitLogs)
-
-router.get("/:id/streak", getHabitStreak)
 
 module.exports = router

@@ -69,5 +69,4 @@ model Category {
 enum Frequency {
   DAILY
   WEEKLY
-  MONTHLY
 }
