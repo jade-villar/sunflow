@@ -1,14 +1,24 @@
 const prisma = require("../config/db");
+const { startOfDay } = require("date-fns");
 
 const getAllHabits = async (req, res) => {
   try {
     // Get user from auth middleware
     const userId = req.user.id;
 
+    const today = startOfDay(new Date());
+
     // Get all habits
     const habits = await prisma.habit.findMany({
       where: { userId: userId },
-      include: { category: true },
+      include: {
+        category: true,
+        logs: {
+          where: {
+            date: today,
+          },
+        },
+      },
       orderBy: { createdAt: "desc" },
     });
 
@@ -29,6 +39,7 @@ const getAllHabits = async (req, res) => {
           emoji: habit.category.emoji,
         },
         streak: habit.streak,
+        completedToday: habit.logs.some((log) => log.completed),
         lastCompletedAt: habit.lastCompletedAt,
         createdAt: habit.createdAt,
         updatedAt: habit.updatedAt,
@@ -88,12 +99,6 @@ const addHabit = async (req, res) => {
   try {
     const { title, description, frequency, categoryId } = req.body;
 
-    if (!title || !frequency || !categoryId) {
-      return res
-        .status(400)
-        .json({ error: "Title, frequency and category are required" });
-    }
-
     // Get user from auth middleware
     const userId = req.user.id;
 
@@ -136,12 +141,6 @@ const addHabit = async (req, res) => {
 const updateHabit = async (req, res) => {
   try {
     const { title, description, frequency, categoryId } = req.body;
-
-    if (!title || !frequency || !categoryId) {
-      return res
-        .status(400)
-        .json({ error: "Title, frequency and category are required" });
-    }
 
     // Get user from auth middleware
     const userId = req.user.id;

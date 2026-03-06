@@ -1,100 +1,115 @@
-const prisma = require('../config/db')
-const bcrypt = require('bcryptjs')
-const generateToken = require('../utils/generateToken')
+const prisma = require("../config/db");
+const bcrypt = require("bcryptjs");
+const generateToken = require("../utils/generateToken");
 
 const registerUser = async (req, res) => {
-  const { name, email, password } = req.body
+  try {
+    const { name, email, password } = req.body;
 
-  // Check if user already exist
-  const userExists = await prisma.user.findUnique({
-    where: { email: email }
-  })
+    // Check if user already exist
+    const userExists = await prisma.user.findUnique({
+      where: { email: email },
+    });
 
-  if (userExists) {
-    return res.status(400).json({ 
-      error: "User email already exist" 
-    })
-  }
-
-  // Hash password
-  const salt = await bcrypt.genSalt(10)
-  const hashedPassword = await bcrypt.hash(password, salt)
-
-  // Create user
-  const user = await prisma.user.create({
-    data: {
-      name: name,
-      email: email,
-      password: hashedPassword
+    if (userExists) {
+      return res.status(400).json({
+        error: "User email already exist",
+      });
     }
-  })
 
-  // Generate JWT token
-  const token = generateToken(user.id, res)
-  
-  res.status(201).json({  
-    status: "success",
-    data: {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Create user
+    const user = await prisma.user.create({
+      data: {
+        name: name,
+        email: email,
+        password: hashedPassword,
       },
-      token: token
-    }
-  })
-}
+    });
+
+    // Generate JWT token
+    const token = generateToken(user.id, res);
+
+    res.status(201).json({
+      status: "success",
+      data: {
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        },
+        token: token,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
 
 const loginUser = async (req, res) => {
-  const { email, password } = req.body
+  try {
+    const { email, password } = req.body;
 
-  // Check if user already registered
-  const user = await prisma.user.findUnique({
-    where: { email: email }
-  })
+    // Check if user already registered
+    const user = await prisma.user.findUnique({
+      where: { email: email },
+    });
 
-  if (!user) {
-    return res.status(401).json({ 
-      error: "Invalid email or password"
-    })
-  }
-
-  // Verify password
-  const isPasswordValid = await bcrypt.compare(password, user.password)
-
-  if (!isPasswordValid) {
-    return res.status(401).json({ 
-      error: "Invalid email or password" 
-    })
-  }
-
-  // Generate JWT token
-  const token = generateToken(user.id, res)
-
-  res.status(201).json({  
-    status: "success",
-    data: {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email
-      },
-      token: token
+    if (!user) {
+      return res.status(401).json({
+        error: "Invalid email or password",
+      });
     }
-  })
-}
+
+    // Verify password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        error: "Invalid email or password",
+      });
+    }
+
+    // Generate JWT token
+    const token = generateToken(user.id, res);
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        },
+        token: token,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
 
 const logoutUser = async (req, res) => {
-  res.clearCookie("jwt", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax"
-  })
-  
-  res.status(200).json({ 
-    status: "success", 
-    message: "Logged out successfully" 
-  })
-}
+  try {
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
 
-module.exports = { registerUser, loginUser, logoutUser }
+    res.status(200).json({
+      status: "success",
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+module.exports = { registerUser, loginUser, logoutUser };

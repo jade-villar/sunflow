@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Habit" ADD COLUMN     "targetCount" INTEGER NOT NULL DEFAULT 1,
+ALTER COLUMN "frequency" DROP DEFAULT;

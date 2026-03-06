@@ -1,32 +1,32 @@
-const prisma = require("../config/db")
-const { startOfDay, subDays, isEqual } = require("date-fns")
+const prisma = require("../config/db");
+const { startOfDay, subDays, isEqual } = require("date-fns");
 
 const calculateDailyStreak = async (habitId) => {
   const logs = await prisma.habitLog.findMany({
     where: {
       habitId: habitId,
-      completed: true
+      completed: true,
     },
     orderBy: {
-      date: "desc"
-    }
-  })
+      date: "desc",
+    },
+  });
 
-  let streak = 0
-  let currentDate = startOfDay(new Date())
+  let streak = 0;
+  let currentDate = startOfDay(new Date());
 
   for (const log of logs) {
-    const logDate = startOfDay(new Date(log.date))
+    const logDate = startOfDay(new Date(log.date));
 
     if (isEqual(logDate, currentDate)) {
-      streak++
-      currentDate = subDays(currentDate, 1)
+      streak++;
+      currentDate = subDays(currentDate, 1);
     } else {
-      break
+      break;
     }
   }
 
-  return streak
-}
+  return streak;
+};
 
-module.exports = calculateDailyStreak
+module.exports = calculateDailyStreak;
