@@ -5,7 +5,7 @@ const Landing = () => {
 
   return (
     <main>
-      <section className="h-screen bg-page bg-cover bg-center flex flex-col justify-center items-center gap-4 text-center">
+      <section className="min-h-screen bg-landing-page bg-cover bg-center flex flex-col justify-center items-center gap-4 text-center">
         <h1 className="max-w-7xl mx-auto px-4 text-white text-6xl md:text-8xl font-black drop-shadow-lg">
           Grow Your Habits
         </h1>

@@ -12,7 +12,7 @@ body {
   }
 }
 
-@utility bg-page {
+@utility bg-landing-page {
   background-image:
     linear-gradient(
       to bottom,
