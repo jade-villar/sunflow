@@ -23,3 +23,7 @@ body {
     ),
     url("/bg2.jpg");
 }
+
+@utility bg-dashboard-page {
+  background-image: url("/bg24.jpg");
+}

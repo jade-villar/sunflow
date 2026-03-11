@@ -27,7 +27,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
+      <div className="max-w-7xl mx-auto w-full flex justify-between items-center gap-4">
         <p className="text-gray-500 text-sm">
           &copy; {today.getFullYear()} sunflow. All rights reserved.
         </p>
