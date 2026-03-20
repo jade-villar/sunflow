@@ -12,9 +12,10 @@ const HabitCard = ({ habit }) => {
 
           <div className="flex flex-col gap-2">
             <h3 className="text-gray-800 font-semibold">{habit?.title}</h3>
-            <p className="text-xs text-gray-500">
-              {habit?.category?.name} &nbsp;&bull; 🔥 {habit?.streak} streak
-            </p>
+            <div className="flex text-xs text-gray-500">
+              <span>{habit?.category?.name} &nbsp;</span>
+              <span className="hidden md:inline-block">&bull; 🔥 {habit?.streak} streak</span>
+            </div>
           </div>
         </div>
 

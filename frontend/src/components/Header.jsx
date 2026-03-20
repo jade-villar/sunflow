@@ -6,7 +6,7 @@ const Header = () => {
   const matchLogin = useMatch("/login");
   const matchDashboard = useMatch("/dashboard");
 
-  const isAuthMatch = matchRegister || matchLogin || matchDashboard;
+  const isAuthMatch = matchRegister || matchLogin;
 
   return (
     <header className="fixed w-full px-4 py-6 z-50">
@@ -14,14 +14,14 @@ const Header = () => {
         <div className="flex items-center gap-4">
           <img src="/sunflow.svg" className="w-7 h-7" />
           <div
-            className={`${isAuthMatch ? "text-gray-800" : "text-white"} lg:text-white text-2xl/relaxed font-extrabold`}
+            className={`${isAuthMatch ? "text-gray-800" : "text-white"} text-2xl font-extrabold`}
           >
             sunflow
           </div>
         </div>
 
         <div
-          className={`${isAuthMatch ? "hidden" : "block"} flex items-center gap-4`}
+          className={`${isAuthMatch || matchDashboard ? "hidden" : "block"} flex items-center gap-4`}
         >
           <Link
             to={"/login"}

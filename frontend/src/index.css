@@ -1,14 +1,51 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=National+Park:wght@200..800&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
-body {
-  font-family: "Poppins", sans-serif;
+@theme {
+  --font-sans: "DM Sans", sans-serif;
+  --font-fraunces: "Sour Gummy", serif;
+
+  --shadow-around-sm: 0 2px 8px rgba(26,26,46,0.06);
+  --shadow-around-md: 0 8px 32px rgba(26,26,46,0.10);
+  --shadow-around-lg: 0 20px 60px rgba(26,26,46,0.12);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: -200px;
+  right: -200px;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(
+    circle,
+    rgba(245, 166, 35, 0.2) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -10;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  bottom: -150px;
+  left: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(
+    circle,
+    rgba(46, 204, 143, 0.16) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -10;
 }
 
 @layer base {
   body {
     @apply selection:bg-yellow-500 selection:text-white;
+    @apply bg-stone-50;
   }
 }
 
