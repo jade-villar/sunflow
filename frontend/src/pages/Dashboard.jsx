@@ -1,8 +1,26 @@
-import HabitCard from "../components/HabitCard";
+import { useState } from "react";
+import CategoryCard from "../components/CategoryCard";
 import HabitCompletionCard from "../components/HabitCompletionCard";
+import HabitModal from "../components/HabitModal";
 import StreakCard from "../components/StreakCard";
 
 const Dashboard = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [editingHabit, setEditingHabit] = useState(null);
+
+  const handleAdd = () => {
+    setEditingHabit(null);
+    setIsOpen(true);
+  };
+
+  const handleSubmit = (data) => {
+    if (editingHabit) {
+      console.log("Update habit:", data);
+    } else {
+      console.log("Add habit:", data);
+    }
+  };
+
   const habits = {
     status: "success",
     data: [
@@ -107,59 +125,53 @@ const Dashboard = () => {
 
   const streakHabits = habits.data.filter((habit) => habit.streak > 0).length;
 
-  const dailyHabits = habits.data.filter(
-    (habit) => habit.frequency === "DAILY",
-  );
-  const weeklyHabits = habits.data.filter(
-    (habit) => habit.frequency === "WEEKLY",
-  );
-
   return (
-    <main className="min-h-screen bg-dashboard-page bg-cover bg-bottom bg-fixed px-4 py-30">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-12">
-        {/* Header */}
-        <div className="flex justify-between items-end gap-6 flex-wrap mt-4 col-[1/2] row-[1/2] md:col-[1/9] md:row-[1/2] lg:col-[1/10] lg:row-[1/2]">
+    <main className="min-h-screen px-4 py-16 text-slate-800">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-6">
+        {/* HEADER */}
+        <section className="flex justify-between items-end gap-6 flex-wrap mt-4 mb-6 col-[1/2] row-[1/2] md:col-[1/9] md:row-[1/2] lg:col-[1/10] lg:row-[1/2]">
           <div className="flex flex-col gap-3">
-            <h2 className="text-gray-800 text-3xl font-extrabold">Good day, Jade!</h2>
+            <div className="text-xs uppercase text-yellow-500 font-bold">
+              Thursday, March 20
+            </div>
+            <h2 className="text-4xl font-fraunces font-extrabold">
+              Good day, Jade!
+            </h2>
             <p className="text-gray-600 text-sm">
               Keep growing your habits today
             </p>
           </div>
 
-          <button className="px-6 py-2 font-semibold bg-yellow-500 text-white rounded-md hover:bg-yellow-600 active:bg-yellow-600 transition">
-            Add Habit
+          <button onClick={handleAdd} className="flex items-center gap-2 px-6 py-3 rounded-full text-sm text-white font-semibold shadow-around-sm hover:shadow-around-md active:shadow-around-md bg-slate-900 hover:bg-slate-800 active:bg-slate-800 hover:-translate-y-0.5 active:translate-y-0 transition cursor-pointer">
+            <span className="w-5 h-5 rounded-full bg-yellow-500">+</span>
+            <span>Add Habit</span>
           </button>
-        </div>
+        </section>
 
-        {/* Habit List */}
-        <div className="flex flex-col gap-6 col-[1/2] row-[3/4] md:col-[1/9] md:row-[2/3] lg:col-[1/10] lg:row-[2/3]">
-          {/* Daily Habits */}
-          <div className="p-4 md:p-6 bg-white rounded-lg">
-            <p className="text-gray-800 font-bold mb-8">Habits Today</p>
-            <div className="flex flex-col gap-4">
-              {dailyHabits.map((habit) => (
-                <HabitCard key={habit.id} habit={habit} />
-              ))}
-            </div>
-          </div>
+        {/* MAIN LIST */}
+        <section className="columns-1 lg:columns-2 gap-6 col-[1/2] row-[3/4] md:col-[1/9] md:row-[2/3] lg:col-[1/10] lg:row-[2/3]">
+          <CategoryCard habits={habits} categoryName="Health" />
+          <CategoryCard habits={habits} categoryName="Mindfulness" />
+          <CategoryCard habits={habits} categoryName="Productivity" />
+          <CategoryCard habits={habits} categoryName="Learning" />
+          <CategoryCard habits={habits} categoryName="Home & Household" />
+          <CategoryCard habits={habits} categoryName="Social" />
+          <CategoryCard habits={habits} categoryName="Spirituality" />
+          <CategoryCard habits={habits} categoryName="Finances" />
+        </section>
 
-          {/* Weekly Habits */}
-          <div className="p-4 md:p-6 bg-white rounded-lg">
-            <p className="text-gray-800 font-bold mb-8">Weekly Habits</p>
-            <div className="flex flex-col gap-4">
-              {weeklyHabits.map((habit) => (
-                <HabitCard key={habit.id} habit={habit} />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Sidebar */}
+        {/* SIDEBAR */}
         <section className="flex flex-col gap-6 md:sticky md:top-30 md:self-start col-[1/2] row-[2/3] md:col-[9/13] md:row-[1/3] lg:col-[10/13] lg:row-[1/3]">
           <StreakCard streakHabits={streakHabits} />
           <HabitCompletionCard habits={habits.data} />
         </section>
       </div>
+      <HabitModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onSubmit={handleSubmit}
+        initialData={editingHabit}
+      />
     </main>
   );
 };

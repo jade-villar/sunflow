@@ -15,15 +15,14 @@ const HabitCompletionChart = ({ habits }) => {
   const COLORS = ["#EAB308", "#D1D5DB"];
 
   return (
-    <div className="bg-gray-100 p-6 rounded-md w-full flex flex-col items-center justify-center gap-6 hover:drop-shadow-sm active:drop-shadow-sm">
+    <div className="rounded-md w-full flex flex-col items-center justify-center gap-4">
       <div className="relative w-40 h-40">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width={160} height={160}>
           <PieChart>
             <Pie
               data={data}
               innerRadius={55}
               outerRadius={75}
-              paddingAngle={2}
               dataKey="value"
               stroke="none"
             >
@@ -36,12 +35,14 @@ const HabitCompletionChart = ({ habits }) => {
 
         {/* Stat */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-gray-800 text-2xl font-bold">{percent}%</span>
-          <span className="text-xs text-gray-500">completed</span>
+          <span className="text-slate-800 text-2xl font-fraunces font-bold">
+            {percent}%
+          </span>
+          <span className="text-xs text-slate-500">completed</span>
         </div>
       </div>
 
-      <p className="text-xs text-gray-500 text-center">
+      <p className="text-xs text-slate-500 text-center">
         {completed} of {total} habits completed
       </p>
     </div>

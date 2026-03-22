@@ -1,24 +1,41 @@
 import { useState } from "react";
+import HabitModal from "../components/HabitModal";
+
+const habit = {
+  status: "success",
+  data: {
+    id: "1c6ffc73-c041-4fc0-b0df-276da90c0e55",
+    title: "Run for atleast 2km a day",
+    description: "Just a text description I dont know",
+    frequency: "WEEKLY",
+    category: {
+      id: 7,
+      name: "Finances",
+      emoji: "💵",
+    },
+    streak: 1,
+    lastCompletedAt: "2026-03-06T16:00:00.000Z",
+    createdAt: "2026-03-05T09:26:39.530Z",
+    updatedAt: "2026-03-06T18:34:20.567Z",
+  },
+};
 
 const Habit = () => {
-  // const habit = {
-  //   status: "success",
-  //   data: {
-  //     id: "1c6ffc73-c041-4fc0-b0df-276da90c0e55",
-  //     title: "Run for atleast 2km a day",
-  //     description: "Just a text description I dont know",
-  //     frequency: "WEEKLY",
-  //     category: {
-  //       id: 7,
-  //       name: "Finances",
-  //       emoji: "💵",
-  //     },
-  //     streak: 1,
-  //     lastCompletedAt: "2026-03-06T16:00:00.000Z",
-  //     createdAt: "2026-03-05T09:26:39.530Z",
-  //     updatedAt: "2026-03-06T18:34:20.567Z",
-  //   },
-  // };
+  const [isOpen, setIsOpen] = useState(false);
+  const [editingHabit, setEditingHabit] = useState(null);
+
+  const handleUpdate = () => {
+    setEditingHabit(habit.data);
+    setIsOpen(true);
+  };
+
+  const handleSubmit = (data) => {
+    if (editingHabit) {
+      console.log("Update habit:", data);
+    } else {
+      console.log("Add habit:", data);
+    }
+  };
 
   // const logs = {
   //   status: "success",
@@ -63,158 +80,142 @@ const Habit = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      {/* NAV */}
-      <nav className="sticky top-0 z-50 px-4 py-4 text-slate-800 bg-slate-50/80 backdrop-blur-md border-b border-slate-200">
-        <div className="max-w-7xl m-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <img src="/sunflow.svg" className="w-7 h-7" />
-            <span className="font-fraunces text-xl font-semibold">sunflow</span>
+    <main className="min-h-screen px-4 py-16 text-slate-800">
+      <div className="max-w-4xl mx-auto flex flex-col gap-5">
+        {/* STATS */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-3">
+          <div className="flex flex-col gap-2 bg-slate-900 text-white rounded-[20px] p-4 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
+            <div className="text-lg">🔥</div>
+            <div className="text-[11px] text-slate-400 font-semibold tracking-wider">
+              CURRENT STREAK
+            </div>
+            <div className="flex items-end gap-2">
+              <span className="text-4xl font-bold font-fraunces">21</span>
+              <span className="text-sm text-slate-400 mb-px">days</span>
+            </div>
           </div>
 
-          <div className="flex gap-2">
-            <button className="px-5 py-1.5 border border-slate-200 rounded-full text-sm hover:bg-slate-900 hover:border-slate-900 hover:text-white active:bg-slate-900 active:border-slate-900 active:text-white transition cursor-pointer">
-              Log in
-            </button>
-            <button className="px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-lg shadow-yellow-100 hover:bg-yellow-600 hover:-translate-y-px active:bg-yellow-600 transition cursor-pointer">
-              Register
-            </button>
+          <div className="flex flex-col gap-2 bg-white border border-slate-200 rounded-[20px] p-4 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
+            <div className="text-lg">🏆</div>
+            <div className="text-[11px] text-slate-400 font-semibold tracking-wider">
+              BEST STREAK
+            </div>
+            <div className="flex items-end gap-2">
+              <span className="text-4xl font-bold font-fraunces">45</span>
+              <span className="text-sm mb-px">days</span>
+            </div>
+          </div>
+
+          <div className="hidden md:flex flex-col gap-2 bg-white border border-slate-200 rounded-[20px] p-4 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
+            <div className="text-lg">✅</div>
+            <div className="text-[11px] text-slate-400 font-semibold tracking-wider">
+              TOTAL COMPLETED
+            </div>
+            <div className="flex items-end gap-2">
+              <span className="text-4xl font-bold font-fraunces">89</span>
+              <span className="text-sm mb-px">times</span>
+            </div>
           </div>
         </div>
-      </nav>
 
-      <main className="px-4 py-16 text-slate-800">
-        <div className="max-w-3xl mx-auto flex flex-col gap-5">
-          {/* STATS */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-3">
-            <div className="flex flex-col gap-2 bg-slate-900 text-white rounded-[20px] p-4 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
-              <div className="text-lg">🔥</div>
-              <div className="text-[11px] text-slate-400 font-semibold tracking-wider">
-                CURRENT STREAK
-              </div>
-              <div className="flex items-end gap-2">
-                <span className="text-4xl font-bold font-fraunces">21</span>
-                <span className="text-sm text-slate-400 mb-px">days</span>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2 bg-white border border-slate-200 rounded-[20px] p-4 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
-              <div className="text-lg">🏆</div>
-              <div className="text-[11px] text-slate-400 font-semibold tracking-wider">
-                BEST STREAK
-              </div>
-              <div className="flex items-end gap-2">
-                <span className="text-4xl font-bold font-fraunces">45</span>
-                <span className="text-sm mb-px">days</span>
-              </div>
-            </div>
-
-            <div className="hidden md:flex flex-col gap-2 bg-white border border-slate-200 rounded-[20px] p-4 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
-              <div className="text-lg">✅</div>
-              <div className="text-[11px] text-slate-400 font-semibold tracking-wider">
-                TOTAL COMPLETED
-              </div>
-              <div className="flex items-end gap-2">
-                <span className="text-4xl font-bold font-fraunces">89</span>
-                <span className="text-sm mb-px">times</span>
-              </div>
-            </div>
+        {/* HABIT CARD */}
+        <div className="flex flex-col gap-3 bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
+          <div className="flex gap-2">
+            <span className="text-[11px] uppercase px-3 py-1 rounded-full bg-yellow-100 text-yellow-600 font-semibold tracking-wider">
+              Health
+            </span>
+            <span className="text-[11px] uppercase px-3 py-1 rounded-full bg-emerald-100 text-emerald-600 font-semibold tracking-wider">
+              Weekly
+            </span>
           </div>
 
-          {/* HABIT CARD */}
-          <div className="flex flex-col gap-3 bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
-            <div className="flex gap-2">
-              <span className="text-[11px] uppercase px-3 py-1 rounded-full bg-yellow-100 text-yellow-600 font-semibold tracking-wider">
-                Health
-              </span>
-              <span className="text-[11px] uppercase px-3 py-1 rounded-full bg-emerald-100 text-emerald-600 font-semibold tracking-wider">
-                Weekly
-              </span>
-            </div>
+          <h1 className="text-3xl font-fraunces font-bold mb-2">
+            Run at least 2km a day
+          </h1>
 
-            <h1 className="text-3xl font-fraunces font-bold mb-2">
-              Run at least 2km a day
-            </h1>
+          <p className="text-sm text-slate-500 mb-2">
+            Build cardiovascular endurance.
+          </p>
+        </div>
 
-            <p className="text-sm text-slate-500 mb-2">
-              Build cardiovascular endurance.
-            </p>
+        {/* WEEK GRID */}
+        <div className="flex flex-col gap-4 bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
+          <div className="text-xs text-slate-800 uppercase font-bold tracking-wider">
+            Weekly History — Mar 4–10
           </div>
 
-          {/* WEEK GRID */}
-          <div className="flex flex-col gap-4 bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
-            <div className="text-xs text-slate-800 uppercase font-bold tracking-wider">
-              Weekly History — Mar 4–10
-            </div>
+          <div className="grid grid-cols-7 gap-2 text-center">
+            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => {
+              const states = [
+                "done",
+                "done",
+                "done",
+                "done",
+                "missed",
+                "done",
+                "today",
+              ];
+              const state = states[i];
 
-            <div className="grid grid-cols-7 gap-2 text-center">
-              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
-                (day, i) => {
-                  const states = [
-                    "done",
-                    "done",
-                    "done",
-                    "done",
-                    "missed",
-                    "done",
-                    "today",
-                  ];
-                  const state = states[i];
+              return (
+                <div key={day} className="flex flex-col items-center gap-1">
+                  <span className="text-[10px] text-slate-400">{day}</span>
 
-                  return (
-                    <div key={day} className="flex flex-col items-center gap-1">
-                      <span className="text-[10px] text-slate-400">{day}</span>
-
-                      <div
-                        className={`w-full h-10 flex items-center justify-center rounded-lg text-sm font-bold hover:-translate-y-1 transition
+                  <div
+                    className={`w-full h-10 flex items-center justify-center rounded-lg text-sm font-bold hover:-translate-y-1 transition
                     ${state === "done" && "bg-emerald-100 text-emerald-600 shadow-md shadow-emerald-50"}
                     ${state === "missed" && "bg-slate-100 text-slate-400"}
                     ${state === "today" && "bg-yellow-500 text-white shadow-md shadow-yellow-100"}
                   `}
-                      >
-                        {state === "done"
-                          ? "✓"
-                          : state === "missed"
-                            ? "✗"
-                            : "-"}
-                      </div>
+                  >
+                    {state === "done" ? "✓" : state === "missed" ? "✗" : "-"}
+                  </div>
 
-                      <span className="text-[10px] text-slate-400">
-                        Mar {4 + i}
-                      </span>
-                    </div>
-                  );
-                },
-              )}
-            </div>
-          </div>
-
-          {/* ACTIONS */}
-          <div className="flex justify-between items-center  text-sm">
-            <button
-              onClick={markComplete}
-              className={`flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold shadow-around-md hover:-translate-y-0.5 active:translate-y-0 transition cursor-pointer
-              ${
-                completed ? "bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-600 shadow-emerald-100" : "bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 shadow-yellow-100"
-              }
-            `}
-            >
-              <span>{completed ? "✓" : "✦"}</span>
-              <span>{completed ? "Completed!" : "Mark Complete"}</span> 
-            </button>
-
-            <div className="flex gap-2">
-              <button className="px-5 py-2 bg-white border border-slate-200 rounded-full hover:bg-slate-900 hover:border-slate-900 hover:text-white active:bg-slate-900 active:border-slate-900 active:text-white transition cursor-pointer">
-                Edit
-              </button>
-              <button className="px-5 py-2 rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white active:bg-red-500 active:text-white transition cursor-pointer">
-                Delete
-              </button>
-            </div>
+                  <span className="text-[10px] text-slate-400">
+                    Mar {4 + i}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
-      </main>
-    </div>
+
+        {/* ACTIONS */}
+        <div className="flex justify-between items-center  text-sm">
+          <button
+            onClick={markComplete}
+            className={`flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold shadow-around-md hover:-translate-y-0.5 active:translate-y-0 transition cursor-pointer
+              ${
+                completed
+                  ? "bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-600 shadow-emerald-100"
+                  : "bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 shadow-yellow-100"
+              }
+            `}
+          >
+            <span>{completed ? "✓" : "✦"}</span>
+            <span>{completed ? "Completed!" : "Mark Complete"}</span>
+          </button>
+
+          <div className="flex gap-2">
+            <button
+              onClick={handleUpdate}
+              className="px-5 py-2 bg-white border border-slate-200 rounded-full hover:bg-slate-900 hover:border-slate-900 hover:text-white active:bg-slate-900 active:border-slate-900 active:text-white transition cursor-pointer"
+            >
+              Edit
+            </button>
+            <button className="px-5 py-2 rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white active:bg-red-500 active:text-white transition cursor-pointer">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+      <HabitModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onSubmit={handleSubmit}
+        initialData={editingHabit}
+      />
+    </main>
   );
 };
 

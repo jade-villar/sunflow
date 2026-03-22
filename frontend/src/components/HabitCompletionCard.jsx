@@ -2,8 +2,10 @@ import HabitCompletionChart from "./HabitCompletionChart";
 
 const HabitCompletionCard = ({ habits }) => {
   return (
-    <div className="p-4 md:p-6 bg-white rounded-lg">
-      <h3 className="text-gray-800 font-bold mb-8">Progress</h3>
+    <div className="hidden md:flex flex-col gap-4 bg-white border border-slate-200 rounded-3xl p-6 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
+      <h3 className="text-xs text-slate-400 font-semibold tracking-wider">
+        PROGRESS
+      </h3>
       <HabitCompletionChart habits={habits} />
     </div>
   );

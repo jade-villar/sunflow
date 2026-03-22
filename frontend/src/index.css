@@ -1,13 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=National+Park:wght@200..800&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=National+Park:wght@200..800&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
+
+@plugin "tailwind-scrollbar";
 
 @theme {
   --font-sans: "DM Sans", sans-serif;
-  --font-fraunces: "Sour Gummy", serif;
+  --font-fraunces: "Fraunces", serif;
 
-  --shadow-around-sm: 0 2px 8px rgba(26,26,46,0.06);
-  --shadow-around-md: 0 8px 32px rgba(26,26,46,0.10);
-  --shadow-around-lg: 0 20px 60px rgba(26,26,46,0.12);
+  --shadow-around-sm: 0 2px 8px rgba(26, 26, 46, 0.06);
+  --shadow-around-md: 0 8px 32px rgba(26, 26, 46, 0.1);
+  --shadow-around-lg: 0 20px 60px rgba(26, 26, 46, 0.12);
+
+  --animate-scale: scale 2s ease-in-out infinite;
+
+  @keyframes scale {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.12);
+    }
+  }
 }
 
 body::before {
@@ -15,8 +29,8 @@ body::before {
   position: fixed;
   top: -200px;
   right: -200px;
-  width: 800px;
-  height: 800px;
+  width: 700px;
+  height: 700px;
   background: radial-gradient(
     circle,
     rgba(245, 166, 35, 0.2) 0%,
