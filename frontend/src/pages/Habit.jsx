@@ -80,7 +80,7 @@ const Habit = () => {
   };
 
   return (
-    <main className="min-h-screen px-4 py-16 text-slate-800">
+    <main className="min-h-screen px-4 py-30 text-slate-800">
       <div className="max-w-4xl mx-auto flex flex-col gap-5">
         {/* STATS */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-3">
@@ -181,7 +181,7 @@ const Habit = () => {
         </div>
 
         {/* ACTIONS */}
-        <div className="flex justify-between items-center  text-sm">
+        <div className="flex justify-between items-center text-sm">
           <button
             onClick={markComplete}
             className={`flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold shadow-around-md hover:-translate-y-0.5 active:translate-y-0 transition cursor-pointer

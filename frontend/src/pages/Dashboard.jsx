@@ -126,7 +126,7 @@ const Dashboard = () => {
   const streakHabits = habits.data.filter((habit) => habit.streak > 0).length;
 
   return (
-    <main className="min-h-screen px-4 py-16 text-slate-800">
+    <main className="min-h-screen px-4 py-30 text-slate-800">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-6">
         {/* HEADER */}
         <section className="flex justify-between items-end gap-6 flex-wrap mt-4 mb-6 col-[1/2] row-[1/2] md:col-[1/9] md:row-[1/2] lg:col-[1/10] lg:row-[1/2]">
@@ -161,7 +161,7 @@ const Dashboard = () => {
         </section>
 
         {/* SIDEBAR */}
-        <section className="flex flex-col gap-6 md:sticky md:top-30 md:self-start col-[1/2] row-[2/3] md:col-[9/13] md:row-[1/3] lg:col-[10/13] lg:row-[1/3]">
+        <section className="flex flex-col gap-6 mb-6 md:mb-0 md:sticky md:top-30 md:self-start col-[1/2] row-[2/3] md:col-[9/13] md:row-[1/3] lg:col-[10/13] lg:row-[1/3]">
           <StreakCard streakHabits={streakHabits} />
           <HabitCompletionCard habits={habits.data} />
         </section>

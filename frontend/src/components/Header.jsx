@@ -1,66 +1,86 @@
-// import { Link } from "react-router-dom";
-// import { useMatch } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useMatch } from "react-router-dom";
+import { Link as LinkScroll } from "react-scroll";
 
 const Header = () => {
-  // const matchRegister = useMatch("/register");
-  // const matchLogin = useMatch("/login");
-  // const matchDashboard = useMatch("/dashboard");
+  const isLanding = useMatch("/");
 
-  // const isAuthMatch = matchRegister || matchLogin;
+  const isRegister = useMatch("/register");
+  const isLogin = useMatch("/login");
+
+  const isDashboard = useMatch("/dashboard");
+  const isHabit = useMatch("/habit/*");
+
+  const isAuthenticated = isDashboard || isHabit;
+  const isNotAuthenticated = isLanding || isRegister || isLogin;
+
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function handleScroll() {
+      if (window.scrollY > 0) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="sticky top-0 z-50 px-4 py-4 text-slate-800 bg-slate-50/80 backdrop-blur-md border-b border-slate-200">
-        <div className="max-w-7xl m-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <img src="/sunflow.svg" className="w-7 h-7" />
-            <span className="font-fraunces text-xl font-semibold">sunflow</span>
-          </div>
-
-          <div className="flex gap-2">
-            <button className="px-5 py-1.5 border border-slate-200 rounded-full text-sm hover:bg-slate-900 hover:border-slate-900 hover:text-white active:bg-slate-900 active:border-slate-900 active:text-white transition cursor-pointer">
-              Log in
-            </button>
-            <button className="px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-lg shadow-yellow-100 hover:bg-yellow-600 hover:-translate-y-px active:bg-yellow-600 transition cursor-pointer">
-              Register
-            </button>
-          </div>
+    <header
+      className={`fixed w-full z-100 p-4 text-slate-800 border-b border-slate-900/0 transition ${scrolled && "backdrop-blur-lg bg-surface/80 border-slate-900/10 shadow-around-md"}`}
+    >
+      <div className="max-w-7xl m-auto flex justify-between gap-4 items-center">
+        <div className="flex items-center gap-3">
+          <img src="/sunflow.svg" className="w-8 aspect-square" />
+          <span className="font-fraunces text-xl font-semibold">sunflow</span>
         </div>
-      </nav>
-    // <header className="fixed w-full px-4 py-6 z-50">
-    //   <div className="max-w-7xl mx-auto flex justify-between items-center gap-4 flex-wrap">
-    //     <div className="flex items-center gap-4">
-    //       <img src="/sunflow.svg" className="w-7 h-7" />
-    //       <div
-    //         className={`${isAuthMatch ? "text-gray-800" : "text-white"} text-2xl font-extrabold`}
-    //       >
-    //         sunflow
-    //       </div>
-    //     </div>
 
-    //     <div
-    //       className={`${isAuthMatch || matchDashboard ? "hidden" : "block"} flex items-center gap-4`}
-    //     >
-    //       <Link
-    //         to={"/login"}
-    //         className="px-6 py-1.5 border-2 rounded-md border-white text-white font-semibold cursor-pointer hover:bg-yellow-600 hover:border-yellow-600 active:bg-yellow-600 active:border-yellow-600 transition"
-    //       >
-    //         Login
-    //       </Link>
-    //       <Link
-    //         to={"/register"}
-    //         className="px-6 py-1.5 border-2 rounded-md border-yellow-500 bg-yellow-500 text-white font-semibold cursor-pointer hover:bg-yellow-600 hover:border-yellow-600 active:bg-yellow-600 active:border-yellow-600 transition"
-    //       >
-    //         Register
-    //       </Link>
-    //     </div>
+        {isLanding && (
+          <nav className="hidden md:flex items-center gap-8 ml-20 text-sm font-medium">
+            <LinkScroll
+              to="features"
+              smooth={true}
+              className="py-1.5 hover:text-slate-700 active:text-slate-700 cursor-pointer transition"
+            >
+              Features
+            </LinkScroll>
+            <LinkScroll
+              to="how"
+              smooth={true}
+              className="py-1.5 hover:text-slate-700 active:text-slate-700 cursor-pointer transition"
+            >
+              How it works
+            </LinkScroll>
+          </nav>
+        )}
 
-    //     {matchDashboard && (
-    //       <button className="px-6 py-1.5 border-2 rounded-md border-yellow-500 bg-yellow-500 text-white font-semibold cursor-pointer hover:bg-yellow-600 hover:border-yellow-600 active:bg-yellow-600 active:border-yellow-600 transition">
-    //         Logout
-    //       </button>
-    //     )}
-    //   </div>
-    // </header>
+        {isNotAuthenticated && (
+          <div className="flex items-center gap-2">
+            <Link
+              to={"/login"}
+              className="hidden md:grid content-center px-5 py-1.5 border border-slate-900/10 rounded-full text-sm hover:bg-slate-900 hover:border-slate-900 hover:text-white active:bg-slate-900 active:border-slate-900 active:text-white transition cursor-pointer"
+            >
+              Log in
+            </Link>
+            <Link
+              to={"/register"}
+              className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30 hover:bg-yellow-600 hover:-translate-y-px active:bg-yellow-600 transition cursor-pointer"
+            >
+              Get Started
+            </Link>
+          </div>
+        )}
+
+        {isAuthenticated && (
+          <button className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30 hover:bg-yellow-600 hover:-translate-y-px active:bg-yellow-600 transition cursor-pointer">
+            Logout
+          </button>
+        )}
+      </div>
+    </header>
   );
 };
 

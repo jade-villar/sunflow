@@ -7,11 +7,15 @@
   --font-sans: "DM Sans", sans-serif;
   --font-fraunces: "Fraunces", serif;
 
+  --color-surface: #fafaf8;
+
   --shadow-around-sm: 0 2px 8px rgba(26, 26, 46, 0.06);
   --shadow-around-md: 0 8px 32px rgba(26, 26, 46, 0.1);
   --shadow-around-lg: 0 20px 60px rgba(26, 26, 46, 0.12);
 
   --animate-scale: scale 2s ease-in-out infinite;
+
+  --animate-slow-spin: slow-spin 10s linear infinite;
 
   @keyframes scale {
     0%,
@@ -22,44 +26,164 @@
       transform: scale(1.12);
     }
   }
+
+  @keyframes slow-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  top: -200px;
-  right: -200px;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(
-    circle,
-    rgba(245, 166, 35, 0.2) 0%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: -10;
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  bottom: -150px;
-  left: -100px;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(
-    circle,
-    rgba(46, 204, 143, 0.16) 0%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: -10;
-}
+/* :root {
+  scrollbar-width: none;
+} */
 
 @layer base {
+  /* html {
+    @apply !scroll-smooth;
+  } */
+
   body {
     @apply selection:bg-yellow-500 selection:text-white;
     @apply bg-stone-50;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    top: -200px;
+    right: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(
+      circle,
+      rgba(245, 166, 35, 0.2) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -10;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    bottom: -150px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(
+      circle,
+      rgba(46, 204, 143, 0.16) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -10;
+  }
+}
+
+@layer components {
+  .auth-panel {
+    position: relative;
+    z-index: 0;
+  }
+  .auth-panel::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    left: -60px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(
+      circle,
+      rgba(46, 204, 143, 0.1) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+  .auth-panel::after {
+    content: "";
+    position: absolute;
+    bottom: -80px;
+    right: -80px;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(
+      circle,
+      rgba(245, 166, 35, 0.18) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .hero {
+    position: relative;
+    z-index: 0;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(
+      circle,
+      rgba(245, 166, 35, 0.14) 0%,
+      transparent 65%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    bottom: -100px;
+    left: -80px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(
+      circle,
+      rgba(46, 204, 143, 0.1) 0%,
+      transparent 65%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .cta-section {
+    position: relative;
+    z-index: 0;
+  }
+  .cta-section::before {
+    content: "";
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(
+      circle,
+      rgba(245, 166, 35, 0.18) 0%,
+      transparent 60%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+  .cta-section::after {
+    content: "";
+    position: absolute;
+    bottom: -80px;
+    right: -80px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(
+      circle,
+      rgba(46, 204, 143, 0.12) 0%,
+      transparent 65%
+    );
+    pointer-events: none;
+    z-index: -1;
   }
 }
 

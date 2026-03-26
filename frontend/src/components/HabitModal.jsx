@@ -62,7 +62,7 @@ const HabitModal = ({ isOpen, onClose, onSubmit, initialData }) => {
     <Dialog
       open={isOpen}
       onClose={onClose}
-      className="relative z-50 text-slate-900"
+      className="relative z-200 text-slate-900"
     >
       <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
 
