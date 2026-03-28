@@ -14,13 +14,17 @@ const habitSchema = z.object({
     .optional()
     .nullable(),
 
-  frequency: z
-    .enum(["DAILY", "WEEKLY"], { error: "Frequency must be DAILY or WEEKLY" }),
-
   categoryId: z
     .int({ error: "Category ID must be a whole number" })
     .min(1, { error: "Invalid category" })
     .max(8, { error: "Invalid category" }),
+
+  frequency: z
+    .enum(["DAILY", "WEEKLY"], { error: "Frequency must be DAILY or WEEKLY" }),
+
+  scheduledDays: z
+    .array(z.enum(["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"], { error: "Invalid scheduled days" }))
+    .min(1, { error: "Select at least one day" }),
 });
 
 module.exports = habitSchema;

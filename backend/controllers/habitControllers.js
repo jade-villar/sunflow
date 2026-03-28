@@ -1,21 +1,34 @@
 const prisma = require("../config/db");
-const { startOfDay } = require("date-fns");
+const { startOfDay, format, addDays } = require("date-fns");
 
 const getAllHabits = async (req, res) => {
   try {
     // Get user from auth middleware
     const userId = req.user.id;
 
-    const today = startOfDay(new Date());
+    const todayStart = startOfDay(new Date());
+    const todayKey = format(new Date(), "EEE").toUpperCase();
 
     // Get all habits
     const habits = await prisma.habit.findMany({
       where: { userId: userId },
       include: {
-        category: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            icon: true,
+          },
+        },
         logs: {
           where: {
-            date: today,
+            date: {
+              gte: todayStart,
+              lt: addDays(todayStart, 1),
+            },
+          },
+          select: {
+            completed: true,
           },
         },
       },
@@ -28,22 +41,31 @@ const getAllHabits = async (req, res) => {
 
     res.status(200).json({
       status: "success",
-      data: habits.map((habit) => ({
-        id: habit.id,
-        title: habit.title,
-        description: habit.description,
-        frequency: habit.frequency,
-        category: {
-          id: habit.category.id,
-          name: habit.category.name,
-          emoji: habit.category.emoji,
-        },
-        streak: habit.streak,
-        completedToday: habit.logs.some((log) => log.completed),
-        lastCompletedAt: habit.lastCompletedAt,
-        createdAt: habit.createdAt,
-        updatedAt: habit.updatedAt,
-      })),
+      data: habits.map((habit) => {
+        const isScheduledToday = habit.scheduledDays.includes(todayKey);
+        const isCompletedToday = habit.logs.some((log) => log.completed);
+
+        return {
+          id: habit.id,
+          title: habit.title,
+          description: habit.description,
+          category: {
+            id: habit.category.id,
+            name: habit.category.name,
+            icon: habit.category.icon,
+          },
+          frequency: habit.frequency,
+          isScheduledToday: isScheduledToday,
+          isCompletedToday: isCompletedToday,
+          scheduledDays: habit.scheduledDays,
+          currentStreak: habit.currentStreak,
+          longestStreak: habit.longestStreak,
+          totalCompleted: habit.totalCompleted,
+          lastCompletedAt: habit.lastCompletedAt,
+          createdAt: habit.createdAt,
+          updatedAt: habit.updatedAt,
+        };
+      }),
     });
   } catch (error) {
     console.log(error);
@@ -56,10 +78,32 @@ const getHabit = async (req, res) => {
     // Get user from auth middleware
     const userId = req.user.id;
 
+    const todayStart = startOfDay(new Date());
+    const todayKey = format(new Date(), "EEE").toUpperCase();
+
     // Get specific habit
     const habit = await prisma.habit.findUnique({
       where: { id: req.params.id },
-      include: { category: true },
+      include: {
+        category: {
+          select: {
+            id: true,
+            name: true,
+            icon: true,
+          },
+        },
+        logs: {
+          where: {
+            date: {
+              gte: todayStart,
+              lt: addDays(todayStart, 1),
+            },
+          },
+          select: {
+            completed: true,
+          },
+        },
+      },
     });
 
     if (!habit) {
@@ -71,19 +115,28 @@ const getHabit = async (req, res) => {
       return res.status(403).json({ error: "Permission denied" });
     }
 
+    // Check completion status
+    const isScheduledToday = habit.scheduledDays.includes(todayKey);
+    const isCompletedToday = habit.logs.some((log) => log.completed);
+
     res.status(200).json({
       status: "success",
       data: {
         id: habit.id,
         title: habit.title,
         description: habit.description,
-        frequency: habit.frequency,
         category: {
           id: habit.category.id,
           name: habit.category.name,
-          emoji: habit.category.emoji,
+          icon: habit.category.icon,
         },
-        streak: habit.streak,
+        frequency: habit.frequency,
+        isScheduledToday: isScheduledToday,
+        isCompletedToday: isCompletedToday,
+        scheduledDays: habit.scheduledDays,
+        currentStreak: habit.currentStreak,
+        longestStreak: habit.longestStreak,
+        totalCompleted: habit.totalCompleted,
         lastCompletedAt: habit.lastCompletedAt,
         createdAt: habit.createdAt,
         updatedAt: habit.updatedAt,
@@ -97,40 +150,59 @@ const getHabit = async (req, res) => {
 
 const addHabit = async (req, res) => {
   try {
-    const { title, description, frequency, categoryId } = req.body;
+    const { title, description, categoryId, frequency, scheduledDays } = req.body;
 
     // Get user from auth middleware
     const userId = req.user.id;
+
+    // Normalize scheduled days
+    const ALL_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+    let finalScheduledDays = scheduledDays;
+
+    if (frequency === "DAILY") {
+      finalScheduledDays = ALL_DAYS;
+    }
+
+    if (frequency === "WEEKLY") {
+      finalScheduledDays = scheduledDays;
+    }
 
     // Add habit
     const habit = await prisma.habit.create({
       data: {
         title: title,
         description: description,
-        frequency: frequency,
         categoryId: categoryId,
+        frequency: frequency,
+        scheduledDays: finalScheduledDays,
         userId: userId,
       },
-      include: { category: true },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            icon: true,
+          },
+        },
+        frequency: true,
+        scheduledDays: true,
+        currentStreak: true,
+        longestStreak: true,
+        totalCompleted: true,
+        lastCompletedAt: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
 
     res.status(201).json({
       status: "success",
-      data: {
-        id: habit.id,
-        title: habit.title,
-        description: habit.description,
-        frequency: habit.frequency,
-        category: {
-          id: habit.category.id,
-          name: habit.category.name,
-          emoji: habit.category.emoji,
-        },
-        streak: habit.streak,
-        lastCompletedAt: habit.lastCompletedAt,
-        createdAt: habit.createdAt,
-        updatedAt: habit.updatedAt,
-      },
+      data: habit,
     });
   } catch (error) {
     console.log(error);
@@ -140,10 +212,23 @@ const addHabit = async (req, res) => {
 
 const updateHabit = async (req, res) => {
   try {
-    const { title, description, frequency, categoryId } = req.body;
+    const { title, description, categoryId, frequency, scheduledDays } = req.body;
 
     // Get user from auth middleware
     const userId = req.user.id;
+
+    // Normalize scheduled days
+    const ALL_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+    let finalScheduledDays = scheduledDays;
+
+    if (frequency === "DAILY") {
+      finalScheduledDays = ALL_DAYS;
+    }
+
+    if (frequency === "WEEKLY") {
+      finalScheduledDays = scheduledDays;
+    }
 
     // Get the habit to update
     const habitItem = await prisma.habit.findUnique({
@@ -165,29 +250,35 @@ const updateHabit = async (req, res) => {
       data: {
         title: title,
         description: description,
-        frequency: frequency,
         categoryId: categoryId,
+        frequency: frequency,
+        scheduledDays: finalScheduledDays,
       },
-      include: { category: true },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            icon: true,
+          },
+        },
+        frequency: true,
+        scheduledDays: true,
+        currentStreak: true,
+        longestStreak: true,
+        totalCompleted: true,
+        lastCompletedAt: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
 
     res.status(200).json({
       status: "success",
-      data: {
-        id: habit.id,
-        title: habit.title,
-        description: habit.description,
-        frequency: habit.frequency,
-        category: {
-          id: habit.category.id,
-          name: habit.category.name,
-          emoji: habit.category.emoji,
-        },
-        streak: habit.streak,
-        lastCompletedAt: habit.lastCompletedAt,
-        createdAt: habit.createdAt,
-        updatedAt: habit.updatedAt,
-      },
+      data: habit,
     });
   } catch (error) {
     console.log(error);
