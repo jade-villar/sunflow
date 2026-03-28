@@ -12,9 +12,11 @@ model User {
   name      String
   email     String   @unique
   password  String
+  theme     Theme    @default(LIGHT)
+
   createdAt DateTime @default(now())
 
-  habits Habit[]
+  habits    Habit[]
 }
 
 model Habit {
@@ -23,17 +25,22 @@ model Habit {
   title           String
   description     String?
   categoryId      Int
-  frequency       Frequency
-  streak          Int        @default(0)
+
+  frequency       Frequency  @default(DAILY)
+  scheduledDays   Day[]
+
+  currentStreak   Int        @default(0)
+  longestStreak   Int        @default(0)
+  totalCompleted  Int        @default(0)
   lastCompletedAt DateTime?
-  
+
   logs            HabitLog[]
 
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  category Category @relation(fields: [categoryId], references: [id])
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category        Category   @relation(fields: [categoryId], references: [id])
 }
 
 model HabitLog {
@@ -42,20 +49,35 @@ model HabitLog {
   date      DateTime @db.Date
   completed Boolean  @default(false)
 
-  habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  habit     Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
 
   @@unique([habitId, date])
 }
 
 model Category {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  emoji String
-
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  icon   String
+  
   habits Habit[]
 }
 
 enum Frequency {
   DAILY
   WEEKLY
+}
+
+enum Day {
+  MON
+  TUE
+  WED
+  THU
+  FRI
+  SAT
+  SUN
+}
+
+enum Theme {
+  LIGHT
+  DARK
 }

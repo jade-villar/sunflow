@@ -7,14 +7,14 @@ const main = async () => {
 
   await prisma.category.createMany({
     data: [
-      { name: "Health", emoji: "🥗" },
-      { name: "Mindfulness", emoji: "🧘" },
-      { name: "Productivity", emoji: "⏰" },
-      { name: "Learning", emoji: "📚" },
-      { name: "Home & Household", emoji: "🏡" },
-      { name: "Social", emoji: "🤝" },
-      { name: "Finances", emoji: "💵" },
-      { name: "Spirituality", emoji: "🙏" },
+      { name: "Health", icon: "health-icon" },
+      { name: "Mindfulness", icon: "mindfulness-icon" },
+      { name: "Productivity", icon: "productivity-icon" },
+      { name: "Learning", icon: "learning-icon" },
+      { name: "Home & Household", icon: "home-&-household-icon" },
+      { name: "Social", icon: "social-icon" },
+      { name: "Finances", icon: "finances-icon" },
+      { name: "Spirituality", icon: "spirituality-icon" },
     ],
   });
 
