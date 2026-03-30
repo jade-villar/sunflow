@@ -1,5 +1,13 @@
 const prisma = require("../config/db");
-const { startOfDay, format } = require("date-fns");
+const {
+  startOfDay,
+  format,
+  startOfWeek,
+  endOfWeek,
+  addDays,
+  eachDayOfInterval,
+  isEqual,
+} = require("date-fns");
 const calculateStreak = require("../utils/calculateStreak");
 
 const completeHabit = async (req, res) => {
@@ -107,7 +115,7 @@ const completeHabit = async (req, res) => {
   }
 };
 
-const getHabitLogs = async (req, res) => {
+const getWeeklyHabitLogs = async (req, res) => {
   try {
     // Get user from auth middleware
     const userId = req.user.id;
@@ -115,32 +123,62 @@ const getHabitLogs = async (req, res) => {
     // Get habit id from params
     const habitId = req.params.id;
 
-    // Get habit logs
-    const habitLogs = await prisma.habitLog.findMany({
-      where: { habitId: habitId },
-      orderBy: { date: "desc" },
-    });
-
-    if (habitLogs.length === 0) {
-      return res.status(200).json({ message: "No logs found" });
-    }
-
-    // Verify ownership
+    // Get the habit to update
     const habit = await prisma.habit.findUnique({
       where: { id: habitId },
     });
 
-    if (!habit || habit.userId !== userId) {
+    if (!habit) {
+      return res.status(404).json({ error: "Habit not found" });
+    }
+
+    // Verify ownership
+    if (habit.userId !== userId) {
       return res.status(403).json({ error: "Permission denied" });
     }
 
+    const today = startOfDay(new Date());
+    const weekStart = startOfWeek(today, { weekStartsOn: 1 });
+    const weekEnd = endOfWeek(today, { weekStartsOn: 1 });
+
+    // Fetch all logs for the current week
+    const logs = await prisma.habitLog.findMany({
+      where: {
+        habitId,
+        date: {
+          gte: weekStart,
+          lte: weekEnd,
+        },
+      },
+    });
+
+    const weekDays = eachDayOfInterval({ start: weekStart, end: weekEnd });
+    
+    // Build response for each day of the week
+    const weeklyLogs = weekDays.map((day) => {
+      const dayKey = format(day, "EEE").toUpperCase();
+      const isScheduled = habit.scheduledDays.includes(dayKey);
+
+      const log = logs.find((log) =>
+        isEqual(startOfDay(new Date(log.date)), day),
+      );
+
+      return {
+        date: format(day, "yyyy-MM-dd"),
+        day: dayKey,
+        isScheduled: isScheduled,
+        completed: log ? log.completed : false,
+        isToday: isEqual(day, today),
+      };
+    });
+
     res.status(200).json({
       status: "success",
-      data: habitLogs.map((log) => ({
-        id: log.id,
-        date: log.date,
-        completed: log.completed,
-      })),
+      data: {
+        weekStart: format(weekStart, "yyyy-MM-dd"),
+        weekEnd: format(weekEnd, "yyyy-MM-dd"),
+        logs: weeklyLogs,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -148,4 +186,4 @@ const getHabitLogs = async (req, res) => {
   }
 };
 
-module.exports = { completeHabit, getHabitLogs };
+module.exports = { completeHabit, getWeeklyHabitLogs };
