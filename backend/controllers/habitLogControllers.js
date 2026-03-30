@@ -1,7 +1,6 @@
 const prisma = require("../config/db");
-const { startOfDay } = require("date-fns");
-const calculateDailyStreak = require("../utils/calculateDailyStreak");
-const calculateWeeklyStreak = require("../utils/calculateWeeklyStreak");
+const { startOfDay, format } = require("date-fns");
+const calculateStreak = require("../utils/calculateStreak");
 
 const completeHabit = async (req, res) => {
   try {
@@ -26,6 +25,16 @@ const completeHabit = async (req, res) => {
     }
 
     const today = startOfDay(new Date());
+    const todayKey = format(new Date(), "EEE").toUpperCase();
+
+    // Check if scheduled today
+    const isScheduledToday = habit.scheduledDays.includes(todayKey);
+
+    if (!isScheduledToday) {
+      return res
+        .status(400)
+        .json({ error: "Habit is not scheduled for today" });
+    }
 
     // Check if there is existing log
     const existingLog = await prisma.habitLog.findUnique({
@@ -39,7 +48,7 @@ const completeHabit = async (req, res) => {
 
     let log;
 
-    // Create log if there is no existing log
+    // Mark habit as completed
     if (!existingLog) {
       log = await prisma.habitLog.create({
         data: {
@@ -48,10 +57,7 @@ const completeHabit = async (req, res) => {
           habitId: habitId,
         },
       });
-    }
-
-    // Update log if there is existing log
-    if (existingLog) {
+    } else {
       log = await prisma.habitLog.update({
         where: { id: existingLog.id },
         data: {
@@ -60,21 +66,28 @@ const completeHabit = async (req, res) => {
       });
     }
 
-    let newStreak;
+    // Calculate streak
+    const newStreak = await calculateStreak(habit);
 
-    if (habit.frequency === "DAILY") {
-      newStreak = await calculateDailyStreak(habitId);
+    // Calculate total completed
+    let totalCompleted = habit.totalCompleted;
+
+    if (!existingLog) {
+      totalCompleted += 1;
+    } else {
+      totalCompleted = log.completed ? totalCompleted + 1 : totalCompleted - 1;
     }
 
-    if (habit.frequency === "WEEKLY") {
-      newStreak = await calculateWeeklyStreak(habitId);
-    }
+    // Calculate longest streak
+    const longestStreak = Math.max(habit.longestStreak, newStreak);
 
-    // Update streak
+    // Update the habit
     await prisma.habit.update({
       where: { id: habitId },
       data: {
-        streak: newStreak,
+        currentStreak: newStreak,
+        longestStreak: longestStreak,
+        totalCompleted: totalCompleted,
         lastCompletedAt: log.completed ? today : null,
       },
     });
@@ -83,7 +96,9 @@ const completeHabit = async (req, res) => {
       status: "success",
       data: {
         completed: log.completed,
-        streak: newStreak,
+        currentStreak: newStreak,
+        longestStreak: longestStreak,
+        totalCompleted: totalCompleted,
       },
     });
   } catch (error) {
@@ -107,7 +122,7 @@ const getHabitLogs = async (req, res) => {
     });
 
     if (habitLogs.length === 0) {
-      return res.status(200).json({ error: "No logs found" });
+      return res.status(200).json({ message: "No logs found" });
     }
 
     // Verify ownership
