@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const express = require("express");
 const app = express();
@@ -10,6 +11,13 @@ const userRoutes = require("./routes/userRoutes");
 const habitRoutes = require("./routes/habitRoutes");
 const habitLogRoutes = require("./routes/habitLogRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  }),
+);
 
 app.use(cookieParser());
 app.use(express.json());

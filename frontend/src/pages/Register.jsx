@@ -2,12 +2,29 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import AuthPanel from "../components/AuthPanel";
+import api from "../api/axios";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const registerUser = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await api.post("/auth/register", {
+        name: name,
+        email: email,
+        password: password,
+      });
+
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <main className="min-h-screen px-4 content-center md:pt-12 text-slate-800">
@@ -35,7 +52,7 @@ const Register = () => {
             </p>
           </div>
 
-          <form className="flex flex-col gap-4">
+          <form onSubmit={registerUser} className="flex flex-col gap-4">
             {/* Name */}
             <div>
               <label className="block text-xs mb-2">Name</label>
@@ -87,7 +104,10 @@ const Register = () => {
               </div>
             </div>
 
-            <button className="space-x-2 mt-6 py-3.5 rounded-full text-sm font-semibold shadow-around-sm shadow-yellow-200 text-white bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 cursor-pointer hover:-translate-y-px active:translate-y-0 transition">
+            <button
+              type="submit"
+              className="space-x-2 mt-6 py-3.5 rounded-full text-sm font-semibold shadow-around-sm shadow-yellow-200 text-white bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 cursor-pointer hover:-translate-y-px active:translate-y-0 transition"
+            >
               <span>✦</span>
               <span>Create Account</span>
             </button>
