@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import AuthPanel from "../components/AuthPanel";
-import { loginUser } from "../services/auth";
+import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -10,6 +10,7 @@ const Register = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState("");
 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   // Login user
@@ -17,7 +18,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      await loginUser({ email, password });
+      await login({ email, password });
       setError("");
       navigate("/dashboard");
     } catch (err) {

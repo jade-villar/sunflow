@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import { Link as LinkScroll } from "react-scroll";
-import { logoutUser } from "../services/auth";
+import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
   const isLanding = useMatch("/");
@@ -17,6 +17,7 @@ const Header = () => {
 
   const [scrolled, setScrolled] = useState(false);
 
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const Header = () => {
     e.preventDefault();
 
     try {
-      await logoutUser();
+      await logout();
       navigate("/");
     } catch (err) {
       console.log(err);

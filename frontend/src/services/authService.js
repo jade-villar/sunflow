@@ -8,7 +8,7 @@ export const registerUser = async ({ name, email, password }) => {
       password,
     });
 
-    return res;
+    return res.data;
   } catch (err) {
     throw err.response?.data?.error;
   }
@@ -21,7 +21,7 @@ export const loginUser = async ({ email, password }) => {
       password,
     });
 
-    return res;
+    return res.data;
   } catch (err) {
     throw err.response?.data?.error;
   }
@@ -30,7 +30,7 @@ export const loginUser = async ({ email, password }) => {
 export const logoutUser = async () => {
   try {
     const res = await api.post("/auth/logout");
-    return res;
+    return res.data;
   } catch (err) {
     throw err.response?.data?.error;
   }

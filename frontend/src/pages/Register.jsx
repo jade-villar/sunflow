@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import AuthPanel from "../components/AuthPanel";
-import { registerUser } from "../services/auth";
+import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -11,6 +11,7 @@ const Register = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState("");
 
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   // Register user
@@ -18,7 +19,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      await registerUser({ name, email, password });
+      await register({ name, email, password });
       setError("");
       navigate("/dashboard");
     } catch (err) {
