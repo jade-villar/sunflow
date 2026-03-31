@@ -1,12 +1,29 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import AuthPanel from "../components/AuthPanel";
+import { loginUser } from "../services/auth";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  // Login user
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      await loginUser({ email, password });
+      setError("");
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err);
+    }
+  };
 
   return (
     <main className="min-h-screen px-4 content-center md:pt-12 text-slate-800">
@@ -34,7 +51,7 @@ const Register = () => {
             </p>
           </div>
 
-          <form className="flex flex-col gap-4">
+          <form onSubmit={handleLogin} className="flex flex-col gap-4">
             {/* Enail */}
             <div>
               <label className="block text-xs mb-2">Email</label>
@@ -73,7 +90,12 @@ const Register = () => {
               </div>
             </div>
 
-            <button className="space-x-2 mt-6 py-3.5 rounded-full text-sm font-semibold shadow-around-sm shadow-yellow-200 text-white bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 cursor-pointer hover:-translate-y-px active:translate-y-0 transition">
+            {error && <div className="block text-xs text-red-500">{error}</div>}
+
+            <button
+              type="submit"
+              className="space-x-2 mt-6 py-3.5 rounded-full text-sm font-semibold shadow-around-sm shadow-yellow-200 text-white bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 cursor-pointer hover:-translate-y-px active:translate-y-0 transition"
+            >
               <span>✦</span>
               <span>Log In</span>
             </button>

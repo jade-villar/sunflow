@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import { Link as LinkScroll } from "react-scroll";
+import { logoutUser } from "../services/auth";
 
 const Header = () => {
   const isLanding = useMatch("/");
@@ -16,6 +17,8 @@ const Header = () => {
 
   const [scrolled, setScrolled] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     function handleScroll() {
       if (window.scrollY > 0) {
@@ -27,6 +30,18 @@ const Header = () => {
 
     window.addEventListener("scroll", handleScroll);
   }, []);
+
+  // Logout user
+  const handleLogout = async (e) => {
+    e.preventDefault();
+
+    try {
+      await logoutUser();
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <header
@@ -75,7 +90,10 @@ const Header = () => {
         )}
 
         {isAuthenticated && (
-          <button className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30 hover:bg-yellow-600 hover:-translate-y-px active:bg-yellow-600 transition cursor-pointer">
+          <button
+            onClick={handleLogout}
+            className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30 hover:bg-yellow-600 hover:-translate-y-px active:bg-yellow-600 transition cursor-pointer"
+          >
             Logout
           </button>
         )}

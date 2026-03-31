@@ -1,28 +1,28 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import AuthPanel from "../components/AuthPanel";
-import api from "../api/axios";
+import { registerUser } from "../services/auth";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [error, setError] = useState("");
 
-  const registerUser = async (e) => {
+  const navigate = useNavigate();
+
+  // Register user
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/auth/register", {
-        name: name,
-        email: email,
-        password: password,
-      });
-
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
+      await registerUser({ name, email, password });
+      setError("");
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err);
     }
   };
 
@@ -52,7 +52,7 @@ const Register = () => {
             </p>
           </div>
 
-          <form onSubmit={registerUser} className="flex flex-col gap-4">
+          <form onSubmit={handleRegister} className="flex flex-col gap-4">
             {/* Name */}
             <div>
               <label className="block text-xs mb-2">Name</label>
@@ -103,6 +103,8 @@ const Register = () => {
                 </div>
               </div>
             </div>
+
+            {error && <div className="block text-xs text-red-500">{error}</div>}
 
             <button
               type="submit"
