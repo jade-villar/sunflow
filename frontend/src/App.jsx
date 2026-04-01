@@ -11,6 +11,8 @@ import Missing from "./pages/Missing.jsx";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import ProtectedRoute from "./components/ProtectedRoute";
+import GuestRoute from "./components/GuestRoute";
 
 function App() {
   return (
@@ -18,12 +20,16 @@ function App() {
       <ScrollToTop />
       <Header />
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route element={<GuestRoute />}>
+          <Route path="/" element={<Landing />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Route>
 
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/habit/:id" element={<Habit />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/habit/:id" element={<Habit />} />
+        </Route>
 
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />

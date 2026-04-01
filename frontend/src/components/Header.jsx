@@ -4,20 +4,12 @@ import { Link as LinkScroll } from "react-scroll";
 import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
+  const { user, logout } = useAuth();
+
   const isLanding = useMatch("/");
-
-  const isRegister = useMatch("/register");
-  const isLogin = useMatch("/login");
-
-  const isDashboard = useMatch("/dashboard");
-  const isHabit = useMatch("/habit/*");
-
-  const isAuthenticated = isDashboard || isHabit;
-  const isNotAuthenticated = isLanding || isRegister || isLogin;
 
   const [scrolled, setScrolled] = useState(false);
 
-  const { logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -73,7 +65,7 @@ const Header = () => {
           </nav>
         )}
 
-        {isNotAuthenticated && (
+        {!user && (
           <div className="flex items-center gap-2">
             <Link
               to={"/login"}
@@ -90,7 +82,7 @@ const Header = () => {
           </div>
         )}
 
-        {isAuthenticated && (
+        {user && (
           <button
             onClick={handleLogout}
             className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30 hover:bg-yellow-600 hover:-translate-y-px active:bg-yellow-600 transition cursor-pointer"
