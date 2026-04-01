@@ -10,7 +10,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
 
   // Check current user
   useEffect(() => {
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
       } catch {
         setUser(null);
       } finally {
-        setLoading(false);
+        setAuthLoading(false);
       }
     };
 
@@ -30,24 +30,30 @@ export const AuthProvider = ({ children }) => {
 
   // Register user
   const register = async ({ name, email, password }) => {
+    setAuthLoading(true);
     const res = await registerUser({ name, email, password });
     setUser(res);
+    setAuthLoading(false);
   };
 
   // Login user
   const login = async ({ email, password }) => {
+    setAuthLoading(true);
     const res = await loginUser({ email, password });
     setUser(res);
+    setAuthLoading(false);
   };
 
   // Logout user
   const logout = async () => {
+    setAuthLoading(true);
     await logoutUser();
     setUser(null);
+    setAuthLoading(false);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, register, login, logout }}>
+    <AuthContext.Provider value={{ user, authLoading, register, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -13,8 +13,16 @@ import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
+import { useAuth } from "./context/AuthContext.jsx";
+import AuthLoading from "./pages/AuthLoading.jsx";
 
 function App() {
+  const { authLoading } = useAuth();
+
+  if (authLoading) {
+    return <AuthLoading />;
+  }
+
   return (
     <BrowserRouter>
       <ScrollToTop />
