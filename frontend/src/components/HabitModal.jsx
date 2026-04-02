@@ -1,62 +1,81 @@
 import { useState, Fragment, useEffect } from "react";
 import { Dialog, Listbox, Tab } from "@headlessui/react";
 import { XMarkIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
-
-// Create getCategories in backend later
-const categoryOptions = [
-  { id: 1, name: "Health", emoji: "🥗" },
-  { id: 2, name: "Mindfulness", emoji: "🧘" },
-  { id: 3, name: "Productivity", emoji: "⏰" },
-  { id: 4, name: "Learning", emoji: "📚" },
-  { id: 5, name: "Home & Household", emoji: "🏡" },
-  { id: 6, name: "Social", emoji: "🤝" },
-  { id: 7, name: "Finances", emoji: "💵" },
-  { id: 8, name: "Spirituality", emoji: "🙏" },
-];
+import { getCategories } from "../services/categoryService";
+import { useHabit } from "../context/HabitContext";
 
 const frequencyOptions = ["DAILY", "WEEKLY"];
-
-const days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const dayOptions = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
 const HabitModal = ({ isOpen, onClose, onSubmit, initialData }) => {
+  const [categoryOptions, setCategoryOptions] = useState([]);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState(categoryOptions[0]);
   const [frequency, setFrequency] = useState(frequencyOptions[0]);
-  const [selectedDays, setSelectedDays] = useState(days);
+  const [scheduledDays, setScheduledDays] = useState(dayOptions);
+
+  const { addHabit } = useHabit();
 
   const toggleDay = (day) => {
-    setSelectedDays((prev) =>
+    setScheduledDays((prev) =>
       prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
     );
   };
 
-  // Populate when editing
   useEffect(() => {
-    const check = () => {
-      if (initialData) {
-        setTitle(initialData.title || "");
-        setDescription(initialData.description || "");
-        setCategory(initialData.category || categoryOptions[0]);
-        setFrequency(initialData.frequency || frequencyOptions[0]);
-        setSelectedDays(initialData.selectedDays || days);
-      } else {
-        setTitle("");
-        setDescription("");
-        setCategory(categoryOptions[0]);
-        setFrequency(frequencyOptions[0]);
-        setSelectedDays(days);
+    const loadCategories = async () => {
+      const res = await getCategories();
+      setCategoryOptions(res.data);
+
+      if (res.data.length > 0) {
+        setCategory(res.data[0]);
       }
     };
 
-    check();
-  }, [initialData, isOpen]);
+    loadCategories();
+  }, []);
 
-  const handleSubmit = (e) => {
+  const handleAdd = async (e) => {
     e.preventDefault();
-    onSubmit({ title, description, category, frequency, selectedDays });
+
+    await addHabit({
+      title,
+      description,
+      categoryId: category.id,
+      frequency,
+      scheduledDays,
+    });
     onClose();
   };
+
+  // Populate when editing
+  // useEffect(() => {
+  //   const check = () => {
+  //     if (initialData) {
+  //       setTitle(initialData.title || "");
+  //       setDescription(initialData.description || "");
+  //       setCategory(initialData.category || categoryOptions[0]);
+  //       setFrequency(initialData.frequency || frequencyOptions[0]);
+  //       setScheduledDays(initialData.scheduledDays || dayOptions);
+  //     } else {
+  //       setTitle("");
+  //       setDescription("");
+  //       setCategory(categoryOptions[0]);
+  //       setFrequency(frequencyOptions[0]);
+  //       setScheduledDays(dayOptions);
+  //     }
+  //   };
+
+  //   check();
+  // }, [initialData, isOpen]);
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   onSubmit({ title, description, category, frequency, scheduledDays });
+  //   onClose();
+  // };
 
   return (
     <Dialog
@@ -85,7 +104,7 @@ const HabitModal = ({ isOpen, onClose, onSubmit, initialData }) => {
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleAdd} className="flex flex-col gap-4">
             {/* Title */}
             <div>
               <label className="block text-xs mb-2">
@@ -125,14 +144,14 @@ const HabitModal = ({ isOpen, onClose, onSubmit, initialData }) => {
               >
                 <Listbox.Button className="flex justify-between items-center w-full bg-stone-100 rounded-xl px-3.5 py-3 text-sm outline outline-stone-200 focus:bg-white focus:outline-yellow-500 focus:ring-4 focus:ring-yellow-200 transition">
                   <div className="space-x-3">
-                    <span>{category.emoji}</span>
-                    <span>{category.name}</span>
+                    <span>{category?.icon}</span>
+                    <span>{category?.name}</span>
                   </div>
                   <ChevronDownIcon className="w-4 h-4 text-slate-500" />
                 </Listbox.Button>
 
                 <Listbox.Options className="absolute z-10 mt-2 w-full bg-stone-100 rounded-xl outline outline-stone-200 overflow-hidden max-h-60 overflow-y-auto scrollbar scrollbar-thumb-stone-200 scrollbar-track-transparent">
-                  {categoryOptions.map((cat) => (
+                  {categoryOptions?.map((cat) => (
                     <Listbox.Option key={cat.id} value={cat} as={Fragment}>
                       {({ active, selected }) => (
                         <li
@@ -141,7 +160,7 @@ const HabitModal = ({ isOpen, onClose, onSubmit, initialData }) => {
                           }`}
                         >
                           <div className="space-x-3">
-                            <span>{cat.emoji}</span>
+                            <span>{cat.icon}</span>
                             <span className={active ? "text-white" : ""}>
                               {cat.name}
                             </span>
@@ -199,8 +218,8 @@ const HabitModal = ({ isOpen, onClose, onSubmit, initialData }) => {
                   Repeat on <span className="text-yellow-500">*</span>
                 </label>
                 <div className="grid grid-cols-7 gap-2">
-                  {days.map((day) => {
-                    const active = selectedDays.includes(day);
+                  {dayOptions.map((day) => {
+                    const active = scheduledDays.includes(day);
 
                     return (
                       <button

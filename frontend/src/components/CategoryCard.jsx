@@ -1,13 +1,13 @@
 import HabitCard from "./HabitCard";
 
 const CategoryCard = ({ habits, categoryName }) => {
-  const categoryHabits = habits.data.filter(
+  const categoryHabits = habits?.data?.filter(
     (habit) => habit.category.name === categoryName,
   );
 
   // const categoryClass = categoryHabits[0]?.category?.name?.toLowerCase().replaceAll(" ", "-");
 
-  if (categoryHabits.length > 0) {
+  if (categoryHabits?.length > 0) {
     return (
       <div className="break-inside-avoid mb-6 flex flex-col gap-4 bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-around-sm hover:shadow-around-md transition">
         <div className="flex gap-3 items-center">

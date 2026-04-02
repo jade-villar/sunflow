@@ -1,4 +1,6 @@
-const StreakCard = ({ streakHabits }) => {
+const StreakCard = ({ habits }) => {
+  const streakHabits = habits?.data?.filter((habit) => habit.streak > 0).length;
+
   return (
     <div className="flex flex-col gap-4 bg-white border border-slate-200 rounded-3xl p-6 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
       <p className="text-xs text-slate-400 font-semibold tracking-wider">

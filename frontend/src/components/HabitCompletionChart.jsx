@@ -1,8 +1,8 @@
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 const HabitCompletionChart = ({ habits }) => {
-  const total = habits.length;
-  const completed = habits.filter((habit) => habit.completedToday).length;
+  const total = habits?.length;
+  const completed = habits?.filter((habit) => habit.completedToday).length;
   const remaining = total - completed;
 
   const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
