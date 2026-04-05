@@ -1,40 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AuthLoading from "./AuthLoading";
 import HabitModal from "../components/HabitModal";
-
-const habit = {
-  status: "success",
-  data: {
-    id: "1c6ffc73-c041-4fc0-b0df-276da90c0e55",
-    title: "Run for atleast 2km a day",
-    description: "Just a text description I dont know",
-    frequency: "WEEKLY",
-    category: {
-      id: 7,
-      name: "Finances",
-      emoji: "💵",
-    },
-    streak: 1,
-    lastCompletedAt: "2026-03-06T16:00:00.000Z",
-    createdAt: "2026-03-05T09:26:39.530Z",
-    updatedAt: "2026-03-06T18:34:20.567Z",
-  },
-};
+import { useHabit } from "../context/HabitContext";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Habit = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [editingHabit, setEditingHabit] = useState(null);
+  const { id } = useParams();
+  const { habit, habitLoading, getHabit, deleteHabit } = useHabit();
 
-  const handleUpdate = () => {
+  const [editingHabit, setEditingHabit] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getHabit({ id });
+  }, [id, getHabit]);
+
+  const handleEdit = () => {
     setEditingHabit(habit.data);
     setIsOpen(true);
   };
 
-  const handleSubmit = (data) => {
-    if (editingHabit) {
-      console.log("Update habit:", data);
-    } else {
-      console.log("Add habit:", data);
-    }
+  const handleDelete = async () => {
+    await deleteHabit({ id });
+    navigate("/dashboard");
   };
 
   // const logs = {
@@ -79,6 +69,10 @@ const Habit = () => {
     // setProgress(6);
   };
 
+  if (habitLoading) {
+    return <AuthLoading />;
+  }
+
   return (
     <main className="min-h-screen px-4 py-30 text-slate-800">
       <div className="max-w-4xl mx-auto flex flex-col gap-5">
@@ -90,7 +84,9 @@ const Habit = () => {
               CURRENT STREAK
             </div>
             <div className="flex items-end gap-2">
-              <span className="text-4xl font-bold font-fraunces">21</span>
+              <span className="text-4xl font-bold font-fraunces">
+                {habit?.data?.currentStreak}
+              </span>
               <span className="text-sm text-slate-400 mb-px">days</span>
             </div>
           </div>
@@ -101,7 +97,9 @@ const Habit = () => {
               BEST STREAK
             </div>
             <div className="flex items-end gap-2">
-              <span className="text-4xl font-bold font-fraunces">45</span>
+              <span className="text-4xl font-bold font-fraunces">
+                {habit?.data?.longestStreak}
+              </span>
               <span className="text-sm mb-px">days</span>
             </div>
           </div>
@@ -112,7 +110,9 @@ const Habit = () => {
               TOTAL COMPLETED
             </div>
             <div className="flex items-end gap-2">
-              <span className="text-4xl font-bold font-fraunces">89</span>
+              <span className="text-4xl font-bold font-fraunces">
+                {habit?.data?.totalCompleted}
+              </span>
               <span className="text-sm mb-px">times</span>
             </div>
           </div>
@@ -122,19 +122,19 @@ const Habit = () => {
         <div className="flex flex-col gap-3 bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
           <div className="flex gap-2">
             <span className="text-[11px] uppercase px-3 py-1 rounded-full bg-yellow-100 text-yellow-600 font-semibold tracking-wider">
-              Health
+              {habit?.data?.category?.name}
             </span>
             <span className="text-[11px] uppercase px-3 py-1 rounded-full bg-emerald-100 text-emerald-600 font-semibold tracking-wider">
-              Weekly
+              {habit?.data?.frequency}
             </span>
           </div>
 
           <h1 className="text-3xl font-fraunces font-bold mb-2">
-            Run at least 2km a day
+            {habit?.data?.title}
           </h1>
 
           <p className="text-sm text-slate-500 mb-2">
-            Build cardiovascular endurance.
+            {habit?.data?.description}
           </p>
         </div>
 
@@ -198,12 +198,15 @@ const Habit = () => {
 
           <div className="flex gap-2">
             <button
-              onClick={handleUpdate}
+              onClick={handleEdit}
               className="px-5 py-2 bg-white border border-slate-200 rounded-full hover:bg-slate-900 hover:border-slate-900 hover:text-white active:bg-slate-900 active:border-slate-900 active:text-white transition cursor-pointer"
             >
               Edit
             </button>
-            <button className="px-5 py-2 rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white active:bg-red-500 active:text-white transition cursor-pointer">
+            <button
+              onClick={handleDelete}
+              className="px-5 py-2 rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white active:bg-red-500 active:text-white transition cursor-pointer"
+            >
               Delete
             </button>
           </div>
@@ -212,7 +215,6 @@ const Habit = () => {
       <HabitModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onSubmit={handleSubmit}
         initialData={editingHabit}
       />
     </main>

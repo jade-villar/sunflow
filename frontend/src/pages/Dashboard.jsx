@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CategoryCard from "../components/CategoryCard";
 import HabitCompletionCard from "../components/HabitCompletionCard";
 import HabitModal from "../components/HabitModal";
@@ -6,28 +6,29 @@ import StreakCard from "../components/StreakCard";
 import { useAuth } from "../context/AuthContext";
 import { format } from "date-fns";
 import { useHabit } from "../context/HabitContext";
+import AuthLoading from "./AuthLoading";
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { habits } = useHabit();
+  const { habits, habitsLoading, getAllHabits } = useHabit();
 
   const today = format(new Date(), "EEEE, MMMM d");
 
   const [isOpen, setIsOpen] = useState(false);
   const [editingHabit, setEditingHabit] = useState(null);
 
+  useEffect(() => {
+    getAllHabits();
+  }, [getAllHabits]);
+
   const handleAdd = () => {
     setEditingHabit(null);
     setIsOpen(true);
   };
 
-  const handleSubmit = (data) => {
-    if (editingHabit) {
-      console.log("Update habit:", data);
-    } else {
-      console.log("Add habit:", data);
-    }
-  };
+  if (habitsLoading) {
+    return <AuthLoading />;
+  }
 
   return (
     <main className="min-h-screen px-4 py-30 text-slate-800">
@@ -76,7 +77,6 @@ const Dashboard = () => {
       <HabitModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onSubmit={handleSubmit}
         initialData={editingHabit}
       />
     </main>

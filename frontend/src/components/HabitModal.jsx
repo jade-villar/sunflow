@@ -7,7 +7,9 @@ import { useHabit } from "../context/HabitContext";
 const frequencyOptions = ["DAILY", "WEEKLY"];
 const dayOptions = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
-const HabitModal = ({ isOpen, onClose, onSubmit, initialData }) => {
+const HabitModal = ({ isOpen, onClose, initialData }) => {
+  const { addHabit, updateHabit } = useHabit();
+
   const [categoryOptions, setCategoryOptions] = useState([]);
 
   const [title, setTitle] = useState("");
@@ -16,14 +18,7 @@ const HabitModal = ({ isOpen, onClose, onSubmit, initialData }) => {
   const [frequency, setFrequency] = useState(frequencyOptions[0]);
   const [scheduledDays, setScheduledDays] = useState(dayOptions);
 
-  const { addHabit } = useHabit();
-
-  const toggleDay = (day) => {
-    setScheduledDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
-    );
-  };
-
+  
   useEffect(() => {
     const loadCategories = async () => {
       const res = await getCategories();
@@ -33,13 +28,34 @@ const HabitModal = ({ isOpen, onClose, onSubmit, initialData }) => {
         setCategory(res.data[0]);
       }
     };
-
+    
     loadCategories();
   }, []);
 
+  // Populate when editing
+  useEffect(() => {
+    const check = () => {
+      if (initialData) {
+        setTitle(initialData.title);
+        setDescription(initialData.description);
+        setCategory(initialData.category);
+        setFrequency(initialData.frequency);
+        setScheduledDays(initialData.scheduledDays);
+      } else {
+        setTitle("");
+        setDescription("");
+        setCategory(categoryOptions[0]);
+        setFrequency(frequencyOptions[0]);
+        setScheduledDays(dayOptions);
+      }
+    };
+
+    check();
+  }, [initialData, isOpen, categoryOptions]);
+
   const handleAdd = async (e) => {
     e.preventDefault();
-
+    
     await addHabit({
       title,
       description,
@@ -50,32 +66,25 @@ const HabitModal = ({ isOpen, onClose, onSubmit, initialData }) => {
     onClose();
   };
 
-  // Populate when editing
-  // useEffect(() => {
-  //   const check = () => {
-  //     if (initialData) {
-  //       setTitle(initialData.title || "");
-  //       setDescription(initialData.description || "");
-  //       setCategory(initialData.category || categoryOptions[0]);
-  //       setFrequency(initialData.frequency || frequencyOptions[0]);
-  //       setScheduledDays(initialData.scheduledDays || dayOptions);
-  //     } else {
-  //       setTitle("");
-  //       setDescription("");
-  //       setCategory(categoryOptions[0]);
-  //       setFrequency(frequencyOptions[0]);
-  //       setScheduledDays(dayOptions);
-  //     }
-  //   };
+  const handleUpdate = async (e) => {
+    e.preventDefault();
 
-  //   check();
-  // }, [initialData, isOpen]);
+    await updateHabit({
+      id: initialData.id,
+      title,
+      description,
+      categoryId: category.id,
+      frequency,
+      scheduledDays,
+    });
+    onClose();
+  };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   onSubmit({ title, description, category, frequency, scheduledDays });
-  //   onClose();
-  // };
+  const toggleDay = (day) => {
+    setScheduledDays((prev) =>
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
+    );
+  };
 
   return (
     <Dialog
@@ -104,7 +113,10 @@ const HabitModal = ({ isOpen, onClose, onSubmit, initialData }) => {
             </button>
           </div>
 
-          <form onSubmit={handleAdd} className="flex flex-col gap-4">
+          <form
+            onSubmit={initialData ? handleUpdate : handleAdd}
+            className="flex flex-col gap-4"
+          >
             {/* Title */}
             <div>
               <label className="block text-xs mb-2">
