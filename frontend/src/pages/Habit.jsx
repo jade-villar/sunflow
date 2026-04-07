@@ -60,7 +60,7 @@ const Habit = () => {
         {/* STATS */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-3">
           <div className="flex flex-col gap-2 bg-slate-900 text-white rounded-[20px] p-4 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
-            <div className="text-lg">🔥</div>
+            <img src="/icons/flame.svg" className="w-5 aspect-square mb-1" />
             <div className="text-[11px] text-slate-400 font-semibold tracking-wider">
               CURRENT STREAK
             </div>
@@ -73,7 +73,7 @@ const Habit = () => {
           </div>
 
           <div className="flex flex-col gap-2 bg-white border border-slate-200 rounded-[20px] p-4 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
-            <div className="text-lg">🏆</div>
+            <img src="/icons/trophy.svg" className="w-5 aspect-square mb-1" />
             <div className="text-[11px] text-slate-400 font-semibold tracking-wider">
               BEST STREAK
             </div>
@@ -86,7 +86,7 @@ const Habit = () => {
           </div>
 
           <div className="hidden md:flex flex-col gap-2 bg-white border border-slate-200 rounded-[20px] p-4 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
-            <div className="text-lg">✅</div>
+            <img src="/icons/check.svg" className="w-5 aspect-square mb-1" />
             <div className="text-[11px] text-slate-400 font-semibold tracking-wider">
               TOTAL COMPLETED
             </div>

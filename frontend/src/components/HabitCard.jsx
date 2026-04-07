@@ -1,6 +1,18 @@
 import { Link } from "react-router-dom";
+import { useHabit } from "../context/HabitContext";
+import { useHabitLog } from "../context/HabitLogContext";
 
 const HabitCard = ({ habit }) => {
+  const { getAllHabits } = useHabit();
+  const { completeHabit } = useHabitLog();
+
+  const handleComplete = async (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    await completeHabit({ id: habit.id });
+    await getAllHabits();
+  };
+
   return (
     <div className="group border-b border-slate-200 last:border-none cursor-pointer">
       <Link
@@ -13,24 +25,21 @@ const HabitCard = ({ habit }) => {
           </h3>
           <div className="flex items-center gap-1 text-[11px] text-slate-400">
             <span>{habit?.frequency} &nbsp;&bull;</span>
-            <img src="/flame.svg" className="w-3 h-3 mb-px" />
-            <span>{habit?.streak} streak</span>
+            <img src="/icons/flame.svg" className="w-3 aspect-square mb-px" />
+            <span>{habit?.currentStreak} streak</span>
           </div>
         </div>
 
         <button
-          onClick={(event) => {
-            event.stopPropagation();
-            event.preventDefault();
-          }}
-          title={habit?.completedToday ? "" : "Mark Complete"}
+          onClick={handleComplete}
+          title={habit?.isCompletedToday ? "" : "Mark Complete"}
           className={`px-4 py-2 rounded-full text-[11px] font-semibold hover:shadow-around-md cursor-pointer text-nowrap ${
-            habit?.completedToday
+            habit?.isCompletedToday
               ? "hover:shadow-emerald-200 border border-emerald-300 bg-emerald-100 text-emerald-600 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white active:border-emerald-500 active:bg-emerald-500 active:text-white transition"
               : "hover:shadow-yellow-200 border border-yellow-300 bg-amber-100 text-yellow-600 hover:border-yellow-500 hover:bg-yellow-500 hover:text-white active:border-yellow-500 active:bg-yellow-500 active:text-white transition"
           }`}
         >
-          {habit?.completedToday ? "✓ Completed" : "Mark Done"}
+          {habit?.isCompletedToday ? "✓ Completed" : "Mark Done"}
         </button>
       </Link>
     </div>

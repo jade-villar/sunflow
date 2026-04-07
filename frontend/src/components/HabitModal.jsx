@@ -18,7 +18,6 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
   const [frequency, setFrequency] = useState(frequencyOptions[0]);
   const [scheduledDays, setScheduledDays] = useState(dayOptions);
 
-  
   useEffect(() => {
     const loadCategories = async () => {
       const res = await getCategories();
@@ -155,8 +154,8 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                 className="relative w-full"
               >
                 <Listbox.Button className="flex justify-between items-center w-full bg-stone-100 rounded-xl px-3.5 py-3 text-sm outline outline-stone-200 focus:bg-white focus:outline-yellow-500 focus:ring-4 focus:ring-yellow-200 transition">
-                  <div className="space-x-3">
-                    <span>{category?.icon}</span>
+                  <div className="flex items-center gap-3">
+                    <img src={`/icons/${category?.icon}.svg`} className="w-4 aspect-square" />
                     <span>{category?.name}</span>
                   </div>
                   <ChevronDownIcon className="w-4 h-4 text-slate-500" />
@@ -171,8 +170,8 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                             active ? "bg-yellow-500" : ""
                           }`}
                         >
-                          <div className="space-x-3">
-                            <span>{cat.icon}</span>
+                          <div className="flex items-center gap-3">
+                            <img src={`/icons/${cat.icon}.svg`} className="w-4 aspect-square" />
                             <span className={active ? "text-white" : ""}>
                               {cat.name}
                             </span>

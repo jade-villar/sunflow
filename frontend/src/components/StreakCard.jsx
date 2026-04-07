@@ -1,5 +1,5 @@
 const StreakCard = ({ habits }) => {
-  const streakHabits = habits?.data?.filter((habit) => habit.streak > 0).length;
+  const streakHabits = habits?.data?.filter((habit) => habit.currentStreak > 0).length;
 
   return (
     <div className="flex flex-col gap-4 bg-white border border-slate-200 rounded-3xl p-6 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
@@ -7,7 +7,7 @@ const StreakCard = ({ habits }) => {
         STREAKS
       </p>
       <div className="bg-slate-900 rounded-xl px-4 py-6 flex items-center justify-center gap-4">
-        <img src="/flame.svg" className="w-14 h-14 animate-scale" />
+        <img src="/icons/flame.svg" className="w-14 aspect-square animate-scale" />
 
         <div className="flex flex-col items-start gap-1">
           <h2 className="font-fraunces text-white text-5xl font-bold">

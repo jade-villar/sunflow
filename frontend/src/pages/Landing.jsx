@@ -70,7 +70,7 @@ const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2 bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 transition duration-300">
               <div className="w-11 aspect-square rounded-xl bg-yellow-500/20 flex items-center justify-center text-xl mb-4">
-                🔥
+                <img src="/icons/flame.svg" className="w-6 aspect-square" />
               </div>
               <div className="text-lg font-semibold font-fraunces mb-2">
                 Streak Tracking
@@ -84,7 +84,7 @@ const Landing = () => {
 
             <div className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-emerald-500 hover:shadow-around-md hover:shadow-emerald-500/10 active:border-emerald-500 active:shadow-around-md active:shadow-emerald-500/10 transition duration-300">
               <div className="w-11 aspect-square rounded-xl bg-emerald-500/20 flex items-center justify-center text-xl mb-4">
-                📊
+                <img src="/icons/bar-chart.svg" className="w-6 aspect-square" />
               </div>
               <div className="text-lg font-semibold font-fraunces mb-2">
                 Progress at a Glance
@@ -98,7 +98,7 @@ const Landing = () => {
 
             <div className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 transition duration-300">
               <div className="w-11 aspect-square rounded-xl bg-yellow-500/20 flex items-center justify-center text-xl mb-4">
-                🗓️
+                <img src="/icons/spiral-calendar.svg" className="w-6 aspect-square" />
               </div>
               <div className="text-lg font-semibold font-fraunces mb-2">
                 Flexible Schedules
@@ -111,7 +111,7 @@ const Landing = () => {
 
             <div className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-emerald-500 hover:shadow-around-md hover:shadow-emerald-500/10 active:border-emerald-500 active:shadow-around-md active:shadow-emerald-500/10 transition duration-300">
               <div className="w-11 aspect-square rounded-xl bg-emerald-500/20 flex items-center justify-center text-xl mb-4">
-                🏷️
+                <img src="/icons/label.svg" className="w-6 aspect-square" />
               </div>
               <div className="text-lg font-semibold font-fraunces mb-2">
                 Categories & Tags
@@ -124,7 +124,7 @@ const Landing = () => {
 
             <div className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 transition duration-300">
               <div className="w-11 aspect-square rounded-xl bg-yellow-500/20 flex items-center justify-center text-xl mb-4">
-                🎉
+                <img src="/icons/party-popper.svg" className="w-6 aspect-square" />
               </div>
               <div className="text-lg font-semibold font-fraunces mb-2">
                 One-tap Completion

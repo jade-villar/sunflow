@@ -11,8 +11,8 @@ const CategoryCard = ({ habits, categoryName }) => {
     return (
       <div className="break-inside-avoid mb-6 flex flex-col gap-4 bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-around-sm hover:shadow-around-md transition">
         <div className="flex gap-3 items-center">
-          <span className="text-xl p-2 bg-slate-800 rounded-lg">
-            {categoryHabits[0].category.emoji}
+          <span className="p-2 bg-slate-800 rounded-lg">
+            <img src={`/icons/${categoryHabits[0].category.icon}.svg`} className="w-6 aspect-square" />
           </span>
           <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">
             {categoryName}
