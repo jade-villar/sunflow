@@ -1,21 +1,39 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { parseISO, format } from "date-fns";
 import AuthLoading from "./AuthLoading";
 import HabitModal from "../components/HabitModal";
 import { useHabit } from "../context/HabitContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useHabitLog } from "../context/HabitLogContext";
 
 const Habit = () => {
   const { id } = useParams();
   const { habit, habitLoading, getHabit, deleteHabit } = useHabit();
+  const { weeklyLogs, getHabitWeeklyLogs, completeHabit } = useHabitLog();
 
   const [editingHabit, setEditingHabit] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
 
+  const weekStart = weeklyLogs?.data?.weekStart;
+  const weekEnd = weeklyLogs?.data?.weekEnd;
+
+  const formattedWeekStart = weekStart ? format(parseISO(weekStart), "MMM dd") : "";
+  const formattedWeekEnd = weekEnd ? format(parseISO(weekEnd), "MMM dd") : "";
+
   useEffect(() => {
     getHabit({ id });
   }, [id, getHabit]);
+
+  useEffect(() => {
+    getHabitWeeklyLogs({ id });
+  }, [id, getHabitWeeklyLogs]);
+
+  useEffect(() => {
+    console.log(weeklyLogs);
+    console.log(habit);
+  }, [weeklyLogs, habit]);
 
   const handleEdit = () => {
     setEditingHabit(habit.data);
@@ -27,47 +45,10 @@ const Habit = () => {
     navigate("/dashboard");
   };
 
-  // const logs = {
-  //   status: "success",
-  //   data: [
-  //     {
-  //       id: "d8d470b9-37b3-4aa7-866c-c3774968587d",
-  //       date: "2026-03-04T00:00:00.000Z",
-  //       completed: true,
-  //     },
-  //     {
-  //       id: "d8d470b9-37b3-4aa7-866c-c3774968587d",
-  //       date: "2026-03-05T00:00:00.000Z",
-  //       completed: true,
-  //     },
-  //     {
-  //       status: "success",
-  //       data: [
-  //         {
-  //           id: "d8d470b9-37b3-4aa7-866c-c3774968587d",
-  //           date: "2026-03-09T00:00:00.000Z",
-  //           completed: true,
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // };
-
-  // const transformLogs = (logs) => {
-  //   return logs.map((log) => ({
-  //     date: format(parseISO(log.date), "yyyy-MM-dd"),
-  //     count: log.completed ? 1 : 0,
-  //   }));
-  // };
-
-  const [completed, setCompleted] = useState(false);
-  // const [progress, setProgress] = useState(5);
-
-  const markComplete = () => {
-    if (completed) return;
-    setCompleted(true);
-    // setProgress(6);
-  };
+  const handleComplete = async () => {
+    await completeHabit({ id });
+    await getHabit({ id });
+  }
 
   if (habitLoading) {
     return <AuthLoading />;
@@ -141,38 +122,51 @@ const Habit = () => {
         {/* WEEK GRID */}
         <div className="flex flex-col gap-4 bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
           <div className="text-xs text-slate-800 uppercase font-bold tracking-wider">
-            Weekly History — Mar 4–10
+            Weekly History — {formattedWeekStart} - {formattedWeekEnd}
           </div>
 
           <div className="grid grid-cols-7 gap-2 text-center">
-            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => {
-              const states = [
-                "done",
-                "done",
-                "done",
-                "done",
-                "missed",
-                "done",
-                "today",
-              ];
-              const state = states[i];
+            {weeklyLogs?.data?.logs?.map((log) => {
+              const formattedDate = format(parseISO(log.date), "MMM d");
+
+              const getDateBg = (log) => {
+                if (log.isToday) {
+                  return "bg-yellow-500 text-white shadow-md shadow-yellow-100";
+                } else if (log.completed) {
+                  return "bg-emerald-100 text-emerald-600 shadow-md shadow-emerald-50";
+                } else {
+                  return "bg-slate-100 text-slate-400";
+                }
+              };
+
+              const getStatusIcon = (log) => {
+                if (log.isToday && !log.completed) {
+                  return "?";
+                } else if (log.completed) {
+                  return "✓";
+                } else if (log.isScheduled) {
+                  return "✗";
+                } else {
+                  return "";
+                }
+              };
+
+              const dateBg = getDateBg(log);
+              const statusIcon = getStatusIcon(log);
 
               return (
-                <div key={day} className="flex flex-col items-center gap-1">
-                  <span className="text-[10px] text-slate-400">{day}</span>
-
+                <div
+                  key={log.date}
+                  className="flex flex-col items-center gap-1"
+                >
+                  <span className="text-[10px] text-slate-400">{log.day}</span>
                   <div
-                    className={`w-full h-10 flex items-center justify-center rounded-lg text-sm font-bold hover:-translate-y-1 transition
-                    ${state === "done" && "bg-emerald-100 text-emerald-600 shadow-md shadow-emerald-50"}
-                    ${state === "missed" && "bg-slate-100 text-slate-400"}
-                    ${state === "today" && "bg-yellow-500 text-white shadow-md shadow-yellow-100"}
-                  `}
+                    className={`w-full h-10 flex items-center justify-center rounded-lg text-sm font-bold hover:-translate-y-1 transition ${dateBg}`}
                   >
-                    {state === "done" ? "✓" : state === "missed" ? "✗" : "-"}
+                    {statusIcon}
                   </div>
-
                   <span className="text-[10px] text-slate-400">
-                    Mar {4 + i}
+                    {formattedDate}
                   </span>
                 </div>
               );
@@ -183,17 +177,17 @@ const Habit = () => {
         {/* ACTIONS */}
         <div className="flex justify-between items-center text-sm">
           <button
-            onClick={markComplete}
+            onClick={handleComplete}
             className={`flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold shadow-around-md hover:-translate-y-0.5 active:translate-y-0 transition cursor-pointer
               ${
-                completed
+                habit?.data?.isCompletedToday
                   ? "bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-600 shadow-emerald-100"
                   : "bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 shadow-yellow-100"
               }
             `}
           >
-            <span>{completed ? "✓" : "✦"}</span>
-            <span>{completed ? "Completed!" : "Mark Complete"}</span>
+            <span>{habit?.data?.isCompletedToday ? "✓" : "✦"}</span>
+            <span>{habit?.data?.isCompletedToday ? "Completed!" : "Mark Complete"}</span>
           </button>
 
           <div className="flex gap-2">
