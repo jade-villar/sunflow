@@ -18,6 +18,11 @@ const registerSchema = z.object({
     .min(8, { error: "Password must be at least 8 characters" })
     .max(100, { error: "Password is too long" })
     .regex(/[A-Z]/, { error: "Password must contain at least one uppercase character" }),
+
+  timezone: z
+    .string()
+    .optional()
+    .default("UTC"),
 });
 
 const loginSchema = z.object({

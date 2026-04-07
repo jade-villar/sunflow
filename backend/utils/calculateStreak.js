@@ -1,7 +1,8 @@
 const prisma = require("../config/db");
-const { startOfDay, subDays, isEqual, format } = require("date-fns");
+const { subDays, format } = require("date-fns");
+const { getLocalToday, getLocalTodayKey } = require("./dateUtils");
 
-const calculateStreak = async (habit) => {
+const calculateStreak = async (habit, timezone = "UTC") => {
   const logs = await prisma.habitLog.findMany({
     where: {
       habitId: habit.id,
@@ -12,38 +13,33 @@ const calculateStreak = async (habit) => {
     },
   });
 
-  const today = startOfDay(new Date());
-  const todayKey = format(today, "EEE").toUpperCase();
-  
+  const today = getLocalToday(timezone);
+  const todayKey = getLocalTodayKey(timezone);
+
+  const completedDates = logs.map((log) =>
+    format(new Date(log.date), "yyyy-MM-dd"),
+  );
+
   let streak = 0;
   const scheduledDays = habit.scheduledDays;
 
-  // Check if today was completed
-  const todayCompleted = logs.some((log) =>
-    isEqual(startOfDay(new Date(log.date)), today),
-  );
-
-  // Check if scheduled days include today
+  const todayString = format(today, "yyyy-MM-dd");
+  const todayCompleted = completedDates.includes(todayString);
   const isScheduledToday = scheduledDays.includes(todayKey);
 
-  // Decide the starting point
-  let currentDate = isScheduledToday && !todayCompleted 
-    ? subDays(today, 1) 
-    : today;
+  let currentDate =
+    isScheduledToday && !todayCompleted ? subDays(today, 1) : today;
 
   while (true) {
     const currentDayKey = format(currentDate, "EEE").toUpperCase();
+    const currentDateString = format(currentDate, "yyyy-MM-dd");
 
     if (!scheduledDays.includes(currentDayKey)) {
       currentDate = subDays(currentDate, 1);
       continue;
     }
 
-    const hasLog = logs.some((log) =>
-      isEqual(startOfDay(new Date(log.date)), currentDate),
-    );
-
-    if (hasLog) {
+    if (completedDates.includes(currentDateString)) {
       streak++;
       currentDate = subDays(currentDate, 1);
     } else {

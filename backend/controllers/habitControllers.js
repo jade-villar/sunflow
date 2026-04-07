@@ -1,13 +1,14 @@
 const prisma = require("../config/db");
-const { startOfDay, format, addDays } = require("date-fns");
+const { addDays } = require("date-fns");
+const { getLocalToday, getLocalTodayKey } = require("../utils/dateUtils");
 
 const getAllHabits = async (req, res) => {
   try {
     // Get user from auth middleware
     const userId = req.user.id;
 
-    const todayStart = startOfDay(new Date());
-    const todayKey = format(new Date(), "EEE").toUpperCase();
+    const todayStart = getLocalToday(req.user.timezone);
+    const todayKey = getLocalTodayKey(req.user.timezone);
 
     // Get all habits
     const habits = await prisma.habit.findMany({
@@ -78,8 +79,8 @@ const getHabit = async (req, res) => {
     // Get user from auth middleware
     const userId = req.user.id;
 
-    const todayStart = startOfDay(new Date());
-    const todayKey = format(new Date(), "EEE").toUpperCase();
+    const todayStart = getLocalToday(req.user.timezone);
+    const todayKey = getLocalTodayKey(req.user.timezone);
 
     // Get specific habit
     const habit = await prisma.habit.findUnique({

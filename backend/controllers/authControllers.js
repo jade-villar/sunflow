@@ -4,7 +4,7 @@ const generateToken = require("../utils/generateToken");
 
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, timezone } = req.body;
 
     // Check if user already exist
     const userExists = await prisma.user.findUnique({
@@ -27,6 +27,7 @@ const registerUser = async (req, res) => {
         name: name,
         email: email,
         password: hashedPassword,
+        timezone: timezone || "UTC",
       },
     });
 
@@ -40,6 +41,7 @@ const registerUser = async (req, res) => {
           id: user.id,
           name: user.name,
           email: user.email,
+          timezone: user.timezone,
           theme: user.theme,
         },
         token: token,

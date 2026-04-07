@@ -2,10 +2,13 @@ import api from "../api/axios";
 
 export const registerUser = async ({ name, email, password }) => {
   try {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     const res = await api.post("/auth/register", {
       name,
       email,
       password,
+      timezone,
     });
 
     return res.data;

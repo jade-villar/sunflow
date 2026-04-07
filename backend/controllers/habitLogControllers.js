@@ -1,13 +1,6 @@
 const prisma = require("../config/db");
-const {
-  startOfDay,
-  format,
-  startOfWeek,
-  endOfWeek,
-  addDays,
-  eachDayOfInterval,
-  isEqual,
-} = require("date-fns");
+const { startOfDay, format, startOfWeek, endOfWeek, eachDayOfInterval } = require("date-fns");
+const { getLocalToday, getLocalTodayKey } = require("../utils/dateUtils");
 const calculateStreak = require("../utils/calculateStreak");
 
 const completeHabit = async (req, res) => {
@@ -32,8 +25,8 @@ const completeHabit = async (req, res) => {
       return res.status(403).json({ error: "Permission denied" });
     }
 
-    const today = startOfDay(new Date());
-    const todayKey = format(new Date(), "EEE").toUpperCase();
+    const today = getLocalToday(req.user.timezone);
+    const todayKey = getLocalTodayKey(req.user.timezone);
 
     // Check if scheduled today
     const isScheduledToday = habit.scheduledDays.includes(todayKey);
@@ -75,7 +68,7 @@ const completeHabit = async (req, res) => {
     }
 
     // Calculate streak
-    const newStreak = await calculateStreak(habit);
+    const newStreak = await calculateStreak(habit, req.user.timezone);
 
     // Calculate total completed
     let totalCompleted = habit.totalCompleted;
@@ -137,7 +130,8 @@ const getWeeklyHabitLogs = async (req, res) => {
       return res.status(403).json({ error: "Permission denied" });
     }
 
-    const today = startOfDay(new Date());
+    const today = getLocalToday(req.user.timezone);
+    const todayString = format(today, "yyyy-MM-dd");
     const weekStart = startOfWeek(today, { weekStartsOn: 1 });
     const weekEnd = endOfWeek(today, { weekStartsOn: 1 });
 
@@ -153,14 +147,16 @@ const getWeeklyHabitLogs = async (req, res) => {
     });
 
     const weekDays = eachDayOfInterval({ start: weekStart, end: weekEnd });
-    
+
     // Build response for each day of the week
     const weeklyLogs = weekDays.map((day) => {
       const dayKey = format(day, "EEE").toUpperCase();
+      const dayString = format(day, "yyyy-MM-dd");
       const isScheduled = habit.scheduledDays.includes(dayKey);
 
-      const log = logs.find((log) =>
-        isEqual(startOfDay(new Date(log.date)), day),
+      const log = logs.find(
+        (log) =>
+          format(startOfDay(new Date(log.date)), "yyyy-MM-dd") === dayString,
       );
 
       return {
@@ -168,7 +164,7 @@ const getWeeklyHabitLogs = async (req, res) => {
         day: dayKey,
         isScheduled: isScheduled,
         completed: log ? log.completed : false,
-        isToday: isEqual(day, today),
+        isToday: dayString === todayString,
       };
     });
 
