@@ -1,5 +1,6 @@
 const prisma = require("../config/db");
 const { getLocalToday, getLocalTodayKey } = require("../utils/dateUtils");
+const calculateStreak = require("../utils/calculateStreak");
 
 const getAllHabits = async (req, res) => {
   try {
@@ -217,6 +218,9 @@ const updateHabit = async (req, res) => {
     // Get user from auth middleware
     const userId = req.user.id;
 
+    // Get timezone
+    const timezone = req.user.timezone;
+
     // Normalize scheduled days
     const ALL_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -242,6 +246,35 @@ const updateHabit = async (req, res) => {
     // Verify ownership
     if (habitItem.userId !== userId) {
       return res.status(403).json({ error: "Permission denied" });
+    }
+
+    const today = getLocalToday(timezone);
+    const todayKey = getLocalTodayKey(timezone);
+
+    const todayWasScheduled = habitItem.scheduledDays.includes(todayKey);
+    const todayIsStillScheduled = finalScheduledDays.includes(todayKey);
+
+    // Mark today's log as uncompleted if today is being unscheduled
+    if (todayWasScheduled && !todayIsStillScheduled) {
+      const todayLog = await prisma.habitLog.findUnique({
+        where: {
+          habitId_date: {
+            habitId: habitItem.id,
+            date: today,
+          },
+        },
+      });
+
+      if (todayLog?.completed) {
+        await prisma.habitLog.update({
+          where: {
+            id: todayLog.id,
+          },
+          data: {
+            completed: false,
+          },
+        });
+      }
     }
 
     // Update habit
@@ -275,6 +308,36 @@ const updateHabit = async (req, res) => {
         updatedAt: true,
       },
     });
+
+    // Sync stats after the schedule change
+    if (todayWasScheduled && !todayIsStillScheduled) {
+      const newStreak = await calculateStreak(habit, timezone);
+
+      const totalCompleted = await prisma.habitLog.count({
+        where: {
+          habitId: habit.id,
+          completed: true,
+        },
+      });
+
+      const lastLog = await prisma.habitLog.findFirst({
+        where: {
+          habitId: habit.id,
+          completed: true,
+        },
+        orderBy: { date: "desc" },
+      });
+
+      await prisma.habit.update({
+        where: { id: habit.id },
+        data: {
+          currentStreak: newStreak,
+          longestStreak: Math.max(habit.longestStreak, newStreak),
+          totalCompleted: totalCompleted,
+          lastCompletedAt: lastLog?.date ?? null,
+        },
+      });
+    }
 
     res.status(200).json({
       status: "success",

@@ -3,12 +3,14 @@ import { Dialog, Listbox, Tab } from "@headlessui/react";
 import { XMarkIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import { getCategories } from "../services/categoryService";
 import { useHabit } from "../context/HabitContext";
+import { useHabitLog } from "../context/HabitLogContext";
 
 const frequencyOptions = ["DAILY", "WEEKLY"];
 const dayOptions = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
 const HabitModal = ({ isOpen, onClose, initialData }) => {
   const { addHabit, updateHabit } = useHabit();
+  const { getHabitWeeklyLogs } = useHabitLog();
 
   const [categoryOptions, setCategoryOptions] = useState([]);
 
@@ -77,6 +79,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
       scheduledDays,
     });
     onClose();
+    await getHabitWeeklyLogs({ id: initialData.id });
   };
 
   const toggleDay = (day) => {
