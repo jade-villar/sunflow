@@ -33,7 +33,7 @@ model Habit {
   currentStreak   Int        @default(0)
   longestStreak   Int        @default(0)
   totalCompleted  Int        @default(0)
-  lastCompletedAt DateTime?
+  lastCompletedAt String?
 
   logs            HabitLog[]
 
@@ -45,12 +45,12 @@ model Habit {
 }
 
 model HabitLog {
-  id        String   @id @default(uuid())
+  id        String  @id @default(uuid())
   habitId   String
-  date      DateTime @db.Date
-  completed Boolean  @default(false)
+  date      String
+  completed Boolean @default(false)
 
-  habit     Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  habit     Habit   @relation(fields: [habitId], references: [id], onDelete: Cascade)
 
   @@unique([habitId, date])
 }

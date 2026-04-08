@@ -1,5 +1,4 @@
 const prisma = require("../config/db");
-const { subDays, format } = require("date-fns");
 const { getLocalToday, getLocalTodayKey } = require("./dateUtils");
 
 const calculateStreak = async (habit, timezone = "UTC") => {
@@ -16,32 +15,40 @@ const calculateStreak = async (habit, timezone = "UTC") => {
   const today = getLocalToday(timezone);
   const todayKey = getLocalTodayKey(timezone);
 
-  const completedDates = logs.map((log) =>
-    format(new Date(log.date), "yyyy-MM-dd"),
-  );
+  const completedDates = logs.map((log) => log.date);
+
+  const todayCompleted = completedDates.includes(today);
+  const isScheduledToday = habit.scheduledDays.includes(todayKey);
+
+  // Build date strings going backwards
+  const getPrevDate = (dateString, days = 1) => {
+    const d = new Date(dateString + "T00:00:00Z");
+    d.setUTCDate(d.getUTCDate() - days);
+    return d.toISOString().slice(0, 10);
+  };
+
+  const getDayKey = (dateString) => {
+    return new Date(dateString + "T00:00:00Z")
+      .toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" })
+      .toUpperCase();
+  };
 
   let streak = 0;
-  const scheduledDays = habit.scheduledDays;
-
-  const todayString = format(today, "yyyy-MM-dd");
-  const todayCompleted = completedDates.includes(todayString);
-  const isScheduledToday = scheduledDays.includes(todayKey);
 
   let currentDate =
-    isScheduledToday && !todayCompleted ? subDays(today, 1) : today;
+    isScheduledToday && !todayCompleted ? getPrevDate(today) : today;
 
   while (true) {
-    const currentDayKey = format(currentDate, "EEE").toUpperCase();
-    const currentDateString = format(currentDate, "yyyy-MM-dd");
+    const currentDayKey = getDayKey(currentDate);
 
-    if (!scheduledDays.includes(currentDayKey)) {
-      currentDate = subDays(currentDate, 1);
+    if (!habit.scheduledDays.includes(currentDayKey)) {
+      currentDate = getPrevDate(currentDate);
       continue;
     }
 
-    if (completedDates.includes(currentDateString)) {
+    if (completedDates.includes(currentDate)) {
       streak++;
-      currentDate = subDays(currentDate, 1);
+      currentDate = getPrevDate(currentDate);
     } else {
       break;
     }

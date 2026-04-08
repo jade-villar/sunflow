@@ -1,5 +1,4 @@
 const prisma = require("../config/db");
-const { startOfDay, format, startOfWeek, endOfWeek, eachDayOfInterval } = require("date-fns");
 const { getLocalToday, getLocalTodayKey } = require("../utils/dateUtils");
 const calculateStreak = require("../utils/calculateStreak");
 
@@ -7,6 +6,9 @@ const completeHabit = async (req, res) => {
   try {
     // Get user from auth middleware
     const userId = req.user.id;
+
+    // Get timezone
+    const timezone = req.user.timezone;
 
     // Get habit id from params
     const habitId = req.params.id;
@@ -25,8 +27,8 @@ const completeHabit = async (req, res) => {
       return res.status(403).json({ error: "Permission denied" });
     }
 
-    const today = getLocalToday(req.user.timezone);
-    const todayKey = getLocalTodayKey(req.user.timezone);
+    const today = getLocalToday(timezone);
+    const todayKey = getLocalTodayKey(timezone);
 
     // Check if scheduled today
     const isScheduledToday = habit.scheduledDays.includes(todayKey);
@@ -68,7 +70,7 @@ const completeHabit = async (req, res) => {
     }
 
     // Calculate streak
-    const newStreak = await calculateStreak(habit, req.user.timezone);
+    const newStreak = await calculateStreak(habit, timezone);
 
     // Calculate total completed
     let totalCompleted = habit.totalCompleted;
@@ -113,6 +115,9 @@ const getWeeklyHabitLogs = async (req, res) => {
     // Get user from auth middleware
     const userId = req.user.id;
 
+    // Get timezone
+    const timezone = req.user.timezone;
+
     // Get habit id from params
     const habitId = req.params.id;
 
@@ -130,10 +135,21 @@ const getWeeklyHabitLogs = async (req, res) => {
       return res.status(403).json({ error: "Permission denied" });
     }
 
-    const today = getLocalToday(req.user.timezone);
-    const todayString = format(today, "yyyy-MM-dd");
-    const weekStart = startOfWeek(today, { weekStartsOn: 1 });
-    const weekEnd = endOfWeek(today, { weekStartsOn: 1 });
+    const today = getLocalToday(timezone);
+
+    // Build week dates as strings manually
+    const todayDate = new Date(today + "T00:00:00Z");
+    const dayOfWeek = todayDate.getUTCDay();
+    const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+
+    const weekDays = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(todayDate);
+      d.setUTCDate(todayDate.getUTCDate() + mondayOffset + i);
+      return d.toISOString().slice(0, 10);
+    });
+
+    const weekStart = weekDays[0];
+    const weekEnd = weekDays[6];
 
     // Fetch all logs for the current week
     const logs = await prisma.habitLog.findMany({
@@ -146,33 +162,29 @@ const getWeeklyHabitLogs = async (req, res) => {
       },
     });
 
-    const weekDays = eachDayOfInterval({ start: weekStart, end: weekEnd });
-
     // Build response for each day of the week
-    const weeklyLogs = weekDays.map((day) => {
-      const dayKey = format(day, "EEE").toUpperCase();
-      const dayString = format(day, "yyyy-MM-dd");
-      const isScheduled = habit.scheduledDays.includes(dayKey);
+    const weeklyLogs = weekDays.map((dateString) => {
+      const dayKey = new Date(dateString + "T00:00:00Z")
+        .toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" })
+        .toUpperCase();
 
-      const log = logs.find(
-        (log) =>
-          format(startOfDay(new Date(log.date)), "yyyy-MM-dd") === dayString,
-      );
+      const isScheduled = habit.scheduledDays.includes(dayKey);
+      const log = logs.find((l) => l.date === dateString);
 
       return {
-        date: format(day, "yyyy-MM-dd"),
+        date: dateString,
         day: dayKey,
         isScheduled: isScheduled,
         completed: log ? log.completed : false,
-        isToday: dayString === todayString,
+        isToday: dateString === today,
       };
     });
 
     res.status(200).json({
       status: "success",
       data: {
-        weekStart: format(weekStart, "yyyy-MM-dd"),
-        weekEnd: format(weekEnd, "yyyy-MM-dd"),
+        weekStart: weekStart,
+        weekEnd: weekEnd,
         logs: weeklyLogs,
       },
     });
