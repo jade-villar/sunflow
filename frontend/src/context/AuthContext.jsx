@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getCurrentUser } from "../services/userService";
 import { loginUser, logoutUser, registerUser } from "../services/authService";
+import AuthLoading from "../pages/AuthLoading";
 
 const AuthContext = createContext();
 
@@ -18,8 +19,15 @@ export const AuthProvider = ({ children }) => {
       try {
         const res = await getCurrentUser();
         setUser(res);
-      } catch {
-        setUser(null);
+      } catch (err) {
+        const isAuthError = err?.response?.status === 401 || err?.response?.status === 404;
+        const isNetworkError = !err?.response;
+
+        if (isAuthError) {
+          setUser(null);
+        } else if (isNetworkError) {
+          window.location.reload();
+        }
       } finally {
         setAuthLoading(false);
       }
@@ -53,7 +61,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, authLoading, register, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, authLoading, register, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
