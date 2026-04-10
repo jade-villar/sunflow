@@ -29,7 +29,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
         setCategory(res.data[0]);
       }
     };
-    
+
     loadCategories();
   }, []);
 
@@ -56,7 +56,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    
+
     await addHabit({
       title,
       description,
@@ -158,7 +158,10 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
               >
                 <Listbox.Button className="flex justify-between items-center w-full bg-stone-100 rounded-xl px-3.5 py-3 text-sm outline outline-stone-200 focus:bg-white focus:outline-yellow-500 focus:ring-4 focus:ring-yellow-200 transition">
                   <div className="flex items-center gap-3">
-                    <img src={`/icons/${category?.icon}.svg`} className="w-4 aspect-square" />
+                    <img
+                      src={`/icons/${category?.icon}.svg`}
+                      className="w-4 aspect-square"
+                    />
                     <span>{category?.name}</span>
                   </div>
                   <ChevronDownIcon className="w-4 h-4 text-slate-500" />
@@ -174,7 +177,10 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                           }`}
                         >
                           <div className="flex items-center gap-3">
-                            <img src={`/icons/${cat.icon}.svg`} className="w-4 aspect-square" />
+                            <img
+                              src={`/icons/${cat.icon}.svg`}
+                              className="w-4 aspect-square"
+                            />
                             <span className={active ? "text-white" : ""}>
                               {cat.name}
                             </span>
@@ -231,7 +237,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                 <label className="block text-xs mb-2">
                   Repeat on <span className="text-yellow-500">*</span>
                 </label>
-                <div className="grid grid-cols-7 gap-2">
+                <div className="grid grid-cols-7 gap-1.5">
                   {dayOptions.map((day) => {
                     const active = scheduledDays.includes(day);
 
@@ -240,11 +246,11 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                         type="button"
                         key={day}
                         onClick={() => toggleDay(day)}
-                        className={`py-4 text-xs rounded-xl outline cursor-pointer transition
+                        className={`w-full max-w-14 aspect-square text-[10px] font-medium rounded-xl border tracking-wider cursor-pointer transition
                         ${
                           active
-                            ? "bg-yellow-500 text-white outline-yellow-500 shadow-around-sm shadow-yellow-200"
-                            : "bg-stone-100 text-slate-800 outline-stone-200 hover:bg-yellow-100 hover:text-yellow-600 hover:outline-yellow-500"
+                            ? "bg-yellow-500 text-white shadow-around-sm shadow-yellow-100"
+                            : "bg-stone-100 text-slate-800 border-stone-200 hover:bg-yellow-50 hover:text-yellow-600 hover:border-yellow-600/40"
                         }`}
                       >
                         {day}

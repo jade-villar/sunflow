@@ -1,48 +1,53 @@
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
+
+ChartJS.register(ArcElement, Tooltip);
 
 const HabitCompletionChart = ({ habits }) => {
-  const total = habits?.length;
-  const completed = habits?.filter((habit) => habit.isCompletedToday).length;
+  const total = habits?.data?.length || 0;
+  const completed = habits?.data?.filter((h) => h.isCompletedToday).length || 0;
   const remaining = total - completed;
 
-  const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-  const data = [
-    { name: "Completed", value: completed },
-    { name: "Remaining", value: remaining },
-  ];
+  const data = {
+    labels: ["Completed", "Remaining"],
+    datasets: [
+      {
+        data: total > 0 ? [completed, remaining] : [1],
+        backgroundColor: total > 0 ? ["#EAB308", "#E5E7EB"] : ["#E5E7EB"],
+        borderWidth: 0,
+        cutout: "70%",
+      },
+    ],
+  };
 
-  const COLORS = ["#EAB308", "#D1D5DB"];
+  const options = {
+    rotation: 0,
+    circumference: 360,
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: false },
+    },
+  };
 
   return (
     <div className="rounded-md w-full flex flex-col items-center justify-center gap-4">
-      <div className="relative w-40 h-40">
-        <ResponsiveContainer width={160} height={160}>
-          <PieChart>
-            <Pie
-              data={data}
-              innerRadius={55}
-              outerRadius={75}
-              dataKey="value"
-              stroke="none"
-            >
-              {data.map((entry, index) => (
-                <Cell key={index} fill={COLORS[index]} />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
+      <div className="relative w-28 h-28 md:w-40 md:h-40">
+        <Doughnut data={data} options={options} />
 
-        {/* Stat */}
+        {/* Center Text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-slate-800 text-2xl font-fraunces font-bold">
+          <span className="text-slate-800 text-lg md:text-2xl font-fraunces font-bold">
             {percent}%
           </span>
-          <span className="text-xs text-slate-500">completed</span>
+          <span className="text-[11px] md:text-xs text-slate-500">
+            completed
+          </span>
         </div>
       </div>
 
-      <p className="text-xs text-slate-500 text-center">
+      <p className="text-[11px] md:text-xs text-slate-500 text-center">
         {completed} of {total} habits completed
       </p>
     </div>

@@ -14,13 +14,13 @@ const HabitCard = ({ habit }) => {
   };
 
   return (
-    <div className="group border-b border-slate-200 last:border-none cursor-pointer">
+    <div className="group border-b border-slate-200 last:border-none pt-4 pb-4 first:pt-1 last:pb-1 cursor-pointer">
       <Link
         to={`/habit/${habit.id}`}
-        className="py-4 flex justify-between items-center gap-4"
+        className="flex justify-between items-center gap-4"
       >
         <div className="flex flex-col gap-2">
-          <h3 className="text-slate-800 font-bold leading-4.5 group-hover:underline group-active:underline">
+          <h3 className="text-slate-800 font-bold leading-4.5 group-hover:text-yellow-600 group-active:text-yellow-500 transition">
             {habit?.title}
           </h3>
           <div className="flex items-center gap-1 text-[11px] text-slate-400">
@@ -33,13 +33,13 @@ const HabitCard = ({ habit }) => {
         <button
           onClick={handleComplete}
           title={habit?.isCompletedToday ? "" : "Mark Complete"}
-          className={`px-4 py-2 rounded-full text-[11px] font-semibold hover:shadow-around-md cursor-pointer text-nowrap ${
+          className={`w-24 px-4 py-2 rounded-full text-[11px] font-semibold hover:shadow-around-md cursor-pointer text-nowrap ${
             habit?.isCompletedToday
               ? "hover:shadow-emerald-200 border border-emerald-300 bg-emerald-100 text-emerald-600 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white active:border-emerald-500 active:bg-emerald-500 active:text-white transition"
               : "hover:shadow-yellow-200 border border-yellow-300 bg-amber-100 text-yellow-600 hover:border-yellow-500 hover:bg-yellow-500 hover:text-white active:border-yellow-500 active:bg-yellow-500 active:text-white transition"
           }`}
         >
-          {habit?.isCompletedToday ? "✓ Completed" : "Mark Done"}
+          {habit?.isCompletedToday ? "Completed" : "Mark Done"}
         </button>
       </Link>
     </div>
