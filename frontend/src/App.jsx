@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useAuth } from "./context/AuthContext.jsx";
 import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -13,8 +14,7 @@ import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
-import { useAuth } from "./context/AuthContext.jsx";
-import AuthLoading from "./pages/AuthLoading.jsx";
+import AuthLoading from "./components/AuthLoading.jsx";
 
 function App() {
   const { authLoading } = useAuth();

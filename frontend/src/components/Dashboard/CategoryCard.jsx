@@ -1,6 +1,9 @@
 import HabitCard from "./HabitCard";
+import { useHabit } from "../../context/HabitContext";
 
-const CategoryCard = ({ habits, categoryName }) => {
+const CategoryCard = ({ categoryName }) => {
+  const { habits } = useHabit();
+
   const categoryHabits = habits?.data?.filter(
     (habit) => habit.category.name === categoryName,
   );

@@ -1,4 +1,8 @@
-const StreakCard = ({ habits }) => {
+import { useHabit } from "../../context/HabitContext";
+
+const StreakCard = () => {
+  const { habits } = useHabit();
+
   const streakHabits =
     habits?.data?.filter((habit) => habit.currentStreak > 0).length || 0;
 

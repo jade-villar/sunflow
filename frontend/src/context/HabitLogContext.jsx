@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useState } from "react";
-import { complete, fetchWeeklyHabitLogs } from "../services/habitLogService";
+import { complete, fetchWeeklyHabitLogs } from "../services/habitLogServices";
 
 const HabitLogContext = createContext();
 
@@ -16,9 +16,8 @@ export const HabitLogProvider = ({ children }) => {
   }, []);
 
   const completeHabit = async ({ id }) => {
-    const res = await complete({ id });
+    await complete({ id });
     await getHabitWeeklyLogs({ id })
-    console.log(res);
   };
 
   return (

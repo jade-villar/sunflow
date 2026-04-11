@@ -1,37 +1,26 @@
-import { useState, Fragment, useEffect } from "react";
-import { Dialog, Listbox, Tab } from "@headlessui/react";
-import { XMarkIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
-import { getCategories } from "../services/categoryService";
-import { useHabit } from "../context/HabitContext";
-import { useHabitLog } from "../context/HabitLogContext";
+import { useState, useEffect } from "react";
+import { Dialog } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/20/solid";
+import { useCategory } from "../../context/CategoryContext";
+import { useHabit } from "../../context/HabitContext";
+import { useHabitLog } from "../../context/HabitLogContext";
+import CategoryListBox from "./CategoryListBox";
+import FrequencyTab from "./FrequencyTab";
+import DaySelector from "./DaySelector";
 
-const frequencyOptions = ["DAILY", "WEEKLY"];
-const dayOptions = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+const frequencies = ["DAILY", "WEEKLY"];
+const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
 const HabitModal = ({ isOpen, onClose, initialData }) => {
+  const { categories } = useCategory();
   const { addHabit, updateHabit } = useHabit();
   const { getHabitWeeklyLogs } = useHabitLog();
 
-  const [categoryOptions, setCategoryOptions] = useState([]);
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState(categoryOptions[0]);
-  const [frequency, setFrequency] = useState(frequencyOptions[0]);
-  const [scheduledDays, setScheduledDays] = useState(dayOptions);
-
-  useEffect(() => {
-    const loadCategories = async () => {
-      const res = await getCategories();
-      setCategoryOptions(res.data);
-
-      if (res.data.length > 0) {
-        setCategory(res.data[0]);
-      }
-    };
-
-    loadCategories();
-  }, []);
+  const [category, setCategory] = useState(categories[0]);
+  const [frequency, setFrequency] = useState(frequencies[0]);
+  const [scheduledDays, setScheduledDays] = useState(days);
 
   // Populate when editing
   useEffect(() => {
@@ -45,14 +34,14 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
       } else {
         setTitle("");
         setDescription("");
-        setCategory(categoryOptions[0]);
-        setFrequency(frequencyOptions[0]);
-        setScheduledDays(dayOptions);
+        setCategory(categories[0]);
+        setFrequency(frequencies[0]);
+        setScheduledDays(days);
       }
     };
 
     check();
-  }, [initialData, isOpen, categoryOptions]);
+  }, [initialData, isOpen, categories]);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -150,54 +139,11 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
               <label className="block text-xs mb-2">
                 Category <span className="text-yellow-500">*</span>
               </label>
-              <Listbox
-                as="div"
-                value={category}
-                onChange={setCategory}
-                className="relative w-full"
-              >
-                <Listbox.Button className="flex justify-between items-center w-full bg-stone-100 rounded-xl px-3.5 py-3 text-sm outline outline-stone-200 focus:bg-white focus:outline-yellow-500 focus:ring-4 focus:ring-yellow-200 transition">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={`/icons/${category?.icon}.svg`}
-                      className="w-4 aspect-square"
-                    />
-                    <span>{category?.name}</span>
-                  </div>
-                  <ChevronDownIcon className="w-4 h-4 text-slate-500" />
-                </Listbox.Button>
-
-                <Listbox.Options className="absolute z-10 mt-2 w-full bg-stone-100 rounded-xl outline outline-stone-200 overflow-hidden max-h-60 overflow-y-auto scrollbar scrollbar-thumb-stone-200 scrollbar-track-transparent">
-                  {categoryOptions?.map((cat) => (
-                    <Listbox.Option key={cat.id} value={cat} as={Fragment}>
-                      {({ active, selected }) => (
-                        <li
-                          className={`flex items-center justify-between px-3.5 py-3 text-sm cursor-pointer ${
-                            active ? "bg-yellow-500" : ""
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <img
-                              src={`/icons/${cat.icon}.svg`}
-                              className="w-4 aspect-square"
-                            />
-                            <span className={active ? "text-white" : ""}>
-                              {cat.name}
-                            </span>
-                          </div>
-                          {selected && (
-                            <span
-                              className={`pr-1 font-bold ${active ? "text-white" : "text-yellow-500"}`}
-                            >
-                              ✓
-                            </span>
-                          )}
-                        </li>
-                      )}
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-              </Listbox>
+              <CategoryListBox
+                categories={categories}
+                category={category}
+                setCategory={setCategory}
+              />
             </div>
 
             {/* Frequency */}
@@ -205,30 +151,11 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
               <label className="block text-xs mb-2">
                 Frequency <span className="text-yellow-500">*</span>
               </label>
-              <Tab.Group
-                selectedIndex={frequencyOptions.indexOf(frequency)}
-                onChange={(index) => setFrequency(frequencyOptions[index])}
-              >
-                <Tab.List className="grid grid-cols-2 w-full bg-stone-100 rounded-xl p-1 text-xs outline outline-stone-200 transition">
-                  {frequencyOptions.map((frequency) => (
-                    <Tab key={frequency} as={Fragment}>
-                      {({ selected }) => (
-                        <button
-                          className={`font-semibold p-2.5 rounded-lg tracking-wide cursor-pointer transition
-                          ${
-                            selected
-                              ? "bg-white text-slate-800 shadow-around-sm"
-                              : "text-stone-400 hover:text-slate-800"
-                          }
-                        `}
-                        >
-                          {frequency}
-                        </button>
-                      )}
-                    </Tab>
-                  ))}
-                </Tab.List>
-              </Tab.Group>
+              <FrequencyTab
+                frequencies={frequencies}
+                frequency={frequency}
+                setFrequency={setFrequency}
+              />
             </div>
 
             {/* Repeats */}
@@ -237,27 +164,11 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                 <label className="block text-xs mb-2">
                   Repeat on <span className="text-yellow-500">*</span>
                 </label>
-                <div className="grid grid-cols-7 gap-1.5">
-                  {dayOptions.map((day) => {
-                    const active = scheduledDays.includes(day);
-
-                    return (
-                      <button
-                        type="button"
-                        key={day}
-                        onClick={() => toggleDay(day)}
-                        className={`w-full max-w-14 aspect-square text-[10px] font-medium rounded-xl border tracking-wider cursor-pointer transition
-                        ${
-                          active
-                            ? "bg-yellow-500 text-white shadow-around-sm shadow-yellow-100"
-                            : "bg-stone-100 text-slate-800 border-stone-200 hover:bg-yellow-50 hover:text-yellow-600 hover:border-yellow-600/40"
-                        }`}
-                      >
-                        {day}
-                      </button>
-                    );
-                  })}
-                </div>
+                <DaySelector
+                  days={days}
+                  scheduledDays={scheduledDays}
+                  toggleDay={toggleDay}
+                />
               </div>
             )}
 

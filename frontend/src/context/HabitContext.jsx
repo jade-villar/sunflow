@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useState } from "react";
-import { editHabit, fetchAllHabits, fetchHabit, postHabit, removeHabit } from "../services/habitService";
+import { editHabit, fetchAllHabits, fetchHabit, postHabit, removeHabit } from "../services/habitServices";
 
 const HabitContext = createContext();
 

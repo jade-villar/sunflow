@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getCurrentUser } from "../services/userService";
-import { loginUser, logoutUser, registerUser } from "../services/authService";
-import AuthLoading from "../pages/AuthLoading";
+import { getCurrentUser } from "../services/userServices";
+import { loginUser, logoutUser, registerUser } from "../services/authServices";
 
 const AuthContext = createContext();
 
@@ -19,6 +18,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const res = await getCurrentUser();
         setUser(res);
+        localStorage.setItem("has_session", "true");
       } catch (err) {
         const isAuthError = err?.response?.status === 401 || err?.response?.status === 404;
         const isNetworkError = !err?.response;
@@ -26,7 +26,11 @@ export const AuthProvider = ({ children }) => {
         if (isAuthError) {
           setUser(null);
         } else if (isNetworkError) {
-          window.location.reload();
+          const hasSession = localStorage.getItem("has_session");
+          
+          if (hasSession) {
+            window.location.reload();
+          }
         }
       } finally {
         setAuthLoading(false);
@@ -56,6 +60,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     setAuthLoading(true);
     await logoutUser();
+    localStorage.removeItem("has_session");
     setUser(null);
     setAuthLoading(false);
   };

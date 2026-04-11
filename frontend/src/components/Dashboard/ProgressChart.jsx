@@ -1,9 +1,12 @@
-import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+import { useHabit } from "../../context/HabitContext";
 
 ChartJS.register(ArcElement, Tooltip);
 
-const HabitCompletionChart = ({ habits }) => {
+const ProgressChart = () => {
+  const { habits } = useHabit();
+  
   const total = habits?.data?.length || 0;
   const completed = habits?.data?.filter((h) => h.isCompletedToday).length || 0;
   const remaining = total - completed;
@@ -54,4 +57,4 @@ const HabitCompletionChart = ({ habits }) => {
   );
 };
 
-export default HabitCompletionChart;
+export default ProgressChart;

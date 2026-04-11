@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useHabit } from "../context/HabitContext";
-import { useHabitLog } from "../context/HabitLogContext";
+import { useHabit } from "../../context/HabitContext";
+import { useHabitLog } from "../../context/HabitLogContext";
 
 const HabitCard = ({ habit }) => {
   const { getAllHabits } = useHabit();

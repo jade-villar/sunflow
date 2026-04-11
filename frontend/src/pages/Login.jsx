@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import AuthPanel from "../components/AuthPanel";
 import { useAuth } from "../context/AuthContext";
+import AuthHeroPanel from "../components/Auth/AuthHeroPanel";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -30,7 +30,7 @@ const Register = () => {
     <main className="min-h-screen px-4 content-center md:pt-12 text-slate-800">
       <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 rounded-3xl md:border md:border-stone-200 md:shadow-around-md">
         {/* Left Panel */}
-        <AuthPanel />
+        <AuthHeroPanel />
 
         {/* Right Panel */}
         <div className="bg-white flex flex-col justify-center gap-6 px-6 py-10 md:px-10 md:py-10 rounded-3xl md:rounded-none md:rounded-r-3xl border border-stone-200 md:border-none shadow-around-md md:shadow-none">

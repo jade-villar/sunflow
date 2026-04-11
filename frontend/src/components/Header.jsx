@@ -6,14 +6,14 @@ import { useAuth } from "../context/AuthContext";
 const Header = () => {
   const { user, logout } = useAuth();
 
-  const isLanding = useMatch("/");
-
   const [scrolled, setScrolled] = useState(false);
+
+  const isLanding = useMatch("/");
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    function handleScroll() {
+    const handleScroll = () => {
       if (window.scrollY > 0) {
         setScrolled(true);
       } else {

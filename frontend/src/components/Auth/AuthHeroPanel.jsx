@@ -1,4 +1,4 @@
-const AuthPanel = () => {
+const AuthHeroPanel = () => {
   return (
     <div className="auth-panel overflow-clip hidden md:flex flex-col gap-6 bg-slate-900 rounded-l-3xl p-10">
       <div className="flex items-center gap-4 mb-6">
@@ -18,4 +18,4 @@ const AuthPanel = () => {
   );
 };
 
-export default AuthPanel;
+export default AuthHeroPanel;
