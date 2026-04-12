@@ -39,6 +39,7 @@ const Habit = () => {
   const handleComplete = async () => {
     await completeHabit({ id });
     await getHabit({ id });
+    await getHabitWeeklyLogs({ id });
   };
 
   if (habitLoading) {

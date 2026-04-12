@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { getCurrentUser } from "../services/userServices";
 import { loginUser, logoutUser, registerUser } from "../services/authServices";
 
@@ -10,6 +11,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [error, setError] = useState("");
   const [authLoading, setAuthLoading] = useState(true);
 
   // Check current user
@@ -27,10 +29,12 @@ export const AuthProvider = ({ children }) => {
           setUser(null);
         } else if (isNetworkError) {
           const hasSession = localStorage.getItem("has_session");
-          
+
           if (hasSession) {
             window.location.reload();
           }
+
+          toast.error("No internet connection. Please check your network.");
         }
       } finally {
         setAuthLoading(false);
@@ -43,31 +47,49 @@ export const AuthProvider = ({ children }) => {
   // Register user
   const register = async ({ name, email, password }) => {
     setAuthLoading(true);
-    const res = await registerUser({ name, email, password });
-    setUser(res);
-    setAuthLoading(false);
+    try {
+      const res = await registerUser({ name, email, password });
+      setUser(res);
+      setError("");
+    } catch (err) {
+      setError(err);
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   // Login user
   const login = async ({ email, password }) => {
     setAuthLoading(true);
-    const res = await loginUser({ email, password });
-    setUser(res);
-    setAuthLoading(false);
+    try {
+      const res = await loginUser({ email, password });
+      setUser(res);
+      setError("");
+    } catch (err) {
+      setError(err);
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   // Logout user
   const logout = async () => {
     setAuthLoading(true);
-    await logoutUser();
-    localStorage.removeItem("has_session");
-    setUser(null);
-    setAuthLoading(false);
+    try {
+      await logoutUser();
+      localStorage.removeItem("has_session");
+      setUser(null);
+      setError("");
+    } catch (err) {
+      setError(err);
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, authLoading, register, login, logout }}
+      value={{ user, error, authLoading, register, login, logout }}
     >
       {children}
     </AuthContext.Provider>

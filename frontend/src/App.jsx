@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "sonner";
 import { useAuth } from "./context/AuthContext.jsx";
 import Landing from "./pages/Landing";
 import Register from "./pages/Register";
@@ -46,6 +47,7 @@ function App() {
         <Route path="*" element={<Missing />} />
       </Routes>
       <Footer />
+      <Toaster position="top-center" richColors />
     </BrowserRouter>
   );
 }

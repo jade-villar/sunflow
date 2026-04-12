@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useMatch, useNavigate } from "react-router-dom";
+import { Link, useMatch } from "react-router-dom";
 import { Link as LinkScroll } from "react-scroll";
 import { useAuth } from "../context/AuthContext";
 
@@ -10,8 +10,6 @@ const Header = () => {
 
   const isLanding = useMatch("/");
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -19,7 +17,7 @@ const Header = () => {
       } else {
         setScrolled(false);
       }
-    }
+    };
 
     window.addEventListener("scroll", handleScroll);
   }, []);
@@ -27,13 +25,7 @@ const Header = () => {
   // Logout user
   const handleLogout = async (e) => {
     e.preventDefault();
-
-    try {
-      await logout();
-      navigate("/");
-    } catch (err) {
-      console.log(err);
-    }
+    await logout();
   };
 
   return (
@@ -41,10 +33,13 @@ const Header = () => {
       className={`fixed w-full z-100 p-4 text-slate-800 border-b border-slate-900/0 transition ${scrolled && "backdrop-blur-lg bg-surface/80 border-slate-900/10 shadow-around-md"}`}
     >
       <div className="max-w-7xl m-auto flex justify-between gap-4 items-center">
-        <div className="flex items-center gap-3">
+        <Link
+          to={user ? "/dashboard" : "/"}
+          className="flex items-center gap-3 cursor-pointer"
+        >
           <img src="/sunflow.svg" className="w-8 aspect-square" />
           <span className="font-fraunces text-xl font-semibold">sunflow</span>
-        </div>
+        </Link>
 
         {isLanding && (
           <nav className="hidden md:flex items-center gap-8 ml-20 text-sm font-medium">

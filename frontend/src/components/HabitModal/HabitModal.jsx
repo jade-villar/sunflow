@@ -18,7 +18,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState(categories[0]);
+  const [category, setCategory] = useState(categories && categories[0]);
   const [frequency, setFrequency] = useState(frequencies[0]);
   const [scheduledDays, setScheduledDays] = useState(days);
 
@@ -34,7 +34,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
       } else {
         setTitle("");
         setDescription("");
-        setCategory(categories[0]);
+        setCategory(categories && categories[0]);
         setFrequency(frequencies[0]);
         setScheduledDays(days);
       }
