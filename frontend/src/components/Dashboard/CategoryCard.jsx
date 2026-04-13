@@ -4,7 +4,7 @@ import { useHabit } from "../../context/HabitContext";
 const CategoryCard = ({ categoryName }) => {
   const { habits } = useHabit();
 
-  const categoryHabits = habits?.data?.filter(
+  const categoryHabits = habits?.filter(
     (habit) => habit.category.name === categoryName,
   );
 

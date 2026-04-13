@@ -9,7 +9,7 @@ export const useCategory = () => {
 };
 
 export const CategoryProvider = ({ children }) => {
-  const [categories, setCategories] = useState();
+  const [categories, setCategories] = useState([]);
 
   // Get habit categories
   useEffect(() => {

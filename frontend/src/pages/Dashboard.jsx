@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { format } from "date-fns";
 import { useAuth } from "../context/AuthContext";
 import { useCategory } from "../context/CategoryContext";
@@ -12,16 +12,12 @@ import AuthLoading from "../components/AuthLoading";
 const Dashboard = () => {
   const { user } = useAuth();
   const { categories } = useCategory();
-  const { habitsLoading, getAllHabits } = useHabit();
+  const { habitsLoading } = useHabit();
 
   const today = format(new Date(), "EEEE, MMMM d");
 
   const [isOpen, setIsOpen] = useState(false);
   const [editingHabit, setEditingHabit] = useState(null);
-
-  useEffect(() => {
-    getAllHabits();
-  }, [getAllHabits]);
 
   const handleAdd = () => {
     setEditingHabit(null);

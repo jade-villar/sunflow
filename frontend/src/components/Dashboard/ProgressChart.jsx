@@ -7,7 +7,7 @@ ChartJS.register(ArcElement, Tooltip);
 const ProgressChart = () => {
   const { habits } = useHabit();
   
-  const habitsToday = habits?.data?.filter((habit) => habit.isScheduledToday);
+  const habitsToday = habits?.filter((habit) => habit.isScheduledToday);
   
   const total = habitsToday?.length || 0;
   const completed = habitsToday?.filter((h) => h.isCompletedToday).length || 0;

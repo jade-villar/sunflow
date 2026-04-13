@@ -3,7 +3,7 @@ import { useHabit } from "../../context/HabitContext";
 import { useHabitLog } from "../../context/HabitLogContext";
 
 const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
-  const { habit, deleteHabit, getHabit } = useHabit();
+  const { habit, getHabit, deleteHabitWithUndo } = useHabit();
   const { completeHabit, getHabitWeeklyLogs } = useHabitLog();
 
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
   };
 
   const handleDelete = async () => {
-    await deleteHabit({ id });
+    await deleteHabitWithUndo(habit.data);
     navigate("/dashboard");
   };
 

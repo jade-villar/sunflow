@@ -3,15 +3,14 @@ import { useHabit } from "../../context/HabitContext";
 const StreakCard = () => {
   const { habits } = useHabit();
 
-  const streakHabits =
-    habits?.data?.filter((habit) => habit.currentStreak > 0).length || 0;
+  const streakHabits = habits?.filter((habit) => habit.currentStreak > 0).length || 0;
 
-  const bestStreak = habits?.data?.reduce(
+  const bestStreak = habits?.reduce(
     (max, h) => Math.max(max, h.currentStreak || 0),
     0,
   );
 
-  const totalDone = habits?.data?.reduce(
+  const totalDone = habits?.reduce(
     (sum, h) => sum + (h.totalCompleted || 0),
     0,
   );
