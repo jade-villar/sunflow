@@ -7,8 +7,10 @@ ChartJS.register(ArcElement, Tooltip);
 const ProgressChart = () => {
   const { habits } = useHabit();
   
-  const total = habits?.data?.length || 0;
-  const completed = habits?.data?.filter((h) => h.isCompletedToday).length || 0;
+  const habitsToday = habits?.data?.filter((habit) => habit.isScheduledToday);
+  
+  const total = habitsToday?.length || 0;
+  const completed = habitsToday?.filter((h) => h.isCompletedToday).length || 0;
   const remaining = total - completed;
 
   const percent = total > 0 ? Math.round((completed / total) * 100) : 0;

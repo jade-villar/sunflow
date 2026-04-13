@@ -15,9 +15,12 @@ const HabitDayLog = ({ log }) => {
   } else if (log.isScheduled) {
     dayStyle = "bg-slate-100 text-slate-400 border border-slate-200";
     statusIcon = "-";
+  } else if (log.isToday && !log.isScheduled) {
+    dayStyle = "text-yellow-500 border border-yellow-500";
+    statusIcon = "∙";
   } else {
     dayStyle = "text-slate-400 border border-slate-300 border-dashed";
-    statusIcon = "∙";
+    statusIcon = "";
   }
 
   return (
