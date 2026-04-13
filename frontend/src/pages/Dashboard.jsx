@@ -6,13 +6,14 @@ import { useHabit } from "../context/HabitContext";
 import CategoryCard from "../components/Dashboard/CategoryCard";
 import StreakCard from "../components/Dashboard/StreakCard";
 import ProgressCard from "../components/Dashboard/ProgressCard";
+import EmptyHabits from "../components/Dashboard/EmptyHabits";
 import HabitModal from "../components/HabitModal/HabitModal";
 import AuthLoading from "../components/AuthLoading";
 
 const Dashboard = () => {
   const { user } = useAuth();
   const { categories } = useCategory();
-  const { habitsLoading } = useHabit();
+  const { habits, habitsLoading } = useHabit();
 
   const today = format(new Date(), "EEEE, MMMM d");
 
@@ -34,13 +35,13 @@ const Dashboard = () => {
         {/* HEADER */}
         <section className="flex justify-between items-end gap-6 flex-wrap mt-4 mb-6 col-[1/2] md:col-[1/9] lg:col-[1/10] row-[1/2]">
           <div className="flex flex-col gap-3">
-            <p className="text-xs uppercase text-yellow-500 font-bold">
+            <p className="text-xs uppercase text-yellow-500 font-medium tracking-wide">
               {today}
             </p>
             <h2 className="text-4xl font-fraunces font-extrabold capitalize">
               Good Day, {user.data.user.name}!
             </h2>
-            <p className="text-gray-600 text-sm">
+            <p className="text-slate-600 text-sm">
               Keep growing your habits today
             </p>
           </div>
@@ -55,11 +56,15 @@ const Dashboard = () => {
         </section>
 
         {/* MAIN LIST */}
-        <section className="flex flex-col gap-4 md:gap-6 col-[1/2] md:col-[1/9] lg:col-[1/10] row-[3/4] md:row-[2/3]">
-          {categories?.map((category) => (
-            <CategoryCard key={category.id} categoryName={category.name} />
-          ))}
-        </section>
+        {!habits?.length ? (
+          <EmptyHabits handleAdd={handleAdd} />
+        ) : (
+          <section className="flex flex-col gap-4 md:gap-6 col-[1/2] md:col-[1/9] lg:col-[1/10] row-[3/4] md:row-[2/3]">
+            {categories?.map((category) => (
+              <CategoryCard key={category.id} categoryName={category.name} />
+            ))}
+          </section>
+        )}
 
         {/* SIDEBAR */}
         <section className="grid grid-cols-2 md:grid-cols-1 gap-4 md:gap-6 mb-6 md:sticky md:top-30 md:self-start col-[1/2] md:col-[9/13] lg:col-[10/13] row-[2/3] md:row-[1/4]">

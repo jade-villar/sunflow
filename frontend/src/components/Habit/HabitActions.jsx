@@ -16,10 +16,6 @@ const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
     buttonStyle = "bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-600 shadow-emerald-100";
     buttonLabel = "Completed!";
     buttonIcon = "✓";
-  } else if (!habit?.data?.isScheduledToday) {
-    buttonStyle = "bg-slate-400 shadow-none";
-    buttonLabel = "Not Scheduled";
-    buttonIcon = "○";
   } else {
     buttonStyle = "bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 shadow-yellow-100";
     buttonLabel = "Mark Complete";
@@ -46,7 +42,6 @@ const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
     <div className="flex justify-between items-center text-sm">
       <button
         onClick={handleComplete}
-        disabled={!habit?.data?.isScheduledToday}
         className={`flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-white shadow-around-md hover:-translate-y-0.5 active:translate-y-0 transition cursor-pointer ${buttonStyle}`}
       >
         <span>{buttonIcon}</span>

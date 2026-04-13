@@ -5,15 +5,8 @@ const StreakCard = () => {
 
   const streakHabits = habits?.filter((habit) => habit.currentStreak > 0).length || 0;
 
-  const bestStreak = habits?.reduce(
-    (max, h) => Math.max(max, h.currentStreak || 0),
-    0,
-  );
-
-  const totalDone = habits?.reduce(
-    (sum, h) => sum + (h.totalCompleted || 0),
-    0,
-  );
+  const bestStreak = habits?.reduce((max, h) => Math.max(max, h.currentStreak || 0), 0) ?? 0;
+  const totalDone = habits?.reduce((sum, h) => sum + (h.totalCompleted || 0), 0) ?? 0;
 
   return (
     <div className="flex flex-col gap-5 bg-white border border-slate-200 rounded-3xl p-5 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
