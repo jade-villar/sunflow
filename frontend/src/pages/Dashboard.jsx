@@ -8,26 +8,25 @@ import StreakCard from "../components/Dashboard/StreakCard";
 import ProgressCard from "../components/Dashboard/ProgressCard";
 import EmptyHabits from "../components/Dashboard/EmptyHabits";
 import HabitModal from "../components/HabitModal/HabitModal";
-import AuthLoading from "../components/AuthLoading";
+import HabitsSkeleton from "../components/Loading/HabitsSkeleton";
 
 const Dashboard = () => {
+  const today = format(new Date(), "EEEE, MMMM d");
+
   const { user } = useAuth();
   const { categories } = useCategory();
   const { habits, habitsLoading } = useHabit();
 
-  const today = format(new Date(), "EEEE, MMMM d");
-
   const [isOpen, setIsOpen] = useState(false);
   const [editingHabit, setEditingHabit] = useState(null);
+
+  const isInitialLoading = habitsLoading && !habits.length;
+  const hasHabits = habits?.length;
 
   const handleAdd = () => {
     setEditingHabit(null);
     setIsOpen(true);
   };
-
-  if (habitsLoading) {
-    return <AuthLoading />;
-  }
 
   return (
     <main className="min-h-screen px-4 py-30 text-slate-800">
@@ -56,15 +55,17 @@ const Dashboard = () => {
         </section>
 
         {/* MAIN LIST */}
-        {!habits?.length ? (
-          <EmptyHabits handleAdd={handleAdd} />
-        ) : (
-          <section className="flex flex-col gap-4 md:gap-6 col-[1/2] md:col-[1/9] lg:col-[1/10] row-[3/4] md:row-[2/3]">
-            {categories?.map((category) => (
+        <section className="flex flex-col gap-4 md:gap-6 col-[1/2] md:col-[1/9] lg:col-[1/10] row-[3/4] md:row-[2/3]">
+          {isInitialLoading ? (
+            <HabitsSkeleton />
+          ) : hasHabits ? (
+            categories?.map((category) => (
               <CategoryCard key={category.id} categoryName={category.name} />
-            ))}
-          </section>
-        )}
+            ))
+          ) : (
+            <EmptyHabits handleAdd={handleAdd} />
+          )}
+        </section>
 
         {/* SIDEBAR */}
         <section className="grid grid-cols-2 md:grid-cols-1 gap-4 md:gap-6 mb-6 md:sticky md:top-30 md:self-start col-[1/2] md:col-[9/13] lg:col-[10/13] row-[2/3] md:row-[1/4]">

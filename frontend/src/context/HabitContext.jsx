@@ -95,11 +95,14 @@ export const HabitProvider = ({ children }) => {
       setHabits(habits?.filter((h) => h.id !== habit.id));
 
       const timeout = setTimeout(async () => {
+        setActionLoading(true);
         try {
           await removeHabit({ id: habit.id });
         } catch (err) {
           toast.error(err);
           setHabits((prev) => [habit, ...prev]);
+        } finally {
+          setActionLoading(false);
         }
       }, 6000);
 

@@ -1,6 +1,6 @@
 const EmptyHabits = ({ handleAdd }) => {
   return (
-    <section className="flex flex-col justify-center items-center gap-3 py-10 col-[1/2] md:col-[1/9] lg:col-[1/10] row-[3/4] md:row-[2/4]">
+    <>
       <img src="/icons/seedling.svg" className="w-8 aspect-square" />
       <h3 className="text-2xl font-fraunces font-bold">No Habits Yet</h3>
       <p className="text-slate-400 text-sm">
@@ -13,7 +13,7 @@ const EmptyHabits = ({ handleAdd }) => {
         <span>+</span>
         <span>Add Habit</span>
       </button>
-    </section>
+    </>
   );
 };
 

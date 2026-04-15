@@ -7,7 +7,96 @@
     <title>sunflow</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main class="auth-loading">
+        <div class="auth-loading__rise">
+          <img src="/sunflow.svg" class="auth-loading__spinner" />
+        </div>
+      </main>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+
+<style>
+  :root {
+    --color-surface: #fafaf8;
+  }
+
+  body {
+    background-color: var(--color-surface);
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: -200px;
+    right: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(
+      circle,
+      rgba(245, 166, 35, 0.2) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -10;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    bottom: -150px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(
+      circle,
+      rgba(46, 204, 143, 0.16) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -10;
+  }
+
+  .auth-loading {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .auth-loading__rise {
+    animation: rise-fade 0.6s cubic-bezier(0.34, 1.6, 0.64, 1) forwards;
+  }
+
+  .auth-loading__spinner {
+    width: 40px;
+    aspect-ratio: 1/1;
+    animation: slow-spin 2s linear infinite;
+  }
+
+  @keyframes rise-fade {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slow-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

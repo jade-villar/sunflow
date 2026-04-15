@@ -1,30 +1,44 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useHabit } from "../../context/HabitContext";
 import { useHabitLog } from "../../context/HabitLogContext";
+import ActionLoading from "../Loading/ActionLoading";
 
 const HabitCard = ({ habit }) => {
   const { getAllHabits } = useHabit();
   const { completeHabit } = useHabitLog();
 
+  const [habitLoadingId, setHabitLoadingId] = useState(null);
+
+  const isLoading = habitLoadingId === habit.id;
+
   let buttonStyle = "";
   let buttonLabel = "";
+  let loadingLabel = "";
 
   if (habit.isCompletedToday) {
     buttonStyle = "hover:shadow-around-md hover:shadow-emerald-200 border border-emerald-300 bg-emerald-100 text-emerald-600 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white active:border-emerald-500 active:bg-emerald-500 active:text-white transition";
     buttonLabel = "Completed";
+    loadingLabel = "Saving";
   } else if (!habit.isScheduledToday) {
     buttonStyle = "border border-stone-300 bg-stone-100 text-stone-600";
-    buttonLabel = "Not Scheduled";
+    buttonLabel = "Inactive";
   } else {
     buttonStyle = "hover:shadow-around-md hover:shadow-yellow-200 border border-yellow-300 bg-amber-100 text-yellow-600 hover:border-yellow-500 hover:bg-yellow-500 hover:text-white active:border-yellow-500 active:bg-yellow-500 active:text-white transition";
     buttonLabel = "Mark Done";
+    loadingLabel = "Marking";
   }
 
   const handleComplete = async (e) => {
     e.stopPropagation();
     e.preventDefault();
-    await completeHabit({ id: habit.id });
-    await getAllHabits();
+    setHabitLoadingId(habit.id);
+    try {
+      await completeHabit({ id: habit.id });
+      await getAllHabits();
+    } finally {
+      setHabitLoadingId(null);
+    }
   };
 
   return (
@@ -49,10 +63,14 @@ const HabitCard = ({ habit }) => {
 
         <button
           onClick={handleComplete}
-          disabled={!habit.isScheduledToday}
-          className={`min-w-24 px-4 py-2 rounded-full text-[11px] font-semibold cursor-pointer text-nowrap ${buttonStyle}`}
+          disabled={!habit.isScheduledToday || isLoading}
+          className={`min-w-24 px-4 py-2 flex justify-center rounded-full text-[11px] font-semibold cursor-pointer text-nowrap ${buttonStyle}`}
         >
-          {buttonLabel}
+          {isLoading ? (
+            <ActionLoading text={loadingLabel} />
+          ) : (
+            <span>{buttonLabel}</span>
+          )}
         </button>
       </Link>
     </div>

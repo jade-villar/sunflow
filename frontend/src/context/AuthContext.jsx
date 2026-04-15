@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
   const [authLoading, setAuthLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
 
   // Check current user
   useEffect(() => {
@@ -46,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
   // Register user
   const register = async ({ name, email, password }) => {
-    setAuthLoading(true);
+    setActionLoading(true);
     try {
       const res = await registerUser({ name, email, password });
       setUser(res);
@@ -54,13 +55,13 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       setError(err);
     } finally {
-      setAuthLoading(false);
+      setActionLoading(false);
     }
   };
 
   // Login user
   const login = async ({ email, password }) => {
-    setAuthLoading(true);
+    setActionLoading(true);
     try {
       const res = await loginUser({ email, password });
       setUser(res);
@@ -68,13 +69,13 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       setError(err);
     } finally {
-      setAuthLoading(false);
+      setActionLoading(false);
     }
   };
 
   // Logout user
   const logout = async () => {
-    setAuthLoading(true);
+    setActionLoading(true);
     try {
       await logoutUser();
       localStorage.removeItem("has_session");
@@ -83,13 +84,13 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       setError(err);
     } finally {
-      setAuthLoading(false);
+      setActionLoading(false);
     }
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, error, authLoading, register, login, logout }}
+      value={{ user, error, authLoading, actionLoading, register, login, logout }}
     >
       {children}
     </AuthContext.Provider>

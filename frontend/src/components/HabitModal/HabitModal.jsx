@@ -7,13 +7,14 @@ import { useHabitLog } from "../../context/HabitLogContext";
 import CategoryListBox from "./CategoryListBox";
 import FrequencyTab from "./FrequencyTab";
 import DaySelector from "./DaySelector";
+import ActionLoading from "../Loading/ActionLoading";
 
 const frequencies = ["DAILY", "WEEKLY"];
 const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
 const HabitModal = ({ isOpen, onClose, initialData }) => {
   const { categories } = useCategory();
-  const { getAllHabits, addHabit, updateHabit } = useHabit();
+  const { getAllHabits, addHabit, updateHabit, actionLoading } = useHabit();
   const { getHabitWeeklyLogs } = useHabitLog();
 
   const [title, setTitle] = useState("");
@@ -184,9 +185,29 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
               </button>
               <button
                 type="submit"
-                className="px-6 py-2.5 text-sm font-semibold rounded-full shadow-around-sm shadow-yellow-200 text-white bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 cursor-pointer hover:-translate-y-px active:translate-y-0 transition"
+                disabled={actionLoading}
+                className="min-w-32 flex justify-center items-center px-6 py-2.5 text-sm font-semibold rounded-full shadow-around-sm shadow-yellow-200 text-white bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 cursor-pointer hover:-translate-y-px active:translate-y-0 transition"
               >
-                {initialData ? "Update Habit" : "✦ Add Habit"}
+                {initialData ? (
+                  <span>
+                    {actionLoading ? (
+                      <ActionLoading text={"Updating"} />
+                    ) : (
+                      <span>Update Habit</span>
+                    )}
+                  </span>
+                ) : (
+                  <span>
+                    {actionLoading ? (
+                      <ActionLoading text={"Adding"} />
+                    ) : (
+                      <span className="flex items-center gap-1.5">
+                        <span>✦</span>
+                        <span>Add Habit</span>
+                      </span>
+                    )}
+                  </span>
+                )}
               </button>
             </div>
           </form>

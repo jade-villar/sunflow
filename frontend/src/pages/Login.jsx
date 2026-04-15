@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../context/AuthContext";
 import AuthHeroPanel from "../components/Auth/AuthHeroPanel";
+import ActionLoading from "../components/Loading/ActionLoading";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const { login, error } = useAuth();
+  const { login, error, actionLoading } = useAuth();
 
   // Login user
   const handleLogin = async (e) => {
@@ -86,10 +87,17 @@ const Login = () => {
 
             <button
               type="submit"
-              className="space-x-2 mt-6 py-4 md:py-3.5 rounded-full text-sm font-semibold shadow-around-sm shadow-yellow-200 text-white bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 cursor-pointer hover:-translate-y-px active:translate-y-0 transition"
+              disabled={actionLoading}
+              className="flex justify-center items-center mt-6 py-4 md:py-3.5 rounded-full text-sm font-semibold shadow-around-sm shadow-yellow-200 text-white bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 cursor-pointer hover:-translate-y-px active:translate-y-0 transition"
             >
-              <span>✦</span>
-              <span>Log In</span>
+              {actionLoading ? (
+                <ActionLoading text={"Logging In"} />
+              ) : (
+                <span className="flex justify-center items-center gap-2">
+                  <span>✦</span>
+                  <span>Log In</span>
+                </span>
+              )}
             </button>
           </form>
         </div>

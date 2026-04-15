@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Link, useMatch } from "react-router-dom";
 import { Link as LinkScroll } from "react-scroll";
 import { useAuth } from "../context/AuthContext";
+import ActionLoading from "./Loading/ActionLoading";
 
 const Header = () => {
-  const { user, logout } = useAuth();
+  const { user, actionLoading, logout } = useAuth();
 
   const [scrolled, setScrolled] = useState(false);
 
@@ -30,7 +31,7 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed w-full z-100 p-4 text-slate-800 border-b border-slate-900/0 transition ${scrolled && "backdrop-blur-lg bg-surface/80 border-slate-900/10 shadow-around-md"}`}
+      className={`fixed top-0 right-0 left-0 z-100 p-4 text-slate-800 border-b border-slate-900/0 transition ${scrolled && "backdrop-blur-lg bg-surface/80 border-slate-900/10 shadow-around-md"}`}
     >
       <div className="max-w-7xl m-auto flex justify-between gap-4 items-center">
         <Link
@@ -80,9 +81,10 @@ const Header = () => {
         {user && (
           <button
             onClick={handleLogout}
+            disabled={actionLoading}
             className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30 hover:bg-yellow-600 hover:-translate-y-px active:bg-yellow-600 transition cursor-pointer"
           >
-            Logout
+            {actionLoading ? <ActionLoading text={"Logging Out"} /> : "Logout"}
           </button>
         )}
       </div>

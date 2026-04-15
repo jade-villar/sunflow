@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../context/AuthContext";
 import AuthHeroPanel from "../components/Auth/AuthHeroPanel";
+import ActionLoading from "../components/Loading/ActionLoading";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -10,7 +11,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const { register, error } = useAuth();
+  const { register, error, actionLoading } = useAuth();
 
   // Register user
   const handleRegister = async (e) => {
@@ -100,10 +101,17 @@ const Register = () => {
 
             <button
               type="submit"
-              className="space-x-2 mt-6 py-4 md:py-3.5 rounded-full text-sm font-semibold shadow-around-sm shadow-yellow-200 text-white bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 cursor-pointer hover:-translate-y-px active:translate-y-0 transition"
+              disabled={actionLoading}
+              className="flex justify-center items-center mt-6 py-4 md:py-3.5 rounded-full text-sm font-semibold shadow-around-sm shadow-yellow-200 text-white bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 cursor-pointer hover:-translate-y-px active:translate-y-0 transition"
             >
-              <span>✦</span>
-              <span>Create Account</span>
+              {actionLoading ? (
+                <ActionLoading text={"Creating Account"} />
+              ) : (
+                <span className="flex justify-center items-center gap-2">
+                  <span>✦</span>
+                  <span>Create Account</span>
+                </span>
+              )}
             </button>
           </form>
         </div>

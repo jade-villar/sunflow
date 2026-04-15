@@ -3,6 +3,10 @@ import { useHabit } from "../../context/HabitContext";
 const HabitStats = () => {
   const { habit } = useHabit();
 
+  const currentStreak = habit?.data?.currentStreak || 0;
+  const longestStreak = habit?.data?.longestStreak || 0;
+  const totalCompleted = habit?.data?.totalCompleted || 0;
+
   return (
     <section className="grid grid-cols-2 md:grid-cols-3 gap-4">
       {/* CURRENT STREAK */}
@@ -13,9 +17,9 @@ const HabitStats = () => {
         </div>
         <div className="flex items-end gap-2">
           <span className="text-4xl font-bold font-fraunces">
-            {habit?.data?.currentStreak}
+            {currentStreak}
           </span>
-          <span className="text-sm text-slate-400 mb-px">days</span>
+          <span className="text-sm text-slate-400 mb-px">{currentStreak === 1 ? "day" : "days"}</span>
         </div>
       </div>
 
@@ -27,9 +31,9 @@ const HabitStats = () => {
         </div>
         <div className="flex items-end gap-2">
           <span className="text-4xl font-bold font-fraunces">
-            {habit?.data?.longestStreak}
+            {longestStreak}
           </span>
-          <span className="text-sm mb-px">days</span>
+          <span className="text-sm mb-px">{longestStreak === 1 ? "day" : "days"}</span>
         </div>
       </div>
 
@@ -41,7 +45,7 @@ const HabitStats = () => {
         </div>
         <div className="flex items-end gap-2">
           <span className="text-4xl font-bold font-fraunces">
-            {habit?.data?.totalCompleted}
+            {totalCompleted}
           </span>
           <span className="text-sm mb-px">times</span>
         </div>

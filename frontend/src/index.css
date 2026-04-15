@@ -14,8 +14,7 @@
   --shadow-around-lg: 0 20px 60px rgba(26, 26, 46, 0.12);
 
   --animate-scale: scale 2s ease-in-out infinite;
-
-  --animate-slow-spin: slow-spin 10s linear infinite;
+  --animate-slow-spin: slow-spin 2s linear infinite;
 
   @keyframes scale {
     0%,
@@ -28,6 +27,9 @@
   }
 
   @keyframes slow-spin {
+    from {
+      transform: rotate(0deg);
+    }
     to {
       transform: rotate(360deg);
     }
@@ -47,7 +49,7 @@
     @apply selection:bg-yellow-500 selection:text-white;
     @apply bg-stone-50;
   }
-  body::before {
+  /* body::before {
     content: "";
     position: fixed;
     top: -200px;
@@ -76,7 +78,7 @@
     );
     pointer-events: none;
     z-index: -10;
-  }
+  } */
 }
 
 @layer components {
@@ -185,20 +187,4 @@
     pointer-events: none;
     z-index: -1;
   }
-}
-
-@utility bg-landing-page {
-  background-image:
-    linear-gradient(
-      to bottom,
-      rgba(16, 16, 16, 0) 0%,
-      rgba(16, 16, 16, 0) 30%,
-      rgba(16, 16, 16, 0.1) 60%,
-      rgb(16, 16, 16, 0.3) 100%
-    ),
-    url("/bg2.jpg");
-}
-
-@utility bg-dashboard-page {
-  background-image: url("/bg24.jpg");
 }

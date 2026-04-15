@@ -15,7 +15,7 @@ import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
-import AuthLoading from "./components/AuthLoading.jsx";
+import AuthLoading from "./components/Loading/AuthLoading.jsx";
 
 function App() {
   const { authLoading } = useAuth();

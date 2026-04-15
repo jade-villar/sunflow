@@ -10,14 +10,19 @@ export const useHabitLog = () => {
 
 export const HabitLogProvider = ({ children }) => {
   const [weeklyLogs, setWeeklyLogs] = useState(null);
+  const [weeklyLogsLoading, setWeeklyLogsLoading] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
 
   // Get habit weekly logs
   const getHabitWeeklyLogs = useCallback(async ({ id }) => {
+    setWeeklyLogsLoading(true);
     try {
       const res = await fetchWeeklyHabitLogs({ id });
       setWeeklyLogs(res);
     } catch (err) {
       toast.error(err);
+    } finally {
+      setWeeklyLogsLoading(false);
     }
   }, []);
 
@@ -32,7 +37,7 @@ export const HabitLogProvider = ({ children }) => {
 
   return (
     <HabitLogContext.Provider
-      value={{ weeklyLogs, getHabitWeeklyLogs, completeHabit }}
+      value={{ weeklyLogs, weeklyLogsLoading, actionLoading, setActionLoading, getHabitWeeklyLogs, completeHabit }}
     >
       {children}
     </HabitLogContext.Provider>

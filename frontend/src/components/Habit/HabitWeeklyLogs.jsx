@@ -1,6 +1,7 @@
 import { format, parseISO } from "date-fns";
 import { useHabitLog } from "../../context/HabitLogContext";
 import HabitDayLog from "./HabitDayLog";
+import HabitLogLegends from "./HabitLogLegends";
 
 const HabitWeeklyLogs = () => {
   const { weeklyLogs } = useHabitLog();
@@ -28,24 +29,7 @@ const HabitWeeklyLogs = () => {
 
       <hr className="border-slate-200" />
 
-      <div className="flex items-center gap-4 flex-wrap">
-        <div className="flex items-center gap-1.5">
-          <div className="w-2 aspect-square rounded-full bg-yellow-500"></div>
-          <p className="text-[11px] text-slate-400">Today</p>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-2 aspect-square rounded-full bg-white border border-slate-300"></div>
-          <p className="text-[11px] text-slate-400">Not scheduled</p>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-2 aspect-square rounded-full bg-emerald-500"></div>
-          <p className="text-[11px] text-slate-400">Completed</p>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-2 aspect-square rounded-full bg-slate-300"></div>
-          <p className="text-[11px] text-slate-400">Not completed</p>
-        </div>
-      </div>
+      <HabitLogLegends />
     </section>
   );
 };
