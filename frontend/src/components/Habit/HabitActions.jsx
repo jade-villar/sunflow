@@ -1,11 +1,14 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useHabit } from "../../context/HabitContext";
 import { useHabitLog } from "../../context/HabitLogContext";
 import ActionLoading from "../Loading/ActionLoading";
 
 const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
-  const { habit, getHabit, deleteHabitWithUndo } = useHabit();
-  const { completeHabit, getHabitWeeklyLogs, actionLoading, setActionLoading } = useHabitLog();
+  const { habit, getHabit, getAllHabits, deleteHabitWithUndo, actionLoading } = useHabit();
+  const { completeHabit, getHabitWeeklyLogs } = useHabitLog();
+
+  const [isCompleting, setIsCompleting] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,6 +29,15 @@ const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
     loadingLabel = "Marking";
   }
 
+  const handleComplete = async () => {
+    setIsCompleting(true);
+    await completeHabit({ id });
+    await getAllHabits();
+    await getHabitWeeklyLogs({ id });
+    await getHabit({ id });
+    setIsCompleting(false);
+  };
+
   const handleEdit = () => {
     setEditingHabit(habit.data);
     setIsOpen(true);
@@ -36,25 +48,14 @@ const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
     navigate("/dashboard");
   };
 
-  const handleComplete = async () => {
-    setActionLoading(true);
-    try {
-      await completeHabit({ id });
-      await getHabit({ id });
-      await getHabitWeeklyLogs({ id });
-    } finally {
-      setActionLoading(false);
-    }
-  };
-
   return (
     <div className="flex justify-between items-center gap-4 flex-wrap text-sm">
       <button
         onClick={handleComplete}
-        disabled={actionLoading}
+        disabled={isCompleting}
         className={`w-full sm:w-fit sm:min-w-40 flex justify-center items-center px-8 py-4 rounded-full font-semibold text-white shadow-around-md hover:-translate-y-0.5 active:translate-y-0 transition cursor-pointer ${buttonStyle}`}
       >
-        {actionLoading ? (
+        {isCompleting ? (
           <ActionLoading text={loadingLabel} />
         ) : (
           <span className="flex items-center gap-2">

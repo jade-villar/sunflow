@@ -11,7 +11,6 @@ export const useHabitLog = () => {
 export const HabitLogProvider = ({ children }) => {
   const [weeklyLogs, setWeeklyLogs] = useState(null);
   const [weeklyLogsLoading, setWeeklyLogsLoading] = useState(false);
-  const [actionLoading, setActionLoading] = useState(false);
 
   // Get habit weekly logs
   const getHabitWeeklyLogs = useCallback(async ({ id }) => {
@@ -37,7 +36,7 @@ export const HabitLogProvider = ({ children }) => {
 
   return (
     <HabitLogContext.Provider
-      value={{ weeklyLogs, weeklyLogsLoading, actionLoading, setActionLoading, getHabitWeeklyLogs, completeHabit }}
+      value={{ weeklyLogs, weeklyLogsLoading, getHabitWeeklyLogs, completeHabit }}
     >
       {children}
     </HabitLogContext.Provider>

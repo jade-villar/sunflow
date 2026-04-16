@@ -14,7 +14,7 @@ const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
 const HabitModal = ({ isOpen, onClose, initialData }) => {
   const { categories } = useCategory();
-  const { getAllHabits, addHabit, updateHabit, actionLoading } = useHabit();
+  const { addHabit, updateHabit, actionLoading } = useHabit();
   const { getHabitWeeklyLogs } = useHabitLog();
 
   const [title, setTitle] = useState("");
@@ -70,7 +70,6 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
     });
     onClose();
     await getHabitWeeklyLogs({ id: initialData.id });
-    await getAllHabits();
   };
 
   const toggleDay = (day) => {

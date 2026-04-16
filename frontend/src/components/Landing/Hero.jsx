@@ -7,7 +7,7 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-4 text-center">
         <img
           src="/sunflow.svg"
-          className="w-10 aspect-square animate-slow-spin"
+          className="w-10 aspect-square animate-slower-spin"
         />
 
         <h1 className="text-7xl md:text-9xl font-fraunces font-bold leading-snug">

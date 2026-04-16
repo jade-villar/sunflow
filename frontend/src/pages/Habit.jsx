@@ -12,13 +12,13 @@ import HabitWeeklyLogsSkeleton from "../components/Loading/HabitWeeklyLogsSkelet
 
 const Habit = () => {
   const { id } = useParams();
-  const { habitLoading, getHabit } = useHabit();
+  const { habitsLoading, habitLoading, getHabit } = useHabit();
   const { weeklyLogsLoading, getHabitWeeklyLogs } = useHabitLog();
 
   const [editingHabit, setEditingHabit] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const isInitialLoading = habitLoading && weeklyLogsLoading;
+  const isLoading = habitsLoading || habitLoading || weeklyLogsLoading;
 
   useEffect(() => {
     getHabit({ id });
@@ -35,10 +35,10 @@ const Habit = () => {
         <HabitStats />
 
         {/* HABIT INFO CARD */}
-        {isInitialLoading ? <HabitInfoCardSkeleton /> : <HabitInfoCard />}
+        {isLoading ? <HabitInfoCardSkeleton /> : <HabitInfoCard />}
 
         {/* WEEKLY LOGS */}
-        {isInitialLoading ? <HabitWeeklyLogsSkeleton /> : <HabitWeeklyLogs />}
+        {isLoading ? <HabitWeeklyLogsSkeleton /> : <HabitWeeklyLogs />}
 
         {/* ACTIONS */}
         <HabitActions

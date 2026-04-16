@@ -15,6 +15,7 @@
 
   --animate-scale: scale 2s ease-in-out infinite;
   --animate-slow-spin: slow-spin 2s linear infinite;
+  --animate-slower-spin: slow-spin 6s linear infinite;
 
   @keyframes scale {
     0%,

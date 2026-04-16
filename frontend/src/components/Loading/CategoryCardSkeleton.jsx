@@ -1,4 +1,4 @@
-const HabitsSkeleton = () => {
+const CategoryCardSkeleton = () => {
   const categoryCards = Array.from({ length: 2 });
   const habitCards = Array.from({ length: 3 });
 
@@ -27,7 +27,7 @@ const HabitsSkeleton = () => {
                     <span className="h-5 w-32 bg-slate-300 rounded-sm animate-pulse"></span>
                     <span className="h-4 w-20 bg-slate-300 rounded-sm animate-pulse"></span>
                   </div>
-                  <div className="h-9 min-w-24 bg-slate-300 rounded-full animate-pulse"></div>
+                  <div className="h-9 w-25 bg-slate-300 rounded-full animate-pulse"></div>
                 </div>
               </div>
             ))}
@@ -38,4 +38,4 @@ const HabitsSkeleton = () => {
   );
 };
 
-export default HabitsSkeleton;
+export default CategoryCardSkeleton;

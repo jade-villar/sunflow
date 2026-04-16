@@ -8,7 +8,7 @@ import StreakCard from "../components/Dashboard/StreakCard";
 import ProgressCard from "../components/Dashboard/ProgressCard";
 import EmptyHabits from "../components/Dashboard/EmptyHabits";
 import HabitModal from "../components/HabitModal/HabitModal";
-import HabitsSkeleton from "../components/Loading/HabitsSkeleton";
+import CategoryCardSkeleton from "../components/Loading/CategoryCardSkeleton";
 
 const Dashboard = () => {
   const today = format(new Date(), "EEEE, MMMM d");
@@ -57,7 +57,7 @@ const Dashboard = () => {
         {/* MAIN LIST */}
         <section className="flex flex-col gap-4 md:gap-6 col-[1/2] md:col-[1/9] lg:col-[1/10] row-[3/4] md:row-[2/3]">
           {isInitialLoading ? (
-            <HabitsSkeleton />
+            <CategoryCardSkeleton />
           ) : hasHabits ? (
             categories?.map((category) => (
               <CategoryCard key={category.id} categoryName={category.name} />
@@ -70,7 +70,7 @@ const Dashboard = () => {
         {/* SIDEBAR */}
         <section className="grid grid-cols-2 md:grid-cols-1 gap-4 md:gap-6 mb-6 md:sticky md:top-30 md:self-start col-[1/2] md:col-[9/13] lg:col-[10/13] row-[2/3] md:row-[1/4]">
           <StreakCard />
-          <ProgressCard />
+          <ProgressCard isInitialLoading={isInitialLoading} />
         </section>
       </div>
 

@@ -67,6 +67,7 @@ export const HabitProvider = ({ children }) => {
     try {
       await editHabit({ id, title, description, categoryId, frequency, scheduledDays });
       await getHabit({ id });
+      await getAllHabits();
       toast.success("Changes saved");
     } catch (err) {
       toast.error(err);
@@ -91,6 +92,7 @@ export const HabitProvider = ({ children }) => {
 
   // Delete habit with undo
   const deleteHabitWithUndo = async (habit) => {
+    const index = habits?.findIndex((h) => h.id === habit.id);
     try {
       setHabits(habits?.filter((h) => h.id !== habit.id));
 
@@ -100,7 +102,11 @@ export const HabitProvider = ({ children }) => {
           await removeHabit({ id: habit.id });
         } catch (err) {
           toast.error(err);
-          setHabits((prev) => [habit, ...prev]);
+          setHabits((prev) => {
+            const restored = [...prev];
+            restored.splice(index, 0, habit);
+            return restored;
+          });
         } finally {
           setActionLoading(false);
         }
@@ -111,20 +117,28 @@ export const HabitProvider = ({ children }) => {
       toast.success(`${habit.title} deleted`, {
         action: {
           label: "Undo",
-          onClick: () => undoDelete(habit),
+          onClick: () => undoDelete(habit, index),
         },
         duration: 5000,
       });
     } catch {
       toast.error("Failed to delete habit");
-      setHabits((prev) => [habit, ...prev]);
+      setHabits((prev) => {
+        const restored = [...prev];
+        restored.splice(index, 0, habit);
+        return restored;
+      });
     }
   };
 
   // Undo delete
-  const undoDelete = (habit) => {
+  const undoDelete = (habit, index) => {
     clearTimeout(deleteTimeoutRef.current);
-    setHabits((prev) => [habit, ...prev]);
+    setHabits((prev) => {
+      const restored = [...prev];
+      restored.splice(index, 0, habit);
+      return restored;
+    });
   };
 
   return (

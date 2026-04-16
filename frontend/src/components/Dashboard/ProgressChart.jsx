@@ -4,11 +4,11 @@ import { useHabit } from "../../context/HabitContext";
 
 ChartJS.register(ArcElement, Tooltip);
 
-const ProgressChart = () => {
+const ProgressChart = ({ isInitialLoading }) => {
   const { habits } = useHabit();
-  
+
   const habitsToday = habits?.filter((habit) => habit.isScheduledToday);
-  
+
   const total = habitsToday?.length || 0;
   const completed = habitsToday?.filter((h) => h.isCompletedToday).length || 0;
   const remaining = total - completed;
@@ -39,7 +39,11 @@ const ProgressChart = () => {
   return (
     <div className="rounded-md w-full flex flex-col items-center justify-center gap-4">
       <div className="relative w-28 h-28 md:w-40 md:h-40">
-        <Doughnut data={data} options={options} />
+        {isInitialLoading ? (
+          <span className="w-full h-full bg-white"></span>
+        ) : (
+          <Doughnut data={data} options={options} />
+        )}
 
         {/* Center Text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
