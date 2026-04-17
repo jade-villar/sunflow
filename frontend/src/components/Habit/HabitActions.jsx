@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useHabit } from "../../context/HabitContext";
 import { useHabitLog } from "../../context/HabitLogContext";
 import ActionLoading from "../Loading/ActionLoading";
+import { fireConfetti } from "../../utils/confetti";
 
 const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
-  const { habit, getHabit, getAllHabits, deleteHabitWithUndo, actionLoading } = useHabit();
+  const { habit, getHabit, deleteHabitWithUndo, actionLoading } = useHabit();
   const { completeHabit, getHabitWeeklyLogs } = useHabitLog();
 
   const [isCompleting, setIsCompleting] = useState(false);
@@ -32,10 +33,13 @@ const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
   const handleComplete = async () => {
     setIsCompleting(true);
     await completeHabit({ id });
-    await getAllHabits();
     await getHabitWeeklyLogs({ id });
     await getHabit({ id });
     setIsCompleting(false);
+
+    if (!habit?.data?.isCompletedToday) {
+      fireConfetti();
+    }
   };
 
   const handleEdit = () => {

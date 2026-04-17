@@ -14,6 +14,7 @@
     "@heroicons/react": "^2.2.0",
     "@tailwindcss/vite": "^4.2.1",
     "axios": "1.13.6",
+    "canvas-confetti": "^1.9.4",
     "chart.js": "^4.5.1",
     "date-fns": "^4.1.0",
     "react": "^19.2.0",

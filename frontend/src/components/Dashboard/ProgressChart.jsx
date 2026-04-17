@@ -1,11 +1,15 @@
+import { useEffect, useRef } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { useHabit } from "../../context/HabitContext";
+import { fireConfetti } from "../../utils/confetti";
 
 ChartJS.register(ArcElement, Tooltip);
 
 const ProgressChart = ({ isInitialLoading }) => {
   const { habits } = useHabit();
+
+  const hasConfettiFired = useRef(false);
 
   const habitsToday = habits?.filter((habit) => habit.isScheduledToday);
 
@@ -14,6 +18,18 @@ const ProgressChart = ({ isInitialLoading }) => {
   const remaining = total - completed;
 
   const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+  useEffect(() => {
+    if (percent === 0) {
+      if (!hasConfettiFired.current) {
+        hasConfettiFired.current = true;
+        fireConfetti();
+      }
+    } else {
+      // Reset
+      hasConfettiFired.current = false;
+    }
+  }, [percent]);
 
   const data = {
     labels: ["Completed", "Remaining"],
