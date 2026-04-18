@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { useHabit } from "../../context/HabitContext";
 import { useHabitLog } from "../../context/HabitLogContext";
 
@@ -9,7 +10,12 @@ const HabitInfoCard = () => {
   const scheduledCount = weeklyLogs?.data?.logs?.filter((log) => log.isScheduled === true).length || 0;
 
   return (
-    <section className="flex flex-col gap-5 bg-white border border-slate-200 rounded-3xl px-6 py-7 md:px-7 md:py-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
+    <motion.section
+      className="flex flex-col gap-5 bg-white border border-slate-200 rounded-3xl px-6 py-7 md:px-7 md:py-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <div className="flex gap-2">
         <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-100">
           <img
@@ -48,7 +54,7 @@ const HabitInfoCard = () => {
           <span>&nbsp;completed this week&nbsp;</span>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

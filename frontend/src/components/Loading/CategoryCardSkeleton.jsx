@@ -1,6 +1,6 @@
 const CategoryCardSkeleton = () => {
   const categoryCards = Array.from({ length: 2 });
-  const habitCards = Array.from({ length: 3 });
+  const habitCards = Array.from({ length: 2 });
 
   return (
     <>

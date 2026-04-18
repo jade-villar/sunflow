@@ -1,4 +1,5 @@
 import { format, parseISO } from "date-fns";
+import { motion } from "motion/react";
 import { useHabitLog } from "../../context/HabitLogContext";
 import HabitDayLog from "./HabitDayLog";
 import HabitLogLegends from "./HabitLogLegends";
@@ -15,7 +16,12 @@ const HabitWeeklyLogs = () => {
     : "";
 
   return (
-    <section className="flex flex-col gap-6 bg-white border border-slate-200 rounded-3xl px-6 py-7 md:px-7 md:py-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
+    <motion.section
+      className="flex flex-col gap-6 bg-white border border-slate-200 rounded-3xl px-6 py-7 md:px-7 md:py-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <div className="text-xs text-slate-400 font-bold tracking-wider flex justify-between items-center gap-4 mb-4">
         <p>WEEKLY HISTORY</p>
         <p>{formattedWeekStart} – {formattedWeekEnd}</p>
@@ -30,7 +36,7 @@ const HabitWeeklyLogs = () => {
       <hr className="border-slate-200" />
 
       <HabitLogLegends />
-    </section>
+    </motion.section>
   );
 };
 

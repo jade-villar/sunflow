@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { AnimatePresence, motion } from "motion/react";
 import { useHabit } from "../context/HabitContext";
 import { useHabitLog } from "../context/HabitLogContext";
 import HabitStats from "../components/Habit/HabitStats";
@@ -9,6 +10,7 @@ import HabitActions from "../components/Habit/HabitActions";
 import HabitModal from "../components/HabitModal/HabitModal";
 import HabitInfoCardSkeleton from "../components/Loading/HabitInfoCardSkeleton";
 import HabitWeeklyLogsSkeleton from "../components/Loading/HabitWeeklyLogsSkeleton";
+import { pageVariant, componentVariant } from "../utils/animations";
 
 const Habit = () => {
   const { id } = useParams();
@@ -29,16 +31,29 @@ const Habit = () => {
   }, [id, getHabitWeeklyLogs]);
 
   return (
-    <main className="min-h-screen px-4 py-30 text-slate-800">
+    <motion.main
+      className="min-h-screen px-4 py-30 text-slate-800"
+      variants={pageVariant}
+      initial="hidden"
+      animate="visible"
+    >
       <div className="max-w-4xl mx-auto flex flex-col gap-6">
         {/* STATS */}
         <HabitStats />
 
         {/* HABIT INFO CARD */}
-        {isLoading ? <HabitInfoCardSkeleton /> : <HabitInfoCard />}
+        <motion.div variants={componentVariant}>
+          <AnimatePresence mode="wait">
+            {isLoading ? <HabitInfoCardSkeleton /> : <HabitInfoCard />}
+          </AnimatePresence>
+        </motion.div>
 
         {/* WEEKLY LOGS */}
-        {isLoading ? <HabitWeeklyLogsSkeleton /> : <HabitWeeklyLogs />}
+        <motion.div variants={componentVariant}>
+          <AnimatePresence mode="wait">
+            {isLoading ? <HabitWeeklyLogsSkeleton /> : <HabitWeeklyLogs />}
+          </AnimatePresence>
+        </motion.div>
 
         {/* ACTIONS */}
         <HabitActions
@@ -54,7 +69,7 @@ const Habit = () => {
         onClose={() => setIsOpen(false)}
         initialData={editingHabit}
       />
-    </main>
+    </motion.main>
   );
 };
 

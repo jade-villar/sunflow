@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import CountUp from "react-countup";
 import { useHabit } from "../../context/HabitContext";
 import { fireConfetti } from "../../utils/confetti";
 
@@ -20,7 +21,7 @@ const ProgressChart = ({ isInitialLoading }) => {
   const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   useEffect(() => {
-    if (percent === 0) {
+    if (percent === 100) {
       if (!hasConfettiFired.current) {
         hasConfettiFired.current = true;
         fireConfetti();
@@ -64,7 +65,7 @@ const ProgressChart = ({ isInitialLoading }) => {
         {/* Center Text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-slate-800 text-lg md:text-2xl font-fraunces font-bold">
-            {percent}%
+            <CountUp end={percent} duration={0.6} suffix="%" />
           </span>
           <span className="text-[11px] md:text-xs text-slate-500">
             completed

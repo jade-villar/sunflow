@@ -1,6 +1,11 @@
+import { motion } from "motion/react";
+
 const HabitInfoCardSkeleton = () => {
   return (
-    <section className="flex flex-col gap-5 bg-white border border-slate-200 rounded-3xl px-6 py-7 md:px-7 md:py-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
+    <motion.section
+      className="flex flex-col gap-5 bg-white border border-slate-200 rounded-3xl px-6 py-7 md:px-7 md:py-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition"
+      exit={{ opacity: 0 }}
+    >
       <div className="flex gap-2">
         <span className="w-24 h-6 rounded-full bg-yellow-100 animate-pulse"></span>
         <span className="w-24 h-6 rounded-full bg-emerald-100 animate-pulse"></span>
@@ -16,7 +21,7 @@ const HabitInfoCardSkeleton = () => {
         <span className="w-48 h-7 rounded-full bg-yellow-100 animate-pulse"></span>
         <span className="w-36 h-4 rounded-sm bg-slate-300 animate-pulse"></span>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

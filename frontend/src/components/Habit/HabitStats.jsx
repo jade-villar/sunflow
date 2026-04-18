@@ -1,4 +1,7 @@
+import { motion } from "motion/react";
+import CountUp from "react-countup";
 import { useHabit } from "../../context/HabitContext";
+import { componentVariant } from "../../utils/animations";
 
 const HabitStats = () => {
   const { habit } = useHabit();
@@ -8,7 +11,10 @@ const HabitStats = () => {
   const totalCompleted = habit?.data?.totalCompleted || 0;
 
   return (
-    <section className="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <motion.section
+      className="grid grid-cols-2 md:grid-cols-3 gap-4"
+      variants={componentVariant}
+    >
       {/* CURRENT STREAK */}
       <div className="flex flex-col gap-3 bg-slate-900 text-white rounded-3xl p-5 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
         <img src="/icons/flame.svg" className="w-5 aspect-square mb-1" />
@@ -17,9 +23,11 @@ const HabitStats = () => {
         </div>
         <div className="flex items-end gap-2">
           <span className="text-4xl font-bold font-fraunces">
-            {currentStreak}
+            <CountUp end={currentStreak} duration={0.6} />
           </span>
-          <span className="text-sm text-slate-400 mb-px">{currentStreak === 1 ? "day" : "days"}</span>
+          <span className="text-sm text-slate-400 mb-px">
+            {currentStreak === 1 ? "day" : "days"}
+          </span>
         </div>
       </div>
 
@@ -31,9 +39,11 @@ const HabitStats = () => {
         </div>
         <div className="flex items-end gap-2">
           <span className="text-4xl font-bold font-fraunces">
-            {longestStreak}
+            <CountUp end={longestStreak} duration={0.6} />
           </span>
-          <span className="text-sm mb-px">{longestStreak === 1 ? "day" : "days"}</span>
+          <span className="text-sm mb-px">
+            {longestStreak === 1 ? "day" : "days"}
+          </span>
         </div>
       </div>
 
@@ -45,12 +55,12 @@ const HabitStats = () => {
         </div>
         <div className="flex items-end gap-2">
           <span className="text-4xl font-bold font-fraunces">
-            {totalCompleted}
+            <CountUp end={totalCompleted} duration={0.6} />
           </span>
           <span className="text-sm mb-px">times</span>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

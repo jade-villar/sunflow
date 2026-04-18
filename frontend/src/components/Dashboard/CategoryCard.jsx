@@ -1,5 +1,5 @@
-import HabitCard from "./HabitCard";
 import { useHabit } from "../../context/HabitContext";
+import HabitCard from "./HabitCard";
 
 const CategoryCard = ({ categoryName }) => {
   const { habits } = useHabit();

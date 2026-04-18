@@ -1,3 +1,4 @@
+import CountUp from "react-countup";
 import { useHabit } from "../../context/HabitContext";
 
 const StreakCard = () => {
@@ -22,7 +23,7 @@ const StreakCard = () => {
 
           <div className="flex md:flex-col items-end md:items-start gap-2.5 md:gap-1">
             <h2 className="font-fraunces text-white text-4xl md:text-5xl font-bold">
-              {streakHabits}
+              <CountUp end={streakHabits} duration={0.6} />
             </h2>
 
             <p className="md:hidden text-xs text-slate-400 text-start mb-1">
@@ -37,13 +38,17 @@ const StreakCard = () => {
 
         <div className="hidden md:grid grid-cols-2 gap-3">
           <div className="bg-stone-100 border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center gap-1">
-            <h3 className="font-fraunces text-3xl font-bold">{bestStreak}</h3>
+            <h3 className="font-fraunces text-3xl font-bold">
+              <CountUp end={bestStreak} duration={0.6} />
+            </h3>
             <p className="text-[10px] text-slate-400 font-semibold tracking-wider text-center">
               BEST STREAK
             </p>
           </div>
           <div className="bg-stone-100 border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center gap-1">
-            <h3 className="font-fraunces text-3xl font-bold">{totalDone}</h3>
+            <h3 className="font-fraunces text-3xl font-bold">
+              <CountUp end={totalDone} duration={0.6} />
+            </h3>
             <p className="text-[10px] text-slate-400 font-semibold tracking-wider text-center">
               TOTAL DONE
             </p>
