@@ -1,7 +1,6 @@
 import { motion } from "motion/react";
 import CountUp from "react-countup";
 import { useHabit } from "../../context/HabitContext";
-import { componentVariant } from "../../utils/animations";
 
 const HabitStats = () => {
   const { habit } = useHabit();
@@ -10,10 +9,21 @@ const HabitStats = () => {
   const longestStreak = habit?.data?.longestStreak || 0;
   const totalCompleted = habit?.data?.totalCompleted || 0;
 
+  const fadeUpComponents = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
+
   return (
     <motion.section
       className="grid grid-cols-2 md:grid-cols-3 gap-4"
-      variants={componentVariant}
+      variants={fadeUpComponents}
     >
       {/* CURRENT STREAK */}
       <div className="flex flex-col gap-3 bg-slate-900 text-white rounded-3xl p-5 md:p-6 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">

@@ -2,27 +2,24 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { AnimatePresence, motion } from "motion/react";
 import { useAuth } from "../context/AuthContext";
-import { useCategory } from "../context/CategoryContext";
 import { useHabit } from "../context/HabitContext";
-import CategoryCard from "../components/Dashboard/CategoryCard";
+import CategoryCards from "../components/Dashboard/CategoryCards";
 import StreakCard from "../components/Dashboard/StreakCard";
 import ProgressCard from "../components/Dashboard/ProgressCard";
 import EmptyHabits from "../components/Dashboard/EmptyHabits";
 import HabitModal from "../components/HabitModal/HabitModal";
-import CategoryCardSkeleton from "../components/Loading/CategoryCardSkeleton";
-import { pageVariant, componentVariant } from "../utils/animations";
+import CategoryCardsSkeleton from "../components/Loading/CategoryCardsSkeleton";
 
 const Dashboard = () => {
   const today = format(new Date(), "EEEE, MMMM d");
 
   const { user } = useAuth();
-  const { categories } = useCategory();
   const { habits, habitsLoading } = useHabit();
 
   const [isOpen, setIsOpen] = useState(false);
   const [editingHabit, setEditingHabit] = useState(null);
 
-  const isInitialLoading = habitsLoading && !habits.length;
+  const isInitialLoading = habitsLoading && !habits?.length;
   const hasHabits = habits?.length;
 
   const handleAdd = () => {
@@ -30,11 +27,33 @@ const Dashboard = () => {
     setIsOpen(true);
   };
 
+  const fadeUpPage = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const fadeUpComponents = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
+
   return (
     <main className="min-h-screen px-4 py-30 text-slate-800">
       <motion.div
         className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-6 items-start"
-        variants={pageVariant}
+        variants={fadeUpPage}
         initial="hidden"
         animate="visible"
       >
@@ -63,32 +82,19 @@ const Dashboard = () => {
 
         {/* MAIN LIST */}
         <motion.section
-          className="flex flex-col gap-4 md:gap-6 col-[1/2] md:col-[1/9] lg:col-[1/10] row-[3/4] md:row-[2/3]"
-          variants={componentVariant}
+          className="col-[1/2] md:col-[1/9] lg:col-[1/10] row-[3/4] md:row-[2/3]"
+          variants={fadeUpComponents}
         >
           <AnimatePresence mode="wait">
-            {isInitialLoading ? (
-              <motion.div
-                key="skeleton"
-                exit={{ opacity: 0 }}
-              >
-                <CategoryCardSkeleton />
-              </motion.div>
-            ) : hasHabits ? (
-              <motion.div
-                key="content"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                {categories?.map((category) => (
-                  <CategoryCard
-                    key={category.id}
-                    categoryName={category.name}
-                  />
-                ))}
-              </motion.div>
-            ) : (
+            {isInitialLoading && (
+              <CategoryCardsSkeleton />
+            )}
+
+            {!isInitialLoading && hasHabits && (
+              <CategoryCards />
+            )}
+
+            {!isInitialLoading && !hasHabits && (
               <EmptyHabits handleAdd={handleAdd} />
             )}
           </AnimatePresence>
@@ -97,7 +103,7 @@ const Dashboard = () => {
         {/* SIDEBAR */}
         <motion.section
           className="grid grid-cols-2 md:grid-cols-1 gap-4 md:gap-6 mb-6 md:sticky md:top-30 md:self-start col-[1/2] md:col-[9/13] lg:col-[10/13] row-[2/3] md:row-[1/4]"
-          variants={componentVariant}
+          variants={fadeUpComponents}
         >
           <StreakCard />
           <ProgressCard isInitialLoading={isInitialLoading} />

@@ -10,7 +10,6 @@ import HabitActions from "../components/Habit/HabitActions";
 import HabitModal from "../components/HabitModal/HabitModal";
 import HabitInfoCardSkeleton from "../components/Loading/HabitInfoCardSkeleton";
 import HabitWeeklyLogsSkeleton from "../components/Loading/HabitWeeklyLogsSkeleton";
-import { pageVariant, componentVariant } from "../utils/animations";
 
 const Habit = () => {
   const { id } = useParams();
@@ -30,10 +29,32 @@ const Habit = () => {
     getHabitWeeklyLogs({ id });
   }, [id, getHabitWeeklyLogs]);
 
+  const fadeUpPage = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const fadeUpComponents = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
+
   return (
     <motion.main
       className="min-h-screen px-4 py-30 text-slate-800"
-      variants={pageVariant}
+      variants={fadeUpPage}
       initial="hidden"
       animate="visible"
     >
@@ -42,14 +63,14 @@ const Habit = () => {
         <HabitStats />
 
         {/* HABIT INFO CARD */}
-        <motion.div variants={componentVariant}>
+        <motion.div variants={fadeUpComponents}>
           <AnimatePresence mode="wait">
             {isLoading ? <HabitInfoCardSkeleton /> : <HabitInfoCard />}
           </AnimatePresence>
         </motion.div>
 
         {/* WEEKLY LOGS */}
-        <motion.div variants={componentVariant}>
+        <motion.div variants={fadeUpComponents}>
           <AnimatePresence mode="wait">
             {isLoading ? <HabitWeeklyLogsSkeleton /> : <HabitWeeklyLogs />}
           </AnimatePresence>

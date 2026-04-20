@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { motion } from "motion/react";
 import { useAuth } from "../context/AuthContext";
 import AuthHeroPanel from "../components/Auth/AuthHeroPanel";
 import ActionLoading from "../components/Loading/ActionLoading";
@@ -21,7 +22,12 @@ const Register = () => {
 
   return (
     <main className="min-h-screen px-4 content-center md:pt-12 text-slate-800">
-      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 rounded-3xl md:border md:border-stone-200 md:shadow-around-md">
+      <motion.div
+        className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 rounded-3xl md:border md:border-stone-200 md:shadow-around-md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+      >
         {/* Left Panel */}
         <AuthHeroPanel />
 
@@ -115,7 +121,7 @@ const Register = () => {
             </button>
           </form>
         </div>
-      </div>
+      </motion.div>
     </main>
   );
 };

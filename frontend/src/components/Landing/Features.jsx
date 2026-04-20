@@ -1,25 +1,89 @@
+import { motion } from "motion/react";
+
 const Features = () => {
+  const staggerHeader = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const staggerContainer = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.3,
+      },
+    },
+  };
+
+  const fadeUpBlur = {
+    hidden: { opacity: 0, y: 20, filter: "blur(10px)" },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: {
+        duration: 0.3,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const fade = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
+
   return (
     <section id="features" className="px-4 py-30 bg-slate-900 text-white">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-16 space-y-5">
-          <div className="text-xs font-semibold tracking-widest uppercase text-yellow-500">
+        <motion.div
+          className="mb-16 space-y-5"
+          variants={staggerHeader}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-200px" }}
+        >
+          <motion.div
+            className="text-xs font-semibold tracking-widest uppercase text-yellow-500"
+            variants={fadeUpBlur}
+          >
             Features
-          </div>
-          <h2 className="max-w-2xl text-4xl md:text-5xl font-bold font-fraunces leading-tight">
+          </motion.div>
+          <motion.h2
+            className="max-w-2xl text-4xl md:text-5xl font-bold font-fraunces leading-tight"
+            variants={fadeUpBlur}
+          >
             Everything you need to&nbsp;
             <em className="text-yellow-500">stay consistent</em>
-          </h2>
-          <p className="text-stone-400 max-w-lg">
+          </motion.h2>
+          <motion.p className="text-stone-400 max-w-lg" variants={fadeUpBlur}>
             Simple, focused tools designed to build momentum — not overwhelm
             you.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="lg:col-span-2 bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 transition duration-300">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-200px" }}
+        >
+          <motion.div
+            className="lg:col-span-2 bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 hover:scale-101 active:scale-101 transition"
+            variants={fade}
+          >
             <div className="w-11 aspect-square rounded-xl bg-yellow-500/20 flex items-center justify-center text-xl mb-4">
               <img src="/icons/flame.svg" className="w-6 aspect-square" />
             </div>
@@ -31,9 +95,12 @@ const Features = () => {
               count, creating a powerful motivation to show up — even on hard
               days.
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-emerald-500 hover:shadow-around-md hover:shadow-emerald-500/10 active:border-emerald-500 active:shadow-around-md active:shadow-emerald-500/10 transition duration-300">
+          <motion.div
+            className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-emerald-500 hover:shadow-around-md hover:shadow-emerald-500/10 active:border-emerald-500 active:shadow-around-md active:shadow-emerald-500/10 hover:scale-101 active:scale-101 transition"
+            variants={fade}
+          >
             <div className="w-11 aspect-square rounded-xl bg-emerald-500/20 flex items-center justify-center text-xl mb-4">
               <img src="/icons/bar-chart.svg" className="w-6 aspect-square" />
             </div>
@@ -45,14 +112,14 @@ const Features = () => {
               scrolling, no digging. Your progress ring updates in real time as
               you complete habits.
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 transition duration-300">
+          <motion.div
+            className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 hover:scale-101 active:scale-101 transition"
+            variants={fade}
+          >
             <div className="w-11 aspect-square rounded-xl bg-yellow-500/20 flex items-center justify-center text-xl mb-4">
-              <img
-                src="/icons/spiral-calendar.svg"
-                className="w-6 aspect-square"
-              />
+              <img src="/icons/spiral-calendar.svg" className="w-6 aspect-square" />
             </div>
             <div className="text-lg font-semibold font-fraunces mb-2">
               Flexible Schedules
@@ -61,9 +128,12 @@ const Features = () => {
               Set habits to repeat daily, or on specific weekdays. Sunflow
               adapts to how your life actually works, not a rigid template.
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-emerald-500 hover:shadow-around-md hover:shadow-emerald-500/10 active:border-emerald-500 active:shadow-around-md active:shadow-emerald-500/10 transition duration-300">
+          <motion.div
+            className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-emerald-500 hover:shadow-around-md hover:shadow-emerald-500/10 active:border-emerald-500 active:shadow-around-md active:shadow-emerald-500/10 hover:scale-101 active:scale-101 transition"
+            variants={fade}
+          >
             <div className="w-11 aspect-square rounded-xl bg-emerald-500/20 flex items-center justify-center text-xl mb-4">
               <img src="/icons/label.svg" className="w-6 aspect-square" />
             </div>
@@ -74,14 +144,14 @@ const Features = () => {
               Organize habits by Health, Productivity, Learning, Finance and
               more. Filter your view to focus on what matters most right now.
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 transition duration-300">
+          <motion.div
+            className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 hover:scale-101 active:scale-101 transition"
+            variants={fade}
+          >
             <div className="w-11 aspect-square rounded-xl bg-yellow-500/20 flex items-center justify-center text-xl mb-4">
-              <img
-                src="/icons/party-popper.svg"
-                className="w-6 aspect-square"
-              />
+              <img src="/icons/party-popper.svg" className="w-6 aspect-square" />
             </div>
             <div className="text-lg font-semibold font-fraunces mb-2">
               One-tap Completion
@@ -90,8 +160,8 @@ const Features = () => {
               Mark a habit done with a single tap. A satisfying animation
               confirms it — small celebrations that keep you coming back.
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

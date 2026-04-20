@@ -1,6 +1,14 @@
+import { motion } from "motion/react";
+
 const EmptyHabits = ({ handleAdd }) => {
   return (
-    <div className="flex flex-col items-center gap-3 py-10 md:py-25">
+    <motion.div
+      className="flex flex-col items-center gap-3 py-10 md:py-25"
+      key="empty"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <img src="/icons/seedling.svg" className="w-8 aspect-square" />
       <h3 className="text-2xl font-fraunces font-bold">No Habits Yet</h3>
       <p className="text-slate-400 text-sm">
@@ -13,7 +21,7 @@ const EmptyHabits = ({ handleAdd }) => {
         <span>+</span>
         <span>Add Habit</span>
       </button>
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
 import { useAuth } from "../context/AuthContext";
 
 const Missing = () => {
@@ -9,7 +10,12 @@ const Missing = () => {
   const label = user ? "Dashboard" : "Home";
 
   return (
-    <main className="min-h-screen px-4 py-30 flex flex-col justify-center items-center gap-8 text-slate-800">
+    <motion.main
+      className="min-h-screen px-4 py-30 flex flex-col justify-center items-center gap-8 text-slate-800"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
       <h1 className="font-fraunces font-bold text-4xl">Page not Found</h1>
       <button
         onClick={() => navigate(target)}
@@ -17,7 +23,7 @@ const Missing = () => {
       >
         {label}
       </button>
-    </main>
+    </motion.main>
   );
 };
 

@@ -1,9 +1,15 @@
-const CategoryCardSkeleton = () => {
+import { motion } from "motion/react";
+
+const CategoryCardsSkeleton = () => {
   const categoryCards = Array.from({ length: 2 });
   const habitCards = Array.from({ length: 2 });
 
   return (
-    <>
+    <motion.div
+      className="flex flex-col gap-4 md:gap-6"
+      key="skeleton"
+      exit={{ opacity: 0 }}
+    >
       {categoryCards.map((_, i) => (
         // Category Card Skeleton
         <div
@@ -34,8 +40,8 @@ const CategoryCardSkeleton = () => {
           </div>
         </div>
       ))}
-    </>
+    </motion.div>
   );
 };
 
-export default CategoryCardSkeleton;
+export default CategoryCardsSkeleton;
