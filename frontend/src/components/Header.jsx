@@ -32,7 +32,7 @@ const Header = () => {
 
   return (
     <motion.header
-      className={`fixed top-0 right-0 left-0 z-100 p-4 text-slate-800 border-b border-slate-900/0 transition ${scrolled && "backdrop-blur-lg bg-surface/80 border-slate-900/10 shadow-around-md"}`}
+      className={`fixed top-0 right-0 left-0 z-100 p-4 text-gray-800 border-b border-gray-900/0 transition ${scrolled && "backdrop-blur-lg bg-surface/80 border-gray-900/10 shadow-around-md"}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
@@ -51,14 +51,14 @@ const Header = () => {
             <LinkScroll
               to="features"
               smooth={true}
-              className="py-1.5 hover:text-slate-700 active:text-slate-700 cursor-pointer transition"
+              className="py-1.5 hover:text-gray-600 active:text-gray-800 cursor-pointer transition"
             >
               Features
             </LinkScroll>
             <LinkScroll
               to="how"
               smooth={true}
-              className="py-1.5 hover:text-slate-700 active:text-slate-700 cursor-pointer transition"
+              className="py-1.5 hover:text-gray-600 active:text-gray-800 cursor-pointer transition"
             >
               How it works
             </LinkScroll>
@@ -69,13 +69,13 @@ const Header = () => {
           <div className="flex items-center gap-2">
             <Link
               to={"/login"}
-              className="hidden md:grid content-center px-5 py-1.5 border border-slate-900/10 rounded-full text-sm hover:bg-slate-900 hover:border-slate-900 hover:text-white active:bg-slate-900 active:border-slate-900 active:text-white transition cursor-pointer"
+              className="hidden md:grid content-center px-5 py-1.5 border border-gray-900/10 rounded-full text-sm hover:bg-gray-900 hover:border-gray-900 hover:text-white active:bg-gray-900 active:border-gray-900 active:text-white transition cursor-pointer"
             >
               Log in
             </Link>
             <Link
               to={"/register"}
-              className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30 hover:bg-yellow-600 hover:scale-102 active:scale-98 active:bg-yellow-600 transition cursor-pointer"
+              className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30 hover:bg-yellow-480 hover:scale-103 active:scale-97 active:bg-yellow-600 transition cursor-pointer"
             >
               Get Started
             </Link>
@@ -86,7 +86,7 @@ const Header = () => {
           <button
             onClick={handleLogout}
             disabled={actionLoading}
-            className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30 hover:bg-yellow-600 hover:scale-102 active:scale-98 active:bg-yellow-600 transition cursor-pointer"
+            className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30 hover:bg-yellow-480 hover:scale-103 active:scale-97 active:bg-yellow-600 transition cursor-pointer"
           >
             {actionLoading ? <ActionLoading text={"Logging Out"} /> : "Logout"}
           </button>

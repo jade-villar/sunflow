@@ -64,16 +64,16 @@ const ProgressChart = ({ isInitialLoading }) => {
 
         {/* Center Text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-slate-800 text-lg md:text-2xl font-fraunces font-bold">
+          <span className="text-gray-800 text-lg md:text-2xl font-fraunces font-bold">
             <CountUp end={percent} duration={0.6} suffix="%" />
           </span>
-          <span className="text-[11px] md:text-xs text-slate-500">
+          <span className="text-[11px] md:text-xs text-gray-500">
             completed
           </span>
         </div>
       </div>
 
-      <p className="text-[11px] md:text-xs text-slate-500 text-center">
+      <p className="text-[11px] md:text-xs text-gray-500 text-center">
         {completed} of {total} habits completed
       </p>
     </div>

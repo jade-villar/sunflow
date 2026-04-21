@@ -50,7 +50,7 @@ const Dashboard = () => {
   };
 
   return (
-    <main className="min-h-screen px-4 py-30 text-slate-800">
+    <main className="min-h-screen px-4 py-30 text-gray-800">
       <motion.div
         className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-6 items-start"
         variants={fadeUpPage}
@@ -66,14 +66,14 @@ const Dashboard = () => {
             <h2 className="text-4xl font-fraunces font-extrabold capitalize">
               Good Day, {user.data.user.name}!
             </h2>
-            <p className="text-slate-600 text-sm">
+            <p className="text-gray-600 text-sm">
               Keep growing your habits today
             </p>
           </div>
 
           <button
             onClick={handleAdd}
-            className="flex items-center gap-2 px-6 py-3 rounded-full text-sm text-white font-semibold shadow-around-sm hover:shadow-around-md active:shadow-around-md bg-slate-900 hover:bg-slate-800 active:bg-slate-800 hover:-translate-y-0.5 active:translate-y-0 transition cursor-pointer"
+            className="flex items-center gap-2 px-6 py-3 rounded-full text-sm text-white font-semibold shadow-around-sm hover:shadow-around-md active:shadow-around-sm bg-gray-900 hover:bg-gray-800 active:bg-gray-900 hover:scale-103 active:scale-97 transition cursor-pointer"
           >
             <span className="w-5 h-5 rounded-full bg-yellow-500">+</span>
             <span>Add Habit</span>

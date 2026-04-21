@@ -10,7 +10,7 @@ const CategoryListBox = ({ categories, category, setCategory }) => {
       onChange={setCategory}
       className="relative w-full"
     >
-      <Listbox.Button className="flex justify-between items-center w-full bg-stone-100 rounded-xl px-3.5 py-3 text-sm outline outline-stone-200 focus:bg-white focus:outline-yellow-500 focus:ring-4 focus:ring-yellow-200 transition">
+      <Listbox.Button className="flex justify-between items-center w-full bg-gray-100 rounded-xl px-3.5 py-3 text-sm outline outline-gray-200 focus:bg-white focus:outline-yellow-500 focus:ring-4 focus:ring-yellow-200 transition">
         <div className="flex items-center gap-3">
           <img
             src={`/icons/${category?.icon}.svg`}
@@ -18,10 +18,10 @@ const CategoryListBox = ({ categories, category, setCategory }) => {
           />
           <span>{category?.name}</span>
         </div>
-        <ChevronDownIcon className="w-4 h-4 text-slate-500" />
+        <ChevronDownIcon className="w-4 h-4 text-gray-500" />
       </Listbox.Button>
 
-      <Listbox.Options className="absolute z-10 mt-2 w-full bg-stone-100 rounded-xl outline outline-stone-200 overflow-hidden max-h-60 overflow-y-auto scrollbar scrollbar-thumb-stone-200 scrollbar-track-transparent">
+      <Listbox.Options className="absolute z-10 mt-2 w-full bg-gray-100 rounded-xl outline outline-gray-200 overflow-hidden max-h-60 overflow-y-auto scrollbar scrollbar-thumb-gray-200 scrollbar-track-transparent">
         {categories?.map((cat) => (
           <Listbox.Option key={cat.id} value={cat} as={Fragment}>
             {({ active, selected }) => (

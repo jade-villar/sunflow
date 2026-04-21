@@ -80,7 +80,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog onClose={onClose} className="relative z-200 text-slate-900">
+      <Dialog onClose={onClose} className="relative z-200 text-gray-800">
         {/* Overlay */}
         <Transition.Child
           as={Fragment}
@@ -105,7 +105,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
             leaveFrom="opacity-100 scale-100 translate-y-0"
             leaveTo="opacity-0 scale-95 translate-y-4"
           >
-            <Dialog.Panel className="border border-slate-200 bg-white shadow-around-md w-full max-w-md rounded-3xl p-6 md:p-8">
+            <Dialog.Panel className="border border-gray-200 bg-white shadow-around-sm w-full max-w-md rounded-3xl p-6 md:p-8">
               <div className="flex justify-between items-start gap-6 mb-8">
                 <Dialog.Title className="flex flex-col items-start gap-0.5">
                   <span className="text-[10px] text-yellow-500 font-bold uppercase tracking-wider">
@@ -117,7 +117,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                 </Dialog.Title>
                 <button
                   onClick={onClose}
-                  className="p-1 rounded-full text-slate-500 hover:text-white active:text-white border border-slate-200 hover:border-slate-900 hover:bg-slate-900 active:border-slate-900 active:bg-slate-900 cursor-pointer transition"
+                  className="p-1 rounded-full text-gray-500 hover:text-white active:text-white border border-gray-200 hover:border-gray-900 hover:bg-gray-900 active:border-gray-900 active:bg-gray-900 cursor-pointer transition"
                 >
                   <XMarkIcon className="w-4 h-4" />
                 </button>
@@ -130,14 +130,14 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                 {/* Title */}
                 <div>
                   <label className="block text-xs mb-2">
-                    Title <span className="text-yellow-500">*</span>
+                    Title <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Habit name"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="w-full bg-stone-100 rounded-xl px-3.5 py-3 text-sm placeholder:text-sm placeholder:text-stone-400 outline outline-stone-200 focus:bg-white focus:outline-yellow-500 focus:ring-4 focus:ring-yellow-200 transition"
+                    className="w-full bg-gray-100 rounded-xl px-3.5 py-3 text-sm placeholder:text-sm placeholder:text-gray-400 outline outline-gray-200 focus:bg-white focus:outline-yellow-500 focus:ring-4 focus:ring-yellow-200 transition"
                     required
                   />
                 </div>
@@ -149,14 +149,14 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                     placeholder="Description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="resize-none scrollbar-none w-full bg-stone-100 rounded-xl px-3.5 py-3 text-sm placeholder:text-sm placeholder:text-stone-400 outline outline-stone-200 focus:bg-white focus:outline-yellow-500 focus:ring-4 focus:ring-yellow-200 transition"
+                    className="resize-none scrollbar-none w-full bg-gray-100 rounded-xl px-3.5 py-3 text-sm placeholder:text-sm placeholder:text-gray-400 outline outline-gray-200 focus:bg-white focus:outline-yellow-500 focus:ring-4 focus:ring-yellow-200 transition"
                   ></textarea>
                 </div>
 
                 {/* Category */}
                 <div>
                   <label className="block text-xs mb-2">
-                    Category <span className="text-yellow-500">*</span>
+                    Category <span className="text-red-500">*</span>
                   </label>
                   <CategoryListBox
                     categories={categories}
@@ -168,7 +168,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                 {/* Frequency */}
                 <div>
                   <label className="block text-xs mb-2">
-                    Frequency <span className="text-yellow-500">*</span>
+                    Frequency <span className="text-red-500">*</span>
                   </label>
                   <FrequencyTab
                     frequencies={frequencies}
@@ -181,7 +181,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                 {frequency === "WEEKLY" && (
                   <div>
                     <label className="block text-xs mb-2">
-                      Repeat on <span className="text-yellow-500">*</span>
+                      Repeat on <span className="text-red-500">*</span>
                     </label>
                     <DaySelector
                       days={days}
@@ -196,14 +196,14 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                   <button
                     type="button"
                     onClick={onClose}
-                    className="px-6 py-2.5 text-sm rounded-full border border-stone-200 hover:text-white hover:bg-slate-900 hover:border-slate-900 active:text-white active:bg-slate-900 active:border-slate-900 cursor-pointer transition"
+                    className="px-6 py-2.5 text-sm rounded-full border border-gray-200 hover:text-white hover:bg-gray-900 hover:border-gray-900 active:text-white active:bg-gray-900 active:border-gray-900 cursor-pointer transition"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={actionLoading}
-                    className="min-w-32 flex justify-center items-center px-6 py-2.5 text-sm font-semibold rounded-full shadow-around-sm shadow-yellow-200 text-white bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 cursor-pointer hover:-translate-y-px active:translate-y-0 transition"
+                    className="min-w-32 flex justify-center items-center px-6 py-2.5 text-sm font-semibold rounded-full shadow-around-sm shadow-yellow-500/30 text-white bg-yellow-500 hover:bg-yellow-480 active:bg-yellow-600 cursor-pointer hover:scale-103 active:scale-97 transition"
                   >
                     {initialData ? (
                       <span>

@@ -53,7 +53,7 @@ const Habit = () => {
 
   return (
     <motion.main
-      className="min-h-screen px-4 py-30 text-slate-800"
+      className="min-h-screen px-4 py-30 text-gray-800"
       variants={fadeUpPage}
       initial="hidden"
       animate="visible"

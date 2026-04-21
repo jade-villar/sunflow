@@ -8,6 +8,8 @@
   --font-fraunces: "Fraunces", serif;
 
   --color-surface: #fafaf8;
+  --color-yellow-480: oklch(81.5% 0.176 86.047);
+  /* --color-yellow-480: oklch(82% 0.178 86.047); */
 
   --shadow-around-sm: 0 2px 8px rgba(26, 26, 46, 0.06);
   --shadow-around-md: 0 8px 32px rgba(26, 26, 46, 0.1);
@@ -48,7 +50,6 @@
 
   body {
     @apply selection:bg-yellow-500 selection:text-white;
-    @apply bg-stone-50;
   }
   /* body::before {
     content: "";

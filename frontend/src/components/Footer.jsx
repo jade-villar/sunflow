@@ -4,7 +4,7 @@ const Footer = () => {
   const today = new Date();
 
   return (
-    <footer className="px-4 pb-12 pt-16 text-slate-800 flex flex-col gap-14">
+    <footer className="px-4 pb-12 pt-16 text-gray-800 flex flex-col gap-14">
       <div className="max-w-7xl mx-auto w-full flex justify-between items-center gap-4">
         <p className="text-2xl font-black font-fraunces">sunflow</p>
         <div className="flex items-center gap-4 md:gap-6">
@@ -23,21 +23,21 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto w-full text-stone-500 text-xs md:text-sm flex justify-between items-center gap-4">
+      <div className="max-w-7xl mx-auto w-full text-gray-500 text-xs md:text-sm flex justify-between items-center gap-4">
         <p>&copy; {today.getFullYear()} sunflow. All rights reserved.</p>
         <div className="flex gap-4">
           <Link to={"/privacy"} className="cursor-pointer">
-            <p className="hover:text-slate-800 active:text-slate-800 transition">
+            <p className="hover:text-gray-800 active:text-gray-800 transition">
               Privacy
             </p>
           </Link>
           <Link to={"/terms"} className="cursor-pointer">
-            <p className="hover:text-slate-800 active:text-slate-800 transition">
+            <p className="hover:text-gray-800 active:text-gray-800 transition">
               Terms
             </p>
           </Link>
           <Link to={"cookies"} className="cursor-pointer">
-            <p className="hover:text-slate-800 active:text-slate-800 transition">
+            <p className="hover:text-gray-800 active:text-gray-800 transition">
               Cookies
             </p>
           </Link>

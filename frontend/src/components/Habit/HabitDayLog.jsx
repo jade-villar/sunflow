@@ -7,29 +7,29 @@ const HabitDayLog = ({ log }) => {
   let statusIcon = "";
 
   if (log.completed) {
-    dayStyle = "bg-emerald-100 text-emerald-600 shadow-around-sm shadow-emerald-100";
+    dayStyle = "bg-emerald-100 text-emerald-600 shadow-around-sm shadow-emerald-500/30";
     statusIcon = "✓";
   } else if (log.isToday && log.isScheduled) {
-    dayStyle = "bg-yellow-500 text-white shadow-around-sm shadow-yellow-100";
+    dayStyle = "bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30";
     statusIcon = "?";
   } else if (log.isScheduled) {
-    dayStyle = "bg-slate-100 text-slate-400 border border-slate-200";
+    dayStyle = "bg-gray-100 text-gray-400 border border-gray-200";
     statusIcon = "-";
   } else if (log.isToday && !log.isScheduled) {
     dayStyle = "text-yellow-500 border border-yellow-500";
     statusIcon = "∙";
   } else {
-    dayStyle = "text-slate-400 border border-slate-300 border-dashed";
+    dayStyle = "text-gray-400 border border-gray-200 border-dashed";
     statusIcon = "";
   }
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <p className="text-[10px] text-slate-400">{log.day}</p>
+      <p className="text-[10px] text-gray-400">{log.day}</p>
       <div className={`w-full max-w-13 aspect-square flex items-center justify-center rounded-xl text-sm font-bold hover:scale-105 transition ${dayStyle}`}>
         {statusIcon}
       </div>
-      <p className="text-[10px] text-slate-400">{formattedDate}</p>
+      <p className="text-[10px] text-gray-400">{formattedDate}</p>
     </div>
   );
 };

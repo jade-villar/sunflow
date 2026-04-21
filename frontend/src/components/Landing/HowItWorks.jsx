@@ -69,7 +69,7 @@ const HowItWorks = () => {
             <br />
             <em className="text-yellow-500">3 simple steps</em>
           </motion.h2>
-          <motion.p className="text-stone-500" variants={fadeUpBlur}>
+          <motion.p className="text-gray-500" variants={fadeUpBlur}>
             No complicated setup, no overwhelming onboarding. Just habits.
           </motion.p>
         </motion.div>
@@ -86,13 +86,13 @@ const HowItWorks = () => {
             className="z-10 flex flex-col items-center text-center group"
             variants={fadeUp}
           >
-            <div className="w-18 aspect-square rounded-full flex items-center justify-center text-2xl font-bold font-fraunces mb-6 bg-yellow-500 text-white shadow-around-md shadow-yellow-200 group-hover:scale-110 group-active:scale-110 transition">
+            <div className="w-18 aspect-square rounded-full flex items-center justify-center text-2xl font-bold font-fraunces mb-6 bg-yellow-500 text-white shadow-around-md shadow-yellow-500/30 group-hover:scale-110 group-active:scale-110 transition">
               1
             </div>
             <div className="text-lg font-semibold font-fraunces mb-4">
               Create your habits
             </div>
-            <div className="text-stone-500 text-sm leading-relaxed">
+            <div className="text-gray-500 text-sm leading-relaxed">
               Name your habit, set category, pick frequency and schedule. Takes
               under 30 seconds per habit.
             </div>
@@ -102,13 +102,13 @@ const HowItWorks = () => {
             className="z-10 flex flex-col items-center text-center group"
             variants={fadeUp}
           >
-            <div className="w-18 aspect-square rounded-full flex items-center justify-center text-2xl font-bold font-fraunces mb-6 bg-yellow-500 text-white shadow-around-md shadow-yellow-200 group-hover:scale-110 group-active:scale-110 transition">
+            <div className="w-18 aspect-square rounded-full flex items-center justify-center text-2xl font-bold font-fraunces mb-6 bg-yellow-500 text-white shadow-around-md shadow-yellow-500/30 group-hover:scale-110 group-active:scale-110 transition">
               2
             </div>
             <div className="text-lg font-semibold font-fraunces mb-4">
               Show up every day
             </div>
-            <div className="text-stone-500 text-sm leading-relaxed">
+            <div className="text-gray-500 text-sm leading-relaxed">
               Your dashboard greets you each day with your habits. Mark them
               complete as you go.
             </div>
@@ -118,20 +118,20 @@ const HowItWorks = () => {
             className="z-10 flex flex-col items-center text-center group"
             variants={fadeUp}
           >
-            <div className="w-18 aspect-square rounded-full flex items-center justify-center text-2xl font-bold font-fraunces mb-6 bg-yellow-500 text-white shadow-around-md shadow-yellow-200 group-hover:scale-110 group-active:scale-110 transition">
+            <div className="w-18 aspect-square rounded-full flex items-center justify-center text-2xl font-bold font-fraunces mb-6 bg-yellow-500 text-white shadow-around-md shadow-yellow-500/30 group-hover:scale-110 group-active:scale-110 transition">
               3
             </div>
             <div className="text-lg font-semibold font-fraunces mb-4">
               Watch yourself grow
             </div>
-            <div className="text-stone-500 text-sm leading-relaxed">
+            <div className="text-gray-500 text-sm leading-relaxed">
               Streaks grow, your total completions climb, and the habits that
               seemed hard become second nature.
             </div>
           </motion.div>
 
           <motion.hr
-            className="hidden md:block absolute top-9 right-[17%] left-[17%] border-dashed border-slate-500"
+            className="hidden md:block absolute top-9 right-[17%] left-[17%] border-dashed border-gray-500"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true, margin: "-165px" }}

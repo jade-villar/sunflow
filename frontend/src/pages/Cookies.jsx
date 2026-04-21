@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 
 const Cookies = () => {
   return (
-    <main className="min-h-screen px-4 py-30 text-slate-800">
+    <main className="min-h-screen px-4 py-30 text-gray-800">
       <motion.div
         className="max-w-7xl mx-auto"
         initial={{ opacity: 0, y: 20 }}
@@ -24,7 +24,7 @@ const Cookies = () => {
           <p>Sunflow does not use cookies for advertising purposes.</p>
         </div>
 
-        <p className="text-xs text-slate-800/40 mt-10">
+        <p className="text-xs text-gray-800/40 mt-10">
           Last updated: March 2026
         </p>
       </motion.div>

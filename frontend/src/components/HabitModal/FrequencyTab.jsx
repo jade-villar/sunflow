@@ -7,7 +7,7 @@ const FrequencyTab = ({ frequencies, frequency, setFrequency }) => {
       selectedIndex={frequencies.indexOf(frequency)}
       onChange={(index) => setFrequency(frequencies[index])}
     >
-      <Tab.List className="grid grid-cols-2 w-full bg-stone-100 rounded-xl p-1 text-xs outline outline-stone-200 transition">
+      <Tab.List className="grid grid-cols-2 w-full bg-gray-100 rounded-xl p-1 text-xs outline outline-gray-200 transition">
         {frequencies.map((frequency) => (
           <Tab key={frequency} as={Fragment}>
             {({ selected }) => (
@@ -15,8 +15,8 @@ const FrequencyTab = ({ frequencies, frequency, setFrequency }) => {
                 className={`font-semibold p-2.5 rounded-lg tracking-wide cursor-pointer transition
                   ${
                     selected
-                      ? "bg-white text-slate-800 shadow-around-sm"
-                      : "text-stone-400 hover:text-slate-800"
+                      ? "bg-white text-gray-800 shadow-around-sm"
+                      : "text-gray-400 hover:text-gray-800"
                   }
                 `}
               >

@@ -19,12 +19,12 @@ const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
   let loadingLabel = "";
 
   if (habit?.data?.isCompletedToday) {
-    buttonStyle = "bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-600 shadow-emerald-100";
+    buttonStyle = "bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 shadow-emerald-500/30";
     buttonLabel = "Completed!";
     buttonIcon = "✓";
     loadingLabel = "Saving";
   } else {
-    buttonStyle = "bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-600 shadow-yellow-100";
+    buttonStyle = "bg-yellow-500 hover:bg-yellow-480 active:bg-yellow-600 shadow-yellow-500/30";
     buttonLabel = "Mark Complete";
     buttonIcon = "✦";
     loadingLabel = "Marking";
@@ -57,7 +57,7 @@ const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
       <button
         onClick={handleComplete}
         disabled={isCompleting}
-        className={`w-full sm:w-fit sm:min-w-40 flex justify-center items-center px-8 py-4 rounded-full font-semibold text-white shadow-around-md hover:-translate-y-0.5 active:translate-y-0 transition cursor-pointer ${buttonStyle}`}
+        className={`w-full sm:w-fit sm:min-w-40 flex justify-center items-center px-8 py-4 rounded-full font-semibold text-white shadow-around-md hover:scale-105 active:scale-95 transition cursor-pointer ${buttonStyle}`}
       >
         {isCompleting ? (
           <ActionLoading text={loadingLabel} />
@@ -73,7 +73,7 @@ const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
         <button
           onClick={handleEdit}
           disabled={actionLoading}
-          className="px-6 py-3 bg-white border border-slate-200 rounded-full hover:bg-slate-900 hover:border-slate-900 hover:text-white active:bg-slate-900 active:border-slate-900 active:text-white transition cursor-pointer"
+          className="px-6 py-3 bg-white border border-gray-200 rounded-full hover:bg-gray-900 hover:border-gray-900 hover:text-white active:bg-gray-900 active:border-gray-900 active:text-white transition cursor-pointer"
         >
           Edit
         </button>

@@ -11,13 +11,13 @@ const HabitInfoCard = () => {
 
   return (
     <motion.section
-      className="flex flex-col gap-5 bg-white border border-slate-200 rounded-3xl px-6 py-7 md:px-7 md:py-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition"
+      className="flex flex-col gap-5 bg-white border border-gray-200 rounded-3xl px-6 py-7 md:px-7 md:py-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
       <div className="flex gap-2">
-        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-100">
+        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100">
           <img
             src={`/icons/${habit?.data?.category?.icon}.svg`}
             className="w-3 aspect-square"
@@ -33,12 +33,12 @@ const HabitInfoCard = () => {
 
       <h1 className="text-3xl font-fraunces font-bold">{habit?.data?.title}</h1>
 
-      <p className="text-sm text-slate-500">{habit?.data?.description}</p>
+      <p className="text-sm text-gray-500">{habit?.data?.description}</p>
 
-      <hr className="border-slate-200" />
+      <hr className="border-gray-200" />
 
       <div className="flex justify-between items-center gap-4">
-        <div className="flex w-fit items-center gap-1.5 px-3 py-1.5 bg-yellow-100 rounded-full">
+        <div className="flex w-fit items-center gap-1.5 px-3 py-1.5 bg-amber-100 rounded-full">
           <img src="/icons/flame.svg" className="w-3 aspect-square" />
           <span className="text-xs font-semibold text-yellow-600">
             {habit?.data?.currentStreak
@@ -47,10 +47,10 @@ const HabitInfoCard = () => {
           </span>
         </div>
 
-        <div className="hidden md:inline-block text-xs text-slate-500">
-          <span className="font-bold text-slate-800">{completedCount}</span>
+        <div className="hidden md:inline-block text-xs text-gray-500">
+          <span className="font-bold text-gray-800">{completedCount}</span>
           <span>&nbsp;of&nbsp;</span>
-          <span className="font-bold text-slate-800">{scheduledCount}</span>
+          <span className="font-bold text-gray-800">{scheduledCount}</span>
           <span>&nbsp;completed this week&nbsp;</span>
         </div>
       </div>

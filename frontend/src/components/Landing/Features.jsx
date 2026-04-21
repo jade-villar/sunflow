@@ -43,7 +43,7 @@ const Features = () => {
   };
 
   return (
-    <section id="features" className="px-4 py-30 bg-slate-900 text-white">
+    <section id="features" className="px-4 py-30 bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -66,7 +66,7 @@ const Features = () => {
             Everything you need to&nbsp;
             <em className="text-yellow-500">stay consistent</em>
           </motion.h2>
-          <motion.p className="text-stone-400 max-w-lg" variants={fadeUpBlur}>
+          <motion.p className="text-gray-400 max-w-lg" variants={fadeUpBlur}>
             Simple, focused tools designed to build momentum — not overwhelm
             you.
           </motion.p>
@@ -81,16 +81,16 @@ const Features = () => {
           viewport={{ once: true, margin: "-200px" }}
         >
           <motion.div
-            className="lg:col-span-2 bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 hover:scale-101 active:scale-101 transition"
+            className="lg:col-span-2 bg-gray-800 border border-gray-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 hover:scale-101 active:scale-101 transition"
             variants={fade}
           >
-            <div className="w-11 aspect-square rounded-xl bg-yellow-500/20 flex items-center justify-center text-xl mb-4">
+            <div className="w-11 aspect-square rounded-xl bg-yellow-500/30 flex items-center justify-center text-xl mb-4">
               <img src="/icons/flame.svg" className="w-6 aspect-square" />
             </div>
             <div className="text-lg font-semibold font-fraunces mb-2">
               Streak Tracking
             </div>
-            <div className="text-stone-400 text-sm leading-relaxed">
+            <div className="text-gray-400 text-sm leading-relaxed">
               Watch your streak grow day by day. Missing a day resets your
               count, creating a powerful motivation to show up — even on hard
               days.
@@ -98,16 +98,16 @@ const Features = () => {
           </motion.div>
 
           <motion.div
-            className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-emerald-500 hover:shadow-around-md hover:shadow-emerald-500/10 active:border-emerald-500 active:shadow-around-md active:shadow-emerald-500/10 hover:scale-101 active:scale-101 transition"
+            className="bg-gray-800 border border-gray-700 rounded-3xl p-6 md:p-8 hover:border-emerald-500 hover:shadow-around-md hover:shadow-emerald-500/10 active:border-emerald-500 active:shadow-around-md active:shadow-emerald-500/10 hover:scale-101 active:scale-101 transition"
             variants={fade}
           >
-            <div className="w-11 aspect-square rounded-xl bg-emerald-500/20 flex items-center justify-center text-xl mb-4">
+            <div className="w-11 aspect-square rounded-xl bg-emerald-500/30 flex items-center justify-center text-xl mb-4">
               <img src="/icons/bar-chart.svg" className="w-6 aspect-square" />
             </div>
             <div className="text-lg font-semibold font-fraunces mb-2">
               Progress at a Glance
             </div>
-            <div className="text-stone-400 text-sm leading-relaxed">
+            <div className="text-gray-400 text-sm leading-relaxed">
               A clean daily dashboard shows exactly where you stand — no
               scrolling, no digging. Your progress ring updates in real time as
               you complete habits.
@@ -115,48 +115,48 @@ const Features = () => {
           </motion.div>
 
           <motion.div
-            className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 hover:scale-101 active:scale-101 transition"
+            className="bg-gray-800 border border-gray-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 hover:scale-101 active:scale-101 transition"
             variants={fade}
           >
-            <div className="w-11 aspect-square rounded-xl bg-yellow-500/20 flex items-center justify-center text-xl mb-4">
+            <div className="w-11 aspect-square rounded-xl bg-yellow-500/30 flex items-center justify-center text-xl mb-4">
               <img src="/icons/spiral-calendar.svg" className="w-6 aspect-square" />
             </div>
             <div className="text-lg font-semibold font-fraunces mb-2">
               Flexible Schedules
             </div>
-            <div className="text-stone-400 text-sm leading-relaxed">
+            <div className="text-gray-400 text-sm leading-relaxed">
               Set habits to repeat daily, or on specific weekdays. Sunflow
               adapts to how your life actually works, not a rigid template.
             </div>
           </motion.div>
 
           <motion.div
-            className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-emerald-500 hover:shadow-around-md hover:shadow-emerald-500/10 active:border-emerald-500 active:shadow-around-md active:shadow-emerald-500/10 hover:scale-101 active:scale-101 transition"
+            className="bg-gray-800 border border-gray-700 rounded-3xl p-6 md:p-8 hover:border-emerald-500 hover:shadow-around-md hover:shadow-emerald-500/10 active:border-emerald-500 active:shadow-around-md active:shadow-emerald-500/10 hover:scale-101 active:scale-101 transition"
             variants={fade}
           >
-            <div className="w-11 aspect-square rounded-xl bg-emerald-500/20 flex items-center justify-center text-xl mb-4">
+            <div className="w-11 aspect-square rounded-xl bg-emerald-500/30 flex items-center justify-center text-xl mb-4">
               <img src="/icons/label.svg" className="w-6 aspect-square" />
             </div>
             <div className="text-lg font-semibold font-fraunces mb-2">
               Categories & Tags
             </div>
-            <div className="text-stone-400 text-sm leading-relaxed">
+            <div className="text-gray-400 text-sm leading-relaxed">
               Organize habits by Health, Productivity, Learning, Finance and
               more. Filter your view to focus on what matters most right now.
             </div>
           </motion.div>
 
           <motion.div
-            className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 hover:scale-101 active:scale-101 transition"
+            className="bg-gray-800 border border-gray-700 rounded-3xl p-6 md:p-8 hover:border-yellow-500 hover:shadow-around-md hover:shadow-yellow-500/10 active:border-yellow-500 active:shadow-around-md active:shadow-yellow-500/10 hover:scale-101 active:scale-101 transition"
             variants={fade}
           >
-            <div className="w-11 aspect-square rounded-xl bg-yellow-500/20 flex items-center justify-center text-xl mb-4">
+            <div className="w-11 aspect-square rounded-xl bg-yellow-500/30 flex items-center justify-center text-xl mb-4">
               <img src="/icons/party-popper.svg" className="w-6 aspect-square" />
             </div>
             <div className="text-lg font-semibold font-fraunces mb-2">
               One-tap Completion
             </div>
-            <div className="text-stone-400 text-sm leading-relaxed">
+            <div className="text-gray-400 text-sm leading-relaxed">
               Mark a habit done with a single tap. A satisfying animation
               confirms it — small celebrations that keep you coming back.
             </div>
