@@ -31,9 +31,9 @@ export const AuthProvider = ({ children }) => {
         } else if (isNetworkError) {
           const hasSession = localStorage.getItem("has_session");
 
-          // if (hasSession) {
-          //   window.location.reload();
-          // }
+          if (hasSession) {
+            // window.location.reload();
+          }
 
           toast.error("No internet connection. Please check your network.");
         }

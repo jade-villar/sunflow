@@ -28,9 +28,11 @@ export const HabitLogProvider = ({ children }) => {
   // Complete habit
   const completeHabit = async ({ id }) => {
     try {
-      await complete({ id });
+      const res = await complete({ id });
+      return res;
     } catch (err) {
       toast.error(err);
+      throw err;
     }
   };
 

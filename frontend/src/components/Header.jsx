@@ -32,7 +32,7 @@ const Header = () => {
 
   return (
     <motion.header
-      className={`fixed top-0 right-0 left-0 z-100 p-4 text-gray-800 border-b border-gray-900/0 transition ${scrolled && "backdrop-blur-lg bg-surface/80 border-gray-900/10 shadow-around-md"}`}
+      className={`fixed top-0 right-0 left-0 z-100 p-4 border-b border-gray-900/0 transition ${scrolled && "backdrop-blur-lg bg-surface/80 border-gray-900/10 shadow-around-md"}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
@@ -75,7 +75,7 @@ const Header = () => {
             </Link>
             <Link
               to={"/register"}
-              className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30 hover:bg-yellow-480 hover:scale-103 active:scale-97 active:bg-yellow-600 transition cursor-pointer"
+              className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-btn-sm shadow-yellow-500/30 hover:bg-yellow-480 hover:scale-103 active:scale-97 active:bg-yellow-600 transition cursor-pointer"
             >
               Get Started
             </Link>
@@ -86,7 +86,7 @@ const Header = () => {
           <button
             onClick={handleLogout}
             disabled={actionLoading}
-            className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30 hover:bg-yellow-480 hover:scale-103 active:scale-97 active:bg-yellow-600 transition cursor-pointer"
+            className="grid content-center px-5 py-1.5 rounded-full text-sm font-semibold bg-yellow-500 text-white shadow-around-btn-sm shadow-yellow-500/30 hover:bg-yellow-480 hover:scale-103 active:scale-97 active:bg-yellow-600 transition cursor-pointer"
           >
             {actionLoading ? <ActionLoading text={"Logging Out"} /> : "Logout"}
           </button>

@@ -10,12 +10,12 @@ const CategoryCard = ({ categoryName }) => {
 
   if (categoryHabits?.length > 0) {
     return (
-      <div className="flex flex-col gap-8 bg-white border border-gray-200 rounded-3xl px-6 py-7 md:px-7 md:py-8 shadow-around-sm hover:shadow-around-md transition">
+      <div className="flex flex-col gap-8 bg-white border border-gray-200 rounded-3xl px-6 py-7 md:px-7 md:py-8 shadow-around-sm hover:shadow-around-md active:shadow-around-md transition">
         <div className="flex gap-3 items-center">
-          <span className="p-2 bg-gray-900 rounded-lg">
+          <span className="p-2.5 bg-gray-900 rounded-lg">
             <img
-              src={`/icons/${categoryHabits[0].category.icon}.svg`}
-              className="w-6 aspect-square"
+              src={`/icons/${categoryHabits[0]?.category?.icon}.svg`}
+              className="w-5 aspect-square"
             />
           </span>
           <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">
@@ -24,7 +24,7 @@ const CategoryCard = ({ categoryName }) => {
         </div>
 
         <div className="flex flex-col">
-          {categoryHabits.map((habit) => (
+          {categoryHabits?.map((habit) => (
             <HabitCard key={habit.id} habit={habit} />
           ))}
         </div>

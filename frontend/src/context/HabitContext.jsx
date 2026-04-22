@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { editHabit, fetchAllHabits, fetchHabit, postHabit, removeHabit } from "../services/habitServices";
+import { useAuth } from "./AuthContext";
 
 const HabitContext = createContext();
 
@@ -9,6 +10,8 @@ export const useHabit = () => {
 };
 
 export const HabitProvider = ({ children }) => {
+  const { user } = useAuth();
+
   const [habits, setHabits] = useState([]);
   const [habit, setHabit] = useState(null);
   const [habitsLoading, setHabitsLoading] = useState(false);
@@ -31,8 +34,10 @@ export const HabitProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    getAllHabits();
-  }, [getAllHabits]);
+    if (user) {
+      getAllHabits();
+    }
+  }, [getAllHabits, user]);
 
   // Get habit
   const getHabit = useCallback(async ({ id }) => {
@@ -51,11 +56,13 @@ export const HabitProvider = ({ children }) => {
   const addHabit = async ({ title, description, categoryId, frequency, scheduledDays }) => {
     setActionLoading(true);
     try {
-      await postHabit({ title, description, categoryId, frequency, scheduledDays });
+      const res = await postHabit({ title, description, categoryId, frequency, scheduledDays });
       await getAllHabits();
       toast.success(`${title} added`);
+      return res;
     } catch (err) {
       toast.error(err);
+      throw err;
     } finally {
       setActionLoading(false);
     }
@@ -65,12 +72,14 @@ export const HabitProvider = ({ children }) => {
   const updateHabit = async ({ id, title, description, categoryId, frequency, scheduledDays }) => {
     setActionLoading(true);
     try {
-      await editHabit({ id, title, description, categoryId, frequency, scheduledDays });
+      const res = await editHabit({ id, title, description, categoryId, frequency, scheduledDays });
       await getHabit({ id });
       await getAllHabits();
       toast.success("Changes saved");
+      return res;
     } catch (err) {
       toast.error(err);
+      throw err;
     } finally {
       setActionLoading(false);
     }

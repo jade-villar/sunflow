@@ -16,7 +16,7 @@ const EmptyHabits = ({ handleAdd }) => {
       </p>
       <button
         onClick={handleAdd}
-        className="flex items-center gap-1.5 mt-2 px-5 py-2.5 text-sm font-semibold rounded-full shadow-around-sm shadow-yellow-500/30 text-white bg-yellow-500 hover:bg-yellow-480 active:bg-yellow-600 cursor-pointer hover:scale-103 active:scale-97 transition"
+        className="flex items-center gap-1.5 mt-2 px-5 py-2.5 text-sm font-semibold rounded-full shadow-around-btn-sm shadow-yellow-500/30 text-white bg-yellow-500 hover:bg-yellow-480 active:bg-yellow-600 cursor-pointer hover:scale-103 active:scale-97 transition"
       >
         <span>+</span>
         <span>Add Habit</span>

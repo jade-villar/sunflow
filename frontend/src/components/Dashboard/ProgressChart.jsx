@@ -37,7 +37,7 @@ const ProgressChart = ({ isInitialLoading }) => {
     datasets: [
       {
         data: total > 0 ? [completed, remaining] : [1],
-        backgroundColor: total > 0 ? ["#EAB308", "#E5E7EB"] : ["#E5E7EB"],
+        backgroundColor: total > 0 ? ["oklch(79.5% 0.184 86.047)", "oklch(92.8% 0.006 264.531)"] : ["oklch(92.8% 0.006 264.531)"],
         borderWidth: 0,
         cutout: "70%",
       },
@@ -64,7 +64,7 @@ const ProgressChart = ({ isInitialLoading }) => {
 
         {/* Center Text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-gray-800 text-lg md:text-2xl font-fraunces font-bold">
+          <span className="text-lg md:text-2xl font-fraunces font-bold">
             <CountUp end={percent} duration={0.6} suffix="%" />
           </span>
           <span className="text-[11px] md:text-xs text-gray-500">

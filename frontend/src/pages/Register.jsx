@@ -21,7 +21,7 @@ const Register = () => {
   };
 
   return (
-    <main className="min-h-screen px-4 content-center md:pt-12 text-gray-800">
+    <main className="min-h-screen px-4 content-center md:pt-12">
       <motion.div
         className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 rounded-3xl md:border md:border-gray-200 md:shadow-around-md"
         initial={{ opacity: 0, y: 20 }}
@@ -108,7 +108,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={actionLoading}
-              className="flex justify-center items-center mt-6 py-4 md:py-3.5 rounded-full text-sm font-semibold shadow-around-sm shadow-yellow-500/30 text-white bg-yellow-500 hover:bg-yellow-480 active:bg-yellow-600 cursor-pointer hover:scale-103 active:scale-97 transition"
+              className="flex justify-center items-center mt-6 py-4 md:py-3.5 rounded-full text-sm font-semibold shadow-around-btn-sm shadow-yellow-500/30 text-white bg-yellow-500 hover:bg-yellow-480 active:bg-yellow-600 cursor-pointer hover:scale-103 active:scale-97 transition"
             >
               {actionLoading ? (
                 <ActionLoading text={"Creating Account"} />

@@ -85,7 +85,7 @@ const Hero = () => {
         >
           <Link
             to="/register"
-            className="flex items-center gap-2 px-8 py-4 rounded-full text-white font-semibold shadow-around-md hover:shadow-around-lg active:shadow-around-md bg-gray-900 hover:bg-gray-800 active:bg-gray-900 hover:scale-105 active:scale-95 transition cursor-pointer"
+            className="flex items-center gap-2 px-8 py-4 rounded-full text-white font-semibold shadow-around-btn-md hover:shadow-around-btn-lg active:shadow-around-btn-md bg-gray-900 hover:bg-gray-800 active:bg-gray-900 hover:scale-105 active:scale-95 transition cursor-pointer"
           >
             <span className="w-6 h-6 rounded-full bg-yellow-500">✦</span>
             <span>Start tracking</span>
@@ -102,7 +102,7 @@ const Hero = () => {
 
         <motion.img
           src="/dashboard.png"
-          className="hidden md:block max-w-5xl w-full mt-15 border rounded-3xl border-gray-200 hover:border-gray-300 shadow-around-md hover:shadow-around-lg hover:scale-101 transition"
+          className="hidden md:block max-w-5xl w-full mt-15 border rounded-3xl border-gray-200 hover:border-gray-300 shadow-around-lg shadow-gray-900/20 hover:scale-101 active:scale-99 transition"
           variants={fade}
           animate={{ y: [0, -15, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}

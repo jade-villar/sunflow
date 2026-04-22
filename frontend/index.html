@@ -5,6 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="/sunflow.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>sunflow</title>
+    <link rel="stylesheet" href="./src/index.css" />
   </head>
   <body>
     <div id="root">
@@ -19,53 +20,6 @@
 </html>
 
 <style>
-  :root {
-    --color-surface: #fafaf8;
-  }
-
-  #root {
-    min-height: 100vh;
-  }
-
-  body {
-    background-color: var(--color-surface);
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    top: -200px;
-    right: -200px;
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(
-      circle,
-      rgba(245, 166, 35, 0.2) 0%,
-      transparent 70%
-    );
-    pointer-events: none;
-    z-index: -10;
-  }
-
-  body::after {
-    content: "";
-    position: fixed;
-    bottom: -150px;
-    left: -100px;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(
-      circle,
-      rgba(46, 204, 143, 0.16) 0%,
-      transparent 70%
-    );
-    pointer-events: none;
-    z-index: -10;
-  }
-
   .auth-loading {
     height: 100vh;
     width: 100%;
@@ -80,7 +34,7 @@
 
   .auth-loading__spinner {
     width: 40px;
-    aspect-ratio: 1/1;
+    height: 40px;
     animation: slow-spin 2s linear infinite;
   }
 

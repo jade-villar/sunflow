@@ -72,13 +72,13 @@ const CTA = () => {
         <motion.div className="flex items-center gap-4 mt-8" variants={fadeUp}>
           <Link
             to="/login"
-            className="px-8 py-3.5 rounded-full text-white font-semibold bg-gray-800 border border-gray-700 hover:border-gray-500 transition cursor-pointer"
+            className="px-8 py-3.5 rounded-full text-white font-semibold bg-gray-700/40 border border-gray-700 hover:border-gray-500 transition cursor-pointer"
           >
             Log in
           </Link>
           <Link
             to="/register"
-            className="px-8 py-3.5 rounded-full text-white font-semibold shadow-yellow-500/30 shadow-around-md hover:shadow-around-lg active:shadow-around-md bg-yellow-500 hover:bg-yellow-480 active:bg-yellow-600 hover:scale-105 active:scale-95 transition cursor-pointer"
+            className="px-8 py-3.5 rounded-full text-white font-semibold shadow-yellow-500/30 shadow-around-btn-md hover:shadow-around-btn-lg active:shadow-around-btn-md bg-yellow-500 hover:bg-yellow-480 active:bg-yellow-600 hover:scale-105 active:scale-95 transition cursor-pointer"
           >
             Get started
           </Link>

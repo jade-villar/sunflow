@@ -21,7 +21,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState(categories && categories[0]);
   const [frequency, setFrequency] = useState(frequencies[0]);
-  const [scheduledDays, setScheduledDays] = useState(days);
+  const [scheduledDays, setScheduledDays] = useState([]);
 
   // Populate when editing
   useEffect(() => {
@@ -37,7 +37,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
         setDescription("");
         setCategory(categories && categories[0]);
         setFrequency(frequencies[0]);
-        setScheduledDays(days);
+        setScheduledDays([]);
       }
     };
 
@@ -47,20 +47,23 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    await addHabit({
+    const res = await addHabit({
       title,
       description,
       categoryId: category.id,
       frequency,
-      scheduledDays,
+      scheduledDays: frequency === "DAILY" ? days : scheduledDays,
     });
-    onClose();
+
+    if (res) {
+      onClose();
+    }
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    await updateHabit({
+    const res = await updateHabit({
       id: initialData.id,
       title,
       description,
@@ -68,7 +71,9 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
       frequency,
       scheduledDays,
     });
-    onClose();
+    if (res) {
+      onClose();
+    }
     await getHabitWeeklyLogs({ id: initialData.id });
   };
 
@@ -80,7 +85,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog onClose={onClose} className="relative z-200 text-gray-800">
+      <Dialog onClose={onClose} className="relative z-200">
         {/* Overlay */}
         <Transition.Child
           as={Fragment}
@@ -203,7 +208,7 @@ const HabitModal = ({ isOpen, onClose, initialData }) => {
                   <button
                     type="submit"
                     disabled={actionLoading}
-                    className="min-w-32 flex justify-center items-center px-6 py-2.5 text-sm font-semibold rounded-full shadow-around-sm shadow-yellow-500/30 text-white bg-yellow-500 hover:bg-yellow-480 active:bg-yellow-600 cursor-pointer hover:scale-103 active:scale-97 transition"
+                    className="min-w-32 flex justify-center items-center px-6 py-2.5 text-sm font-semibold rounded-full shadow-around-btn-sm shadow-yellow-500/30 text-white bg-yellow-500 hover:bg-yellow-480 active:bg-yellow-600 cursor-pointer hover:scale-103 active:scale-97 transition"
                   >
                     {initialData ? (
                       <span>

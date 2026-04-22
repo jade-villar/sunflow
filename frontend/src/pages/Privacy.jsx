@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 
 const Privacy = () => {
   return (
-    <main className="min-h-screen px-4 py-30 text-gray-800">
+    <main className="min-h-screen px-4 py-30">
       <motion.div
         className="max-w-7xl mx-auto"
         initial={{ opacity: 0, y: 20 }}

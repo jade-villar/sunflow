@@ -7,7 +7,7 @@ const HabitDayLog = ({ log }) => {
   let statusIcon = "";
 
   if (log.completed) {
-    dayStyle = "bg-emerald-100 text-emerald-600 shadow-around-sm shadow-emerald-500/30";
+    dayStyle = "bg-emerald-100 text-emerald-600 shadow-around-sm shadow-emerald-100";
     statusIcon = "✓";
   } else if (log.isToday && log.isScheduled) {
     dayStyle = "bg-yellow-500 text-white shadow-around-sm shadow-yellow-500/30";
@@ -19,7 +19,7 @@ const HabitDayLog = ({ log }) => {
     dayStyle = "text-yellow-500 border border-yellow-500";
     statusIcon = "∙";
   } else {
-    dayStyle = "text-gray-400 border border-gray-200 border-dashed";
+    dayStyle = "text-gray-400 border border-gray-200";
     statusIcon = "";
   }
 

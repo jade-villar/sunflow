@@ -5,7 +5,7 @@ import CTA from "../components/Landing/CTA";
 
 const Landing = () => {
   return (
-    <main className="min-h-screen text-gray-800">
+    <main className="min-h-screen">
       {/* HERO */}
       <Hero />
 

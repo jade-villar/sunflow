@@ -4,7 +4,7 @@ const Footer = () => {
   const today = new Date();
 
   return (
-    <footer className="px-4 pb-12 pt-16 text-gray-800 flex flex-col gap-14">
+    <footer className="px-4 pb-12 pt-16 flex flex-col gap-14">
       <div className="max-w-7xl mx-auto w-full flex justify-between items-center gap-4">
         <p className="text-2xl font-black font-fraunces">sunflow</p>
         <div className="flex items-center gap-4 md:gap-6">

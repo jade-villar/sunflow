@@ -32,13 +32,16 @@ const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
 
   const handleComplete = async () => {
     setIsCompleting(true);
-    await completeHabit({ id });
-    await getHabitWeeklyLogs({ id });
-    await getHabit({ id });
-    setIsCompleting(false);
+    try {
+      const res = await completeHabit({ id });
+      await getHabitWeeklyLogs({ id });
+      await getHabit({ id });
 
-    if (!habit?.data?.isCompletedToday) {
-      fireConfetti();
+      if (res?.data?.completed) {
+        fireConfetti();
+      }
+    } finally {
+      setIsCompleting(false);
     }
   };
 
@@ -57,7 +60,7 @@ const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
       <button
         onClick={handleComplete}
         disabled={isCompleting}
-        className={`w-full sm:w-fit sm:min-w-40 flex justify-center items-center px-8 py-4 rounded-full font-semibold text-white shadow-around-md hover:scale-105 active:scale-95 transition cursor-pointer ${buttonStyle}`}
+        className={`w-full sm:w-fit sm:min-w-40 flex justify-center items-center px-8 py-4 rounded-full font-semibold text-white shadow-around-btn-md hover:scale-105 active:scale-95 transition cursor-pointer ${buttonStyle}`}
       >
         {isCompleting ? (
           <ActionLoading text={loadingLabel} />
