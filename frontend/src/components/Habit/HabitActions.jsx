@@ -6,7 +6,7 @@ import ActionLoading from "../Loading/ActionLoading";
 import { fireConfetti } from "../../utils/confetti";
 
 const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
-  const { habit, getHabit, deleteHabitWithUndo, actionLoading } = useHabit();
+  const { habit, getHabit, getAllHabits, deleteHabitWithUndo, actionLoading } = useHabit();
   const { completeHabit, getHabitWeeklyLogs } = useHabitLog();
 
   const [isCompleting, setIsCompleting] = useState(false);
@@ -36,10 +36,12 @@ const HabitActions = ({ id, setEditingHabit, setIsOpen }) => {
       const res = await completeHabit({ id });
       await getHabitWeeklyLogs({ id });
       await getHabit({ id });
-
+      
       if (res?.data?.completed) {
         fireConfetti();
       }
+      
+      await getAllHabits();
     } finally {
       setIsCompleting(false);
     }
