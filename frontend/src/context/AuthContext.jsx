@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getCsrfToken } from "../api/axios";
 import { getCurrentUser } from "../services/userServices";
 import { loginUser, logoutUser, registerUser } from "../services/authServices";
 
@@ -21,21 +22,15 @@ export const AuthProvider = ({ children }) => {
       try {
         const res = await getCurrentUser();
         setUser(res);
-        localStorage.setItem("has_session", "true");
+        await getCsrfToken();
       } catch (err) {
-        const isAuthError = err?.response?.status === 401 || err?.response?.status === 404;
         const isNetworkError = !err?.response;
+        const isAuthError = err?.response?.status === 401 || err?.response?.status === 404;
 
-        if (isAuthError) {
-          setUser(null);
-        } else if (isNetworkError) {
-          const hasSession = localStorage.getItem("has_session");
-
-          if (hasSession) {
-            // window.location.reload();
-          }
-
+        if (isNetworkError) {
           toast.error("No internet connection. Please check your network.");
+        } else if (isAuthError) {
+          setUser(null);
         }
       } finally {
         setAuthLoading(false);
@@ -51,6 +46,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await registerUser({ name, email, password });
       setUser(res);
+      await getCsrfToken();
       setError("");
     } catch (err) {
       setError(err);
@@ -65,6 +61,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await loginUser({ email, password });
       setUser(res);
+      await getCsrfToken();
       setError("");
     } catch (err) {
       setError(err);
@@ -78,7 +75,6 @@ export const AuthProvider = ({ children }) => {
     setActionLoading(true);
     try {
       await logoutUser();
-      localStorage.removeItem("has_session");
       setUser(null);
       setError("");
     } catch (err) {
